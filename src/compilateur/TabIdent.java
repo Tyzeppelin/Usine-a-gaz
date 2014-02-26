@@ -20,7 +20,13 @@ public class TabIdent {
 		return table.containsKey(cle);
 	}
 	
+	
 	public void rangeIdent(String cle, Ident id) {
 		table.put(cle, id);
 	}	
+	
+	public String toString()
+	{
+		return table.toString();
+	}
 }

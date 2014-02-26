@@ -2,14 +2,15 @@ package compilateur;
 
 public abstract class Ident {
 	
-	protected enum Type {
-		ENTIER, BOOLEEN;
-	}
 	
 	private String nom;
 	private Type type;
 	
-	
+	public Ident(String nom)
+	{
+		super();
+		this.nom = nom;
+	}
 	public Ident(String nom, Type type) {
 		super();
 		this.nom = nom;
@@ -18,6 +19,7 @@ public abstract class Ident {
 	
 	
 	public abstract int getValeur();
+	public abstract void setValeur(int value);
 	
 	public Type getType() {
 		return type;
