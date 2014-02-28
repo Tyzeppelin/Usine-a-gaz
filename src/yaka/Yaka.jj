@@ -22,6 +22,8 @@ import compilateur.*;
 public class Yaka {
 	public static TabIdent tabIdent;
 	public static Declaration decl;
+	public static Expression expr;
+	public static Generation gen;
 
   public static void main(String args[]) { 
     Yaka analyseur;
@@ -29,6 +31,7 @@ public class Yaka {
 
     tabIdent = new TabIdent();
     decl = new Declaration(tabIdent);
+    expr = new Expression(tabIdent);
 
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");
@@ -48,6 +51,7 @@ public class Yaka {
     try {
       analyseur = new Yaka(input);
       analyseur.analyse();
+      
       System.out.println("analyse syntaxique reussie !\n");
     } catch (ParseException e) {
       String msg = e.getMessage();
@@ -209,7 +213,10 @@ void type() :{}
  * Syntaxe des instructions.
  */
 void suiteExpr() : {}
-{ (expression() (";" (expression())? )*)? }
+{ (expression() (";"{
+  System.out.println(expr.stackType);
+  expr.clear();}
+(expression())? )*)? }
 
 
 
@@ -220,29 +227,27 @@ void expression() : {}
 {
   simpleExpr() 
   (opRel() 
-  simpleExpr() 
+  simpleExpr() {expr.verifType();}
   )?
 }
-
-
 
 void simpleExpr() : {}
 {
    terme() 
    (opAdd() 
-   terme()	
+   terme()	 {expr.verifType();}
    )*
 } 
 void terme() : {}
 {
   facteur() 
   (opMul() 
-  facteur()	
+  facteur() {expr.verifType();}  
   )*
 }
 void facteur() : {}
 {   primaire() 
-  |  opNeg() primaire() 
+  |  opNeg() primaire() {expr.verifType();}
 }
 
 void primaire (): {}
@@ -253,40 +258,41 @@ void primaire (): {}
 }
 
 void valeur () : {}
-{ <entier> 		
- | <ident> 		
- | <VRAI> 		
- | <FAUX> 		
+{ <entier> 		{expr.ajouterType(Type.ENT);}
+ | <ident> 		{expr.ajouterIdent(YakaTokenManager.identLu);}
+ | <VRAI> 		{expr.ajouterType(Type.BOOL);}
+ | <FAUX> 		{expr.ajouterType(Type.BOOL);}
  
 }
 
 void opRel() : {}
 {
-   "=" 		
- | "<>" 	
- | "<" 		
- | "<=" 	
- | ">" 		
- | ">=" 	
+   "="  {expr.ajouterOp(Operateur.EQU);}
+ | "<>" {expr.ajouterOp(Operateur.DIFF);}	
+ | "<" 	{expr.ajouterOp(Operateur.INF);}	
+ | "<=" {expr.ajouterOp(Operateur.INFE);}	
+ | ">" 	{expr.ajouterOp(Operateur.SUP);}	
+ | ">=" {expr.ajouterOp(Operateur.SUPE);}
+ 	
 } 
 
 void opAdd() : {}
 {
-    "+"		
-  |  "-"  
-  | <OU> 	
+    "+"		{expr.ajouterOp(Operateur.ADD);}
+  |  "-"  	{expr.ajouterOp(Operateur.SUB);}
+  | <OU> 	{expr.ajouterOp(Operateur.OR);}
 }
 
 void opMul() : {}
 {
-  "*"		
-  | "/"		
-  | <ET>	
+  "*"		{expr.ajouterOp(Operateur.MUL);}
+  | "/"		{expr.ajouterOp(Operateur.DIV);}
+  | <ET>	{expr.ajouterOp(Operateur.AND);}
 } 
 
 void opNeg() : {}
-{ "-" 		
- | <NON>	
+{ "-" 		{expr.ajouterOp(Operateur.NEG);}
+ | <NON>	{expr.ajouterOp(Operateur.NOT);}
 }
 
 

@@ -3,7 +3,7 @@ package compilateur;
 import yaka.YakaConstants;
 
 public enum Type implements YakaConstants {
-	ENT, BOOL;
+	ENT, BOOL, ERR;
 	
 	public static Type intToType(int type)
 	{
@@ -12,6 +12,6 @@ public enum Type implements YakaConstants {
 		else if (type==ENTIER)
 			return ENT;
 		
-		return ENT;
+		return ERR;
 	}
 }
