@@ -2,7 +2,7 @@
  *
  *       Auteur: Pedrono Marie-Jo
  *
- * 	création : 13 février 2002
+ * 	crï¿½ation : 13 fï¿½vrier 2002
  *
  *     nature : projet etudiant
  *
@@ -18,6 +18,7 @@ PARSER_BEGIN(Yaka)
 package yaka;
 
 import compilateur.*;
+import exceptions.*;
 
 public class Yaka {
 	public static TabIdent tabIdent;
@@ -90,7 +91,7 @@ SKIP :
 }
 
 
-/* Mots réservés*/
+/* Mots rï¿½servï¿½s*/
 
 TOKEN :
 {
@@ -173,17 +174,45 @@ void defConst() : {}
 
 void valConst() : {String name = YakaTokenManager.identLu;}{
   <entier>  {
-    decl.addConst(name,Type.ENT,YakaTokenManager.entierLu);  }
+    try
+    {
+    	decl.addConst(name,Type.ENT,YakaTokenManager.entierLu);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+		System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }  }
  | <ident>
- {	decl.addConstIdent(name,YakaTokenManager.identLu);
+ {
+    try
+    {		decl.addConstIdent(name,YakaTokenManager.identLu);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+		System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
  }	
  | <VRAI> 	
  {
-	decl.addConst(name,Type.BOOL,VRAI);
+    try
+    {
+		decl.addConst(name,Type.BOOL,VRAI);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+		System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
  }		
  | <FAUX>
  {
-	decl.addConst(name,Type.BOOL,FAUX);
+    try
+    {
+		decl.addConst(name,Type.BOOL,FAUX);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+		System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
  }		
 }
 
@@ -193,12 +222,25 @@ void declVar() : {}
   <VAR> type()  {
     int type = token.kind;  }
   <ident>
-  {		decl.addVar(YakaTokenManager.identLu,type);
+  {
+    try
+    {		decl.addVar(YakaTokenManager.identLu,type);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+		System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
   }
   ("," 
       <ident>  
   {
-		decl.addVar(YakaTokenManager.identLu,type);
+    try
+    {        decl.addVar(YakaTokenManager.identLu,type);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+		System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
   }
   )* ";"
 	
@@ -214,7 +256,6 @@ void type() :{}
  */
 void suiteExpr() : {}
 { (expression() (";"{
-  System.out.println(expr.stackType);
   expr.clear();}
 (expression())? )*)? }
 
@@ -259,7 +300,16 @@ void primaire (): {}
 
 void valeur () : {}
 { <entier> 		{expr.ajouterType(Type.ENT);}
- | <ident> 		{expr.ajouterIdent(YakaTokenManager.identLu);}
+ | <ident> 		{
+   					try
+   					{
+   						expr.ajouterIdent(YakaTokenManager.identLu);
+		   			}
+		   			catch (IdentDoesNotExistException e)
+		   			{
+						System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+		   			}
+   				}
  | <VRAI> 		{expr.ajouterType(Type.BOOL);}
  | <FAUX> 		{expr.ajouterType(Type.BOOL);}
  

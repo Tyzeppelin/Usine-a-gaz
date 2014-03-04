@@ -2,6 +2,8 @@ package compilateur;
 
 import java.util.Stack;
 
+import exceptions.IdentDoesNotExistException;
+
 public class Expression {
 	
 	protected Type[][] typesOperateurs = {
@@ -13,8 +15,8 @@ public class Expression {
 	};
 		
 
-	public Stack<Type> stackType;	// pile du type des opérandes lues
-	protected Stack<Operateur> stackOp;	// pile des opérateurs lus
+	public Stack<Type> stackType;	// pile du type des opï¿½randes lues
+	protected Stack<Operateur> stackOp;	// pile des opï¿½rateurs lus
 	
 	// Table des identifiants
 	protected TabIdent tabIdent;
@@ -34,16 +36,16 @@ public class Expression {
 		stackType.push(type);
 	}
 	
-	public void ajouterIdent(String nom) {
+	public void ajouterIdent(String nom) throws IdentDoesNotExistException {
 		if (tabIdent.existeIdent(nom))
 		{
 			Ident ident = tabIdent.chercheIdent(nom);
-			System.out.println(nom+" "+ident.getType());
 			stackType.push(ident.getType());
 		}
 		else
 		{
-			// erreur
+			stackType.push(Type.ERR);
+			throw new IdentDoesNotExistException(nom);
 		}
 	}
 	

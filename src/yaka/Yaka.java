@@ -2,6 +2,7 @@
 package yaka;
 
 import compilateur.*;
+import exceptions.*;
 
 public class Yaka implements YakaConstants {
         public static TabIdent tabIdent;
@@ -113,19 +114,47 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case entier:
       jj_consume_token(entier);
-    decl.addConst(name,Type.ENT,YakaTokenManager.entierLu);
+    try
+    {
+        decl.addConst(name,Type.ENT,YakaTokenManager.entierLu);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
       break;
     case ident:
       jj_consume_token(ident);
-        decl.addConstIdent(name,YakaTokenManager.identLu);
+    try
+    {
+                decl.addConstIdent(name,YakaTokenManager.identLu);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
       break;
     case VRAI:
       jj_consume_token(VRAI);
-        decl.addConst(name,Type.BOOL,VRAI);
+    try
+    {
+                decl.addConst(name,Type.BOOL,VRAI);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
       break;
     case FAUX:
       jj_consume_token(FAUX);
-        decl.addConst(name,Type.BOOL,FAUX);
+    try
+    {
+                decl.addConst(name,Type.BOOL,FAUX);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
       break;
     default:
       jj_la1[3] = jj_gen;
@@ -139,7 +168,14 @@ public class Yaka implements YakaConstants {
     type();
     int type = token.kind;
     jj_consume_token(ident);
+    try
+    {
                 decl.addVar(YakaTokenManager.identLu,type);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
     label_4:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -152,7 +188,14 @@ public class Yaka implements YakaConstants {
       }
       jj_consume_token(40);
       jj_consume_token(ident);
-                decl.addVar(YakaTokenManager.identLu,type);
+    try
+    {
+        decl.addVar(YakaTokenManager.identLu,type);
+    }
+    catch (IdentAlreadyDeclaredException e)
+    {
+                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+    }
     }
     jj_consume_token(41);
   }
@@ -196,7 +239,6 @@ public class Yaka implements YakaConstants {
           break label_5;
         }
         jj_consume_token(41);
-  System.out.println(expr.stackType);
   expr.clear();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case VRAI:
@@ -332,7 +374,14 @@ public class Yaka implements YakaConstants {
       break;
     case ident:
       jj_consume_token(ident);
-                         expr.ajouterIdent(YakaTokenManager.identLu);
+                                        try
+                                        {
+                                                expr.ajouterIdent(YakaTokenManager.identLu);
+                                        }
+                                        catch (IdentDoesNotExistException e)
+                                        {
+                                                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+                                        }
       break;
     case VRAI:
       jj_consume_token(VRAI);

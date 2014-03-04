@@ -11,7 +11,16 @@ public enum Type implements YakaConstants {
 			return BOOL;
 		else if (type==ENTIER)
 			return ENT;
-		
 		return ERR;
+	}
+	
+	public static int typeToInt(Type type)
+	{
+		if (type==ENT)
+			return ENTIER;
+		else if (type==BOOL)
+			return BOOLEEN;
+		else
+			return -1;
 	}
 }
