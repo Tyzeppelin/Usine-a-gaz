@@ -17,151 +17,280 @@ public class ASM  extends AbstractGeneration {
 		Ecriture.ecrireChar(out, ';');
 		yvm.header();
 		
-		
+		Ecriture.ecrireStringln(out,"extrn lirent:proc, ecrent:proc, ecrbool:proc, ecrch:proc, ligsuiv:proc" +
+				".model SMALL\n" +
+				".586\n" +
+				".CODE\n" +
+				"debut:\n" +
+				"STARTUPCODE\n");
 	}
 
 	@Override
 	public void footer() {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.footer();
+
+		Ecriture.ecrireStringln(out,"nop\n" +
+				"exitcode\n" +
+				"end debut\n");
 	}
 
 	@Override
 	public void iconst(int val) {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.iconst(val);
+
+		Ecriture.ecrireStringln(out,"push "+val+"\n");	
 	}
 
 	@Override
 	public void istore(int offset) {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.istore(offset);
+
+		String signe = "";
+		if (offset >= 0) signe = "+"
+		Ecriture.ecrireStringln(out,"pop ax\n" +
+				"mov word ptr[bp"+signe+offset+"], ax\n");	
 	}
 
 	@Override
 	public void iload(int offset) {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.iload(offset);
+
+		String signe = "";
+		if (offset >= 0) signe = "+"
+		Ecriture.ecrireStringln(out,"push word ptr[bp"+signe+offset+"]\n");
 	}
 
 	@Override
 	public void idiv() {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.idiv();
+
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"cwd\n" +
+				"idiv bx\n" +
+				"push ax\n");
 	}
 
 	@Override
 	public void imul() {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.imul();
+
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"imul bx\n" +
+				"push ax\n");
 	}
 
 	@Override
 	public void iadd() {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.iadd();
+
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"add ax,bx\n" +
+				"push ax\n");
 	}
 
 	@Override
 	public void isub() {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.isub();
+
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"sub ax,bx\n" +
+				"push ax\n");
 	}
 
 	@Override
 	public void ineg() {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.ineg();
+
+		Ecriture.ecrireStringln(out,"pop ax\n" +
+				"neg ax\n" + // Calcule l'opposé de l'opérande (négation par complément à deux)
+				"push ax\n");
 	}
 
 	@Override
 	public void inot() {
-		// TODO Auto-generated method stub
-		
+		Ecriture.ecrireChar(out, ';');
+		yvm.inot();
+
+		Ecriture.ecrireStringln(out,"pop ax\n" +
+				"not ax\n" + // Effectue un NON logique (négation par complément à un)
+				"push ax\n");		
 	}
 
 	@Override
 	public void ior() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.ior();
 		
+		Ecriture.ecrireStringln(out,"pop ax\n" +
+				"pop bx\n" +
+				"or ax, bx" +
+				"push ax\n");	
 	}
 
 	@Override
 	public void iand() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.iand();
 		
+		Ecriture.ecrireStringln(out,"pop ax\n" +
+				"pop bx\n" +
+				"and ax, bx" +
+				"push ax\n");			
 	}
 
 	@Override
 	public void iinf() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.iinf();
 		
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"cmp ax, bx" +
+				"jge $+6\n" +
+				"push -1\n" +
+				"jmp $+4\n" +
+				"push 0\n");		
 	}
 
 	@Override
 	public void isup() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.isup();
 		
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"cmp ax, bx" +
+				"jle $+6\n" +
+				"push -1\n" +
+				"jmp $+4\n" +
+				"push 0\n");		
 	}
 
 	@Override
 	public void iinfegal() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.iinfegal();
 		
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"cmp ax, bx" +
+				"jg $+6\n" +
+				"push -1\n" +
+				"jmp $+4\n" +
+				"push 0\n");
 	}
 
 	@Override
 	public void isupegal() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.isupegal();
 		
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"cmp ax, bx" +
+				"jl $+6\n" +
+				"push -1\n" +
+				"jmp $+4\n" +
+				"push 0\n");
 	}
 
 	@Override
 	public void iegal() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.iegal();
 		
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"cmp ax, bx" +
+				"jne $+6\n" +
+				"push -1\n" +
+				"jmp $+4\n" +
+				"push 0\n");
 	}
 
 	@Override
 	public void idiff() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.idiff();
 		
+		Ecriture.ecrireStringln(out,"pop bx\n" +
+				"pop ax\n" +
+				"cmp ax, bx" +
+				"je $+6\n" +
+				"push -1\n" +
+				"jmp $+4\n" +
+				"push 0\n");		
 	}
 
 	@Override
 	public void ecrireInt() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.ecrireInt();
 		
+		Ecriture.ecrireStringln(out,"call ecrent\n");	
 	}
 
 	@Override
 	public void ecrireBool() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.ecrireBool();
 		
+		Ecriture.ecrireStringln(out,"call ecrbool\n");	
 	}
 
 	@Override
 	public void ecrireString(String s) {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.ecrireString();
 		
+		Ecriture.ecrireStringln(out,".DATA" +
+				"mess2 DB " + s.substring(0, s.length()-1) + "=$\"\n" +
+				".CODE\n" +
+				"lea dx, mess2\n" +
+				"push dx\n" +
+				"call ercch\n");			
 	}
 
 	@Override
 	public void alaligne() {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.alaligne();
 		
+		Ecriture.ecrireStringln(out,"call ligsuiv\n");		
 	}
 
 	@Override
-	public void lire(int offset) {
-		// TODO Auto-generated method stub
+	public void lire(int offset) { // lireEnt
+		Ecriture.ecrireChar(out, ';');
+		yvm.lire();
 		
+		String signe = "";
+		if (offset >= 0) signe = "+";
+		Ecriture.ecrireStringln(out,"lea dx, [bp"+signe+offset+"]\n" +
+				"push dx\n" +
+				"call lirent\n");			
 	}
 
 	@Override
 	public void ouvrePrinc(int i) {
-		// TODO Auto-generated method stub
+		Ecriture.ecrireChar(out, ';');
+		yvm.ouvrePrinc();
 		
+		Ecriture.ecrireStringln(out,"mov bp, sp" +
+				"sub sp, " + i + "\n");	
 	}
 
 }
