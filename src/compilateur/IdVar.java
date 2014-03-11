@@ -52,6 +52,10 @@ public class IdVar extends Ident {
 	public String toString() {
 		return "IdVar [offset=" + offset + "]";
 	}
+	@Override
+	public void generateIdent(Generation gen) {
+		gen.iload(offset);
+	}
 	
 	
 

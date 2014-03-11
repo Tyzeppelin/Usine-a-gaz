@@ -2,21 +2,76 @@ package compilateur;
 
 import java.io.OutputStream;
 
-public class ASM  extends AbstractGeneration {
+public class AbstractGeneration implements Generation {
+
+	protected OutputStream out;
 	
-	private YVM yvm;
-	
-	public ASM(String nameFile)
+	protected AbstractGeneration()
 	{
-		super(nameFile);
-		yvm = new YVM(out);
+		
+	}
+	protected AbstractGeneration(String nameFile)
+	{
+		out = Ecriture.ouvrir(nameFile);
+	}
+
+	public void operation(Operateur op) {
+		switch (op)
+		{
+		case ADD:
+			iadd();
+			break;
+		case SUB:
+			isub();
+			break;
+		case MUL:
+			imul();
+			break;
+		case DIV:
+			idiv();
+			break;
+		case INF:
+			iinf();
+			break;
+		case SUP:
+			isup();
+			break;
+		case INFE:
+			iinfegal();
+			break;
+		case SUPE:
+			isupegal();
+			break;
+		case EQU:
+			iegal();
+			break;
+		case DIFF:
+			idiff();
+			break;
+		case AND:
+			iand();
+			break;
+		case OR:
+			ior();
+			break;
+		case NEG:
+			ineg();
+			break;
+		case NOT:
+			inot();
+			break;
+		}
 	}
 
 	@Override
 	public void header() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.header();
+		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void ouvrePrinc(int i) {
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -154,12 +209,6 @@ public class ASM  extends AbstractGeneration {
 
 	@Override
 	public void lire(int offset) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void ouvrePrinc(int i) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -49,6 +49,11 @@ public class IdConst extends Ident {
 		return true;
 	}
 	
+	@Override
+	public void generateIdent(Generation gen) {
+		gen.iconst(val);
+	}
+	
 	
 	
 

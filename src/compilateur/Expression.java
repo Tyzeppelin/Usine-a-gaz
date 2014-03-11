@@ -27,6 +27,15 @@ public class Expression {
 		tabIdent = tab;
 	}
 	
+	public Type getTypeExpr()
+	{
+		return stackType.peek();
+	}
+	
+	public Operateur getOperateur()
+	{
+		return stackOp.peek();
+	}
 	
 	public void ajouterOp (Operateur op) {
 		stackOp.push(op);
@@ -37,15 +46,15 @@ public class Expression {
 	}
 	
 	public void ajouterIdent(String nom) throws IdentDoesNotExistException {
-		if (tabIdent.existeIdent(nom))
+		try
 		{
 			Ident ident = tabIdent.chercheIdent(nom);
 			stackType.push(ident.getType());
 		}
-		else
+		catch (IdentDoesNotExistException e)
 		{
 			stackType.push(Type.ERR);
-			throw new IdentDoesNotExistException(nom);
+			throw e;			
 		}
 	}
 	

@@ -1,7 +1,10 @@
 package compilateur;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import exceptions.IdentDoesNotExistException;
 
 public class TabIdent {
 
@@ -11,9 +14,29 @@ public class TabIdent {
 		table = new HashMap<String, Ident>();
 	}
 	
-	public Ident chercheIdent(String cle) {
-		// Retourne null si cle non existante
-		return table.get(cle);
+	public int nbVarDeclared()
+	{
+		int compteur = 0;
+
+		Iterator<Ident> i = table.values().iterator();
+		while (i.hasNext()) {
+			if(i.next() instanceof IdVar) {
+				compteur++;
+			}
+		}
+
+		return compteur;
+	}
+	
+	public Ident chercheIdent(String cle) throws IdentDoesNotExistException {
+		if (existeIdent(cle))
+		{
+			return table.get(cle);
+		}
+		else
+		{
+			throw new IdentDoesNotExistException(cle);
+		}
 	}
 	
 	public boolean existeIdent(String cle) {

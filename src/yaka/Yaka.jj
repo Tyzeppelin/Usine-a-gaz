@@ -24,7 +24,8 @@ public class Yaka {
 	public static TabIdent tabIdent;
 	public static Declaration decl;
 	public static Expression expr;
-	public static Generation gen;
+	public static AbstractGeneration gen;
+
 
   public static void main(String args[]) { 
     Yaka analyseur;
@@ -33,6 +34,7 @@ public class Yaka {
     tabIdent = new TabIdent();
     decl = new Declaration(tabIdent);
     expr = new Expression(tabIdent);
+    gen = new YVM("out.yvm");
 
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");
@@ -149,15 +151,19 @@ TOKEN  :
 /**************************************/
 void analyse() : {}
 {
+  {gen.header();}
    <PROGRAMME> <ident>	
    bloc()
-   <FPROGRAMME> 
+   <FPROGRAMME>
+   {gen.footer();}
 }
 
 void bloc() : {}{
  (declConst())*
- (declVar())*		
-   suiteExpr() 
+ (declVar())*
+ {
+   gen.ouvrePrinc(tabIdent.nbVarDeclared()*2); }	
+   suiteInstr() 
 }
 
 void declConst() : {}
@@ -187,7 +193,7 @@ void valConst() : {String name = YakaTokenManager.identLu;}{
     try
     {		decl.addConstIdent(name,YakaTokenManager.identLu);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (Exception e)
     {
 		System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
     }
@@ -254,11 +260,73 @@ void type() :{}
 /*
  * Syntaxe des instructions.
  */
+
+/* Remplacé.
 void suiteExpr() : {}
 { (expression() (";"{
   expr.clear();}
 (expression())? )*)? }
+*/
 
+void suiteInstr() :{}
+{	instruction()
+	(	";"
+		(instruction())?
+	)*
+}
+
+void instruction() :{}
+{	affectation()
+| 	lecture()
+| 	ecriture()
+}
+
+void affectation() :{}
+{	< ident >	{
+	  String ident = YakaTokenManager.identLu;
+	  if (!tabIdent.existeIdent(ident))
+	  {			System.out.println("Error (l."+token.beginLine+") : "+ident+" does not exist.");
+			tabIdent.rangeIdent(ident,new IdVar(ident,Type.ERR));
+	  }	}
+	 "=" expression()
+	 {
+	   try
+	   {	     		if (expr.getTypeExpr() != tabIdent.chercheIdent(ident).getType())
+		{
+			System.out.println("Error (l."+token.beginLine+") : type expected "+tabIdent.chercheIdent(ident).getType());
+		}
+		else
+		{			gen.istore(tabIdent.chercheIdent(ident).getValeur());
+		}
+	   }
+	   catch (Exception e)
+	   {
+		System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());			
+	   }
+	 }
+}
+
+void lecture() :{}
+{	< LIRE > "(" < ident >
+	{
+	  try
+	  {	    gen.lire(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+	  }
+	catch (Exception e)
+	{
+		System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+	}
+
+	} ")"
+}
+
+void ecriture() :{}
+{	< ECRIRE > "(" (expression()	{
+	  if (expr.getTypeExpr()==Type.ENT)
+	  	gen.ecrireInt();
+	  else
+	  	gen.ecrireBool();	} | < chaine > {gen.ecrireString(YakaTokenManager.chaineLue);}) ")" | < ALALIGNE > {gen.alaligne();}
+}
 
 
 /*
@@ -268,7 +336,7 @@ void expression() : {}
 {
   simpleExpr() 
   (opRel() 
-  simpleExpr() {expr.verifType();}
+  simpleExpr() {gen.operation(expr.getOperateur());expr.verifType();}
   )?
 }
 
@@ -276,19 +344,19 @@ void simpleExpr() : {}
 {
    terme() 
    (opAdd() 
-   terme()	 {expr.verifType();}
+   terme()	 {gen.operation(expr.getOperateur());expr.verifType();}
    )*
 } 
 void terme() : {}
 {
   facteur() 
   (opMul() 
-  facteur() {expr.verifType();}  
+  facteur() {gen.operation(expr.getOperateur());expr.verifType();}  
   )*
 }
 void facteur() : {}
 {   primaire() 
-  |  opNeg() primaire() {expr.verifType();}
+  |  opNeg() primaire() {gen.operation(expr.getOperateur());expr.verifType();}
 }
 
 void primaire (): {}
@@ -299,8 +367,17 @@ void primaire (): {}
 }
 
 void valeur () : {}
-{ <entier> 		{expr.ajouterType(Type.ENT);}
+{ <entier> 		{expr.ajouterType(Type.ENT);gen.iconst(YakaTokenManager.entierLu);}
  | <ident> 		{
+   					try
+   					{
+						Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
+						i.generateIdent(gen);
+   					}
+   					catch (IdentDoesNotExistException e)
+   					{						System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+   					}
+   					
    					try
    					{
    						expr.ajouterIdent(YakaTokenManager.identLu);
@@ -310,8 +387,8 @@ void valeur () : {}
 						System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
 		   			}
    				}
- | <VRAI> 		{expr.ajouterType(Type.BOOL);}
- | <FAUX> 		{expr.ajouterType(Type.BOOL);}
+ | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(-1);}
+ | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(0);}
  
 }
 

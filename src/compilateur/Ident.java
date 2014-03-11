@@ -42,6 +42,8 @@ public abstract class Ident {
 		this.nom = nom;
 	}
 	
+	public abstract void generateIdent(Generation gen);
+	
 
 	@Override
 	public int hashCode() {

@@ -3,6 +3,7 @@ package compilateur;
 public interface Generation {
 
 	void header();
+	void ouvrePrinc(int i);
 	void footer();
 	
 	void iconst(int val);
@@ -26,6 +27,14 @@ public interface Generation {
 	void isupegal();
 	void iegal();
 	void idiff();
+	
+	void ecrireInt();
+	void ecrireBool();
+	void ecrireString(String s);
+	void alaligne();
+	
+	void lire(int offset);
+	
 	
 	
 	

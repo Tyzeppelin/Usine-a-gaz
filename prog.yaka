@@ -1,13 +1,15 @@
 PROGRAMME max
-CONST
-aa=10,
-ba = VRAI,
-cc=aa;
-VAR ENTIER c1,c2;
-VAR BOOLEEN b1,b2;
-	(aa+cc/2)/5;
-	c1+3*c1-aa;
-	ba OU VRAI;
-	c1 <= (c2+4);
-	b1 ET VRAI;
+VAR BOOLEEN a;
+VAR ENTIER x,y,z;
+	ECRIRE("x=");
+	LIRE(x);
+	ALALIGNE;
+	ECRIRE("y=");
+	LIRE(y);
+	ALALIGNE;
+	ECRIRE("x+y=");
+	ECRIRE(x+y);
+	ALALIGNE;
+	z=(x+y/2)/5;
+	a=y+3*y-4;
 FPROGRAMME
