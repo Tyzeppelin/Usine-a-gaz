@@ -31,7 +31,7 @@ public class ASM  extends AbstractGeneration {
 		yvm.footer();
 
 		Ecriture.ecrireStringln(out,"nop\n" +
-				"exitcode\n" +
+				"EXITCODE\n" +
 				"end debut\n");
 	}
 
@@ -158,7 +158,7 @@ public class ASM  extends AbstractGeneration {
 		
 		Ecriture.ecrireStringln(out,"pop bx\n" +
 				"pop ax\n" +
-				"cmp ax, bx" +
+				"cmp ax, bx\n" +
 				"jge $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
@@ -172,7 +172,7 @@ public class ASM  extends AbstractGeneration {
 		
 		Ecriture.ecrireStringln(out,"pop bx\n" +
 				"pop ax\n" +
-				"cmp ax, bx" +
+				"cmp ax, bx\n" +
 				"jle $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
@@ -186,7 +186,7 @@ public class ASM  extends AbstractGeneration {
 		
 		Ecriture.ecrireStringln(out,"pop bx\n" +
 				"pop ax\n" +
-				"cmp ax, bx" +
+				"cmp ax, bx\n" +
 				"jg $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
@@ -200,7 +200,7 @@ public class ASM  extends AbstractGeneration {
 		
 		Ecriture.ecrireStringln(out,"pop bx\n" +
 				"pop ax\n" +
-				"cmp ax, bx" +
+				"cmp ax, bx\n" +
 				"jl $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
@@ -214,7 +214,7 @@ public class ASM  extends AbstractGeneration {
 		
 		Ecriture.ecrireStringln(out,"pop bx\n" +
 				"pop ax\n" +
-				"cmp ax, bx" +
+				"cmp ax, bx\n" +
 				"jne $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
@@ -256,7 +256,7 @@ public class ASM  extends AbstractGeneration {
 		Ecriture.ecrireChar(out, ';');
 		yvm.ecrireString();
 		
-		Ecriture.ecrireStringln(out,".DATA" +
+		Ecriture.ecrireStringln(out,".DATA\n" +
 				"mess2 DB " + s.substring(0, s.length()-1) + "=$\"\n" +
 				".CODE\n" +
 				"lea dx, mess2\n" +
@@ -289,7 +289,7 @@ public class ASM  extends AbstractGeneration {
 		Ecriture.ecrireChar(out, ';');
 		yvm.ouvrePrinc();
 		
-		Ecriture.ecrireStringln(out,"mov bp, sp" +
+		Ecriture.ecrireStringln(out,"mov bp, sp\n" +
 				"sub sp, " + i + "\n");	
 	}
 
