@@ -254,7 +254,7 @@ public class ASM  extends AbstractGeneration {
 	@Override
 	public void ecrireString(String s) {
 		Ecriture.ecrireChar(out, ';');
-		yvm.ecrireString();
+		yvm.ecrireString(s);
 		
 		Ecriture.ecrireStringln(out,".DATA\n" +
 				"mess2 DB " + s.substring(0, s.length()-1) + "=$\"\n" +
@@ -275,7 +275,7 @@ public class ASM  extends AbstractGeneration {
 	@Override
 	public void lire(int offset) { // lireEnt
 		Ecriture.ecrireChar(out, ';');
-		yvm.lire();
+		yvm.lire(offset);
 		
 		String signe = "";
 		if (offset >= 0) signe = "+";
@@ -287,7 +287,7 @@ public class ASM  extends AbstractGeneration {
 	@Override
 	public void ouvrePrinc(int i) {
 		Ecriture.ecrireChar(out, ';');
-		yvm.ouvrePrinc();
+		yvm.ouvrePrinc(i);
 		
 		Ecriture.ecrireStringln(out,"mov bp, sp\n" +
 				"sub sp, " + i + "\n");	
