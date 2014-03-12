@@ -49,7 +49,7 @@ public class ASM  extends AbstractGeneration {
 		yvm.istore(offset);
 
 		String signe = "";
-		if (offset >= 0) signe = "+"
+		if (offset >= 0) signe = "+";
 		Ecriture.ecrireStringln(out,"pop ax\n" +
 				"mov word ptr[bp"+signe+offset+"], ax\n");	
 	}
@@ -60,7 +60,7 @@ public class ASM  extends AbstractGeneration {
 		yvm.iload(offset);
 
 		String signe = "";
-		if (offset >= 0) signe = "+"
+		if (offset >= 0) signe = "+";
 		Ecriture.ecrireStringln(out,"push word ptr[bp"+signe+offset+"]\n");
 	}
 
