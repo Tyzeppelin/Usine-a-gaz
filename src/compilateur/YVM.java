@@ -20,8 +20,7 @@ public class YVM extends AbstractGeneration {
 
 	@Override
 	public void footer() {
-		Ecriture.ecrireStringln(out,"queue");	
-		Ecriture.fermer(out);
+		Ecriture.ecrireStringln(out,"queue");
 	}
 
 	@Override

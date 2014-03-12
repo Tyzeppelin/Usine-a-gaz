@@ -56,6 +56,7 @@ public class Yaka {
       analyseur.analyse();
       
       System.out.println("analyse syntaxique reussie !\n");
+      gen.closeFile();
     } catch (ParseException e) {
       String msg = e.getMessage();
       msg = msg.substring(0,msg.indexOf("\n"));
@@ -261,7 +262,7 @@ void type() :{}
  * Syntaxe des instructions.
  */
 
-/* Remplacé.
+/* Remplacï¿½.
 void suiteExpr() : {}
 { (expression() (";"{
   expr.clear();}

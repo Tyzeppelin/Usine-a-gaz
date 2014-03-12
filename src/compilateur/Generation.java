@@ -35,6 +35,7 @@ public interface Generation {
 	
 	void lire(int offset);
 	
+	void closeFile();
 	
 	
 	

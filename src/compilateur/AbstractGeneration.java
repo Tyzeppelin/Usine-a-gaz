@@ -212,5 +212,10 @@ public class AbstractGeneration implements Generation {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void closeFile() {
+		Ecriture.fermer(out);
+	}
 
 }
