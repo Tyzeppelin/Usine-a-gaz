@@ -2,7 +2,6 @@ package compilateur;
 
 import exceptions.IdentAlreadyDeclaredException;
 import exceptions.IdentDoesNotExistException;
-import yaka.Yaka;
 import yaka.YakaConstants;
 
 public class Declaration implements YakaConstants{

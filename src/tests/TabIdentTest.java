@@ -7,7 +7,7 @@ import compilateur.IdVar;
 import compilateur.Ident;
 import compilateur.TabIdent;
 import compilateur.Type;
-
+import exceptions.IdentDoesNotExistException;
 import junit.framework.TestCase;
 
 public class TabIdentTest extends TestCase {
@@ -22,10 +22,32 @@ public class TabIdentTest extends TestCase {
 
 	@Test
 	public void testChercheIdent() {
-		assertEquals(null, tabIdent.chercheIdent("test"));
+		
+		boolean thrown = false;
+		
+		try {
+			assertEquals(null, tabIdent.chercheIdent("test"));
+		} catch (IdentDoesNotExistException e) {
+			thrown = true;
+		}
+		assertTrue(thrown);
+		
 		tabIdent.rangeIdent("test", new IdVar("test", Type.ENT));
-		assertEquals(new IdVar("test", Type.ENT), tabIdent.chercheIdent("test"));		
-		assertEquals(null, tabIdent.chercheIdent(null));		
+		thrown = false;
+		try {
+			assertEquals(new IdVar("test", Type.ENT), tabIdent.chercheIdent("test"));
+		} catch (IdentDoesNotExistException e) {
+			thrown = true;
+		}		
+		assertFalse(thrown);
+		
+		thrown = false;
+		try {
+			assertEquals(null, tabIdent.chercheIdent(null));
+		} catch (IdentDoesNotExistException e) {
+			thrown = true;
+		}
+		assertTrue(thrown);
 	}
 
 	@Test

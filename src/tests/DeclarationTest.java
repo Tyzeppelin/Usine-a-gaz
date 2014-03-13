@@ -10,7 +10,7 @@ import compilateur.IdVar;
 import compilateur.TabIdent;
 import compilateur.Type;
 import exceptions.IdentAlreadyDeclaredException;
-
+import exceptions.IdentDoesNotExistException;
 import junit.framework.TestCase;
 
 public class DeclarationTest extends TestCase {
@@ -33,7 +33,15 @@ public class DeclarationTest extends TestCase {
 			assertTrue(false);
 		}
 		assertTrue(tabIdent.existeIdent("test"));
-		assertEquals(new IdConst("test",Type.ENT,5), tabIdent.chercheIdent("test"));
+		
+		
+		try {
+			assertEquals(new IdConst("test",Type.ENT,5), tabIdent.chercheIdent("test"));
+		} catch (IdentDoesNotExistException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		
 		try {
 			decl.addConst("test", Type.ENT, 8);
@@ -74,7 +82,14 @@ public class DeclarationTest extends TestCase {
 			assertTrue(false);
 		}
 		assertTrue(tabIdent.existeIdent("test"));
-		assertEquals(new IdVar("test",Type.ENT), tabIdent.chercheIdent("test"));
+		
+		try {
+			assertEquals(new IdVar("test",Type.ENT), tabIdent.chercheIdent("test"));
+		} catch (IdentDoesNotExistException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		try {
 			decl.addVar("test", Type.typeToInt(Type.ENT));
 		} catch (IdentAlreadyDeclaredException e) {

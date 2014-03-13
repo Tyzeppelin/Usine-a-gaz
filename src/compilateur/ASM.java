@@ -1,7 +1,5 @@
 package compilateur;
 
-import java.io.OutputStream;
-
 public class ASM  extends AbstractGeneration {
 	
 	private YVM yvm;
