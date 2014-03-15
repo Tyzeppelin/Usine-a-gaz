@@ -17,9 +17,6 @@ public abstract class Ident {
 		this.type = type;
 	}
 	
-	
-	
-	
 	@Override
 	public String toString() {
 		return "Ident [nom=" + nom + ", type=" + type + "]";

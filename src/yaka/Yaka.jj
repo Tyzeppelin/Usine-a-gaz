@@ -275,7 +275,7 @@ void suiteInstr() :{}
 	)*
 }
 
-void instruction() :{}
+void instruction() :{expr.clear();}
 {	affectation()
 | 	lecture()
 | 	ecriture()
@@ -340,27 +340,28 @@ void expression() : {}
 {
   simpleExpr() 
   (opRel() 
-  simpleExpr() {gen.operation(expr.getOperateur());expr.verifType();}
+  simpleExpr() {gen.operation(expr.getOperateur());}
   )?
+  {    expr.verifType();  }  
 }
 
 void simpleExpr() : {}
 {
    terme() 
    (opAdd() 
-   terme()	 {gen.operation(expr.getOperateur());expr.verifType();}
+   terme()	 {gen.operation(expr.getOperateur());}
    )*
 } 
 void terme() : {}
 {
   facteur() 
   (opMul() 
-  facteur() {gen.operation(expr.getOperateur());expr.verifType();}  
+  facteur() {gen.operation(expr.getOperateur());}  
   )*
 }
 void facteur() : {}
 {   primaire() 
-  |  opNeg() primaire() {gen.operation(expr.getOperateur());expr.verifType();}
+  |  opNeg() primaire() {gen.operation(expr.getOperateur());}
 }
 
 void primaire (): {}
@@ -384,8 +385,8 @@ void valeur () : {}
       					printErrorMsg(e.getMessage());	
    					}
    				}
- | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(-1);}
- | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(0);}
+ | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(VRAI);}
+ | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(FAUX);}
  
 }
 

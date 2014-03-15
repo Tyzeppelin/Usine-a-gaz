@@ -134,7 +134,7 @@ public class ASM  extends AbstractGeneration {
 		
 		Ecriture.ecrireStringln(out,"pop ax\n" +
 				"pop bx\n" +
-				"or ax, bx" +
+				"or ax, bx\n" +
 				"push ax\n");	
 	}
 
@@ -145,7 +145,7 @@ public class ASM  extends AbstractGeneration {
 		
 		Ecriture.ecrireStringln(out,"pop ax\n" +
 				"pop bx\n" +
-				"and ax, bx" +
+				"and ax, bx\n" +
 				"push ax\n");			
 	}
 
@@ -226,7 +226,7 @@ public class ASM  extends AbstractGeneration {
 		
 		Ecriture.ecrireStringln(out,"pop bx\n" +
 				"pop ax\n" +
-				"cmp ax, bx" +
+				"cmp ax, bx\n" +
 				"je $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
