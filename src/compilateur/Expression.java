@@ -2,6 +2,7 @@ package compilateur;
 
 import java.util.Stack;
 
+import exceptions.ErrTypeExprException;
 import exceptions.IdentDoesNotExistException;
 
 public class Expression {
@@ -27,8 +28,10 @@ public class Expression {
 		tabIdent = tab;
 	}
 	
-	public Type getTypeExpr()
+	public Type getTypeExpr() throws ErrTypeExprException
 	{
+		if (stackType.peek()==Type.ERR)
+			throw new ErrTypeExprException();
 		return stackType.peek();
 	}
 	
@@ -56,6 +59,20 @@ public class Expression {
 			stackType.push(Type.ERR);
 			throw e;			
 		}
+	}
+	
+	public void ajouterIdent(Ident id) throws IdentDoesNotExistException
+	{
+		try
+		{
+			tabIdent.chercheIdent(id.getNom());
+			stackType.push(id.getType());
+		}
+		catch (IdentDoesNotExistException e)
+		{
+			stackType.push(Type.ERR);
+			throw e;			
+		}		
 	}
 	
 	public void verifType() {

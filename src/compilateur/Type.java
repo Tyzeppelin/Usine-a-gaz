@@ -1,5 +1,6 @@
 package compilateur;
 
+import exceptions.ErrTypeExprException;
 import yaka.YakaConstants;
 
 public enum Type implements YakaConstants {
@@ -22,5 +23,15 @@ public enum Type implements YakaConstants {
 			return BOOLEEN;
 		else
 			return -1;
+	}
+	
+	public static void generateEcrireType(Type type, AbstractGeneration gen) throws ErrTypeExprException
+	{
+		  if (type==ENT)
+		  	gen.ecrireInt();
+		  else if (type==BOOL)
+		  	gen.ecrireBool();
+		  else
+			  throw new ErrTypeExprException();
 	}
 }

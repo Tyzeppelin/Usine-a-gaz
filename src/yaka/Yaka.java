@@ -11,6 +11,12 @@ public class Yaka implements YakaConstants {
         public static AbstractGeneration gen;
 
 
+  public static void printErrorMsg(String msg)
+  {
+                System.out.println("Error (l."+token.beginLine+") : "+msg);
+  }
+
+
   public static void main(String args[]) {
     Yaka analyseur;
     java.io.InputStream input;
@@ -18,7 +24,7 @@ public class Yaka implements YakaConstants {
     tabIdent = new TabIdent();
     decl = new Declaration(tabIdent);
     expr = new Expression(tabIdent);
-    gen = new YVM("out.yvm");
+    gen = new ASM("out.yvm");
 
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");
@@ -40,6 +46,7 @@ public class Yaka implements YakaConstants {
       analyseur.analyse();
 
       System.out.println("analyse syntaxique reussie !\u005cn");
+      gen.closeFile();
     } catch (ParseException e) {
       String msg = e.getMessage();
       msg = msg.substring(0,msg.indexOf("\u005cn"));
@@ -125,7 +132,7 @@ public class Yaka implements YakaConstants {
     }
     catch (IdentAlreadyDeclaredException e)
     {
-                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+      printErrorMsg(e.getMessage());
     }
       break;
     case ident:
@@ -136,7 +143,7 @@ public class Yaka implements YakaConstants {
     }
     catch (Exception e)
     {
-                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+      printErrorMsg(e.getMessage());
     }
       break;
     case VRAI:
@@ -147,7 +154,7 @@ public class Yaka implements YakaConstants {
     }
     catch (IdentAlreadyDeclaredException e)
     {
-                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+      printErrorMsg(e.getMessage());
     }
       break;
     case FAUX:
@@ -158,7 +165,7 @@ public class Yaka implements YakaConstants {
     }
     catch (IdentAlreadyDeclaredException e)
     {
-                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+      printErrorMsg(e.getMessage());
     }
       break;
     default:
@@ -179,7 +186,7 @@ public class Yaka implements YakaConstants {
     }
     catch (IdentAlreadyDeclaredException e)
     {
-                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+      printErrorMsg(e.getMessage());
     }
     label_4:
     while (true) {
@@ -199,7 +206,7 @@ public class Yaka implements YakaConstants {
     }
     catch (IdentAlreadyDeclaredException e)
     {
-                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+      printErrorMsg(e.getMessage());
     }
     }
     jj_consume_token(41);
@@ -223,13 +230,6 @@ public class Yaka implements YakaConstants {
 /*
  * Syntaxe des instructions.
  */
-
-/* Remplacé.
-void suiteExpr() : {}
-{ (expression() (";"{
-  expr.clear();}
-(expression())? )*)? }
-*/
   static final public void suiteInstr() throws ParseException {
     instruction();
     label_5:
@@ -281,7 +281,7 @@ void suiteExpr() : {}
           String ident = YakaTokenManager.identLu;
           if (!tabIdent.existeIdent(ident))
           {
-                        System.out.println("Error (l."+token.beginLine+") : "+ident+" does not exist.");
+                printErrorMsg(ident+" does not exist.");
                         tabIdent.rangeIdent(ident,new IdVar(ident,Type.ERR));
           }
     jj_consume_token(42);
@@ -291,7 +291,7 @@ void suiteExpr() : {}
 
                 if (expr.getTypeExpr() != tabIdent.chercheIdent(ident).getType())
                 {
-                        System.out.println("Error (l."+token.beginLine+") : type expected "+tabIdent.chercheIdent(ident).getType());
+                printErrorMsg("type expected "+tabIdent.chercheIdent(ident).getType());
                 }
                 else
                 {
@@ -300,7 +300,7 @@ void suiteExpr() : {}
            }
            catch (Exception e)
            {
-                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+                printErrorMsg(e.getMessage());
            }
   }
 
@@ -314,7 +314,7 @@ void suiteExpr() : {}
           }
         catch (Exception e)
         {
-                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+                printErrorMsg(e.getMessage());
         }
     jj_consume_token(44);
   }
@@ -333,10 +333,14 @@ void suiteExpr() : {}
       case 43:
       case 51:
         expression();
-          if (expr.getTypeExpr()==Type.ENT)
-                gen.ecrireInt();
-          else
-                gen.ecrireBool();
+          try
+          {
+            Type.generateEcrireType(expr.getTypeExpr(),gen);
+          }
+          catch (Exception e)
+          {
+                printErrorMsg(e.getMessage());
+          }
         break;
       case chaine:
         jj_consume_token(chaine);
@@ -474,21 +478,13 @@ void suiteExpr() : {}
       jj_consume_token(ident);
                                         try
                                         {
-                                                Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
-                                                i.generateIdent(gen);
+                                                Ident id = tabIdent.chercheIdent(YakaTokenManager.identLu);
+                                                id.generateIdent(gen);
+                                                expr.ajouterIdent(id);
                                         }
                                         catch (IdentDoesNotExistException e)
                                         {
-                                                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
-                                        }
-
-                                        try
-                                        {
-                                                expr.ajouterIdent(YakaTokenManager.identLu);
-                                        }
-                                        catch (IdentDoesNotExistException e)
-                                        {
-                                                System.out.println("Error (l."+token.beginLine+") : "+e.getMessage());
+                                        printErrorMsg(e.getMessage());
                                         }
       break;
     case VRAI:

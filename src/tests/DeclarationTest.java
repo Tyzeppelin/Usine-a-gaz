@@ -62,10 +62,16 @@ public class DeclarationTest extends TestCase {
 			decl.addConstIdent("bb", "aa");
 		} catch (IdentAlreadyDeclaredException e) {
 			assertTrue(false);
+		} catch (IdentDoesNotExistException e) {
+			assertTrue(false);
 		}
 		assertTrue(tabIdent.existeIdent("aa"));
 		assertTrue(tabIdent.existeIdent("bb"));
-		assertEquals(new IdConst("aa",Type.ENT,5), tabIdent.chercheIdent("bb"));
+		try {
+			assertEquals(new IdConst("aa",Type.ENT,5), tabIdent.chercheIdent("bb"));
+		} catch (IdentDoesNotExistException e1) {
+			assertTrue(false);
+		}
 		
 		try {
 			decl.addConst("bb", Type.ENT, 8);
@@ -84,10 +90,9 @@ public class DeclarationTest extends TestCase {
 		assertTrue(tabIdent.existeIdent("test"));
 		
 		try {
-			assertEquals(new IdVar("test",Type.ENT), tabIdent.chercheIdent("test"));
+			assertEquals(new IdVar("test",Type.ENT,-2), tabIdent.chercheIdent("test"));
 		} catch (IdentDoesNotExistException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			assertTrue(false);
 		}
 		
 		try {
