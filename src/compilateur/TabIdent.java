@@ -14,38 +14,56 @@ public class TabIdent {
 		table = new HashMap<String, Ident>();
 	}
 	
+	/**
+	 * Cette méthode retourne le nombre de variable déclarée
+	 * @return le nombre de IdVar
+	 */
 	public int nbVarDeclared()
 	{
 		int compteur = 0;
-
 		Iterator<Ident> i = table.values().iterator();
 		while (i.hasNext()) {
 			if(i.next() instanceof IdVar) {
 				compteur++;
 			}
 		}
-
 		return compteur;
 	}
 	
-	public Ident chercheIdent(String cle) throws IdentDoesNotExistException {
-		if (existeIdent(cle))
+	/**
+	 * Retourne l'identifiant suivant son nom
+	 * @param name le nom de l'identifiant
+	 * @return l'identifiant
+	 * @throws IdentDoesNotExistException si l'identifiant n'existe pas
+	 */
+	public Ident chercheIdent(String name) throws IdentDoesNotExistException {
+		if (existeIdent(name))
 		{
-			return table.get(cle);
+			return table.get(name);
 		}
 		else
 		{
-			throw new IdentDoesNotExistException(cle);
+			throw new IdentDoesNotExistException(name);
 		}
 	}
 	
-	public boolean existeIdent(String cle) {
-		return table.containsKey(cle);
+	/**
+	 * Test si l'identifiant existe
+	 * @param name le nom de l'identifiant
+	 * @return true si l'identifiant existe, faux sinon
+	 */
+	public boolean existeIdent(String name) {
+		return table.containsKey(name);
 	}
 	
-	public void rangeIdent(String cle, Ident id) {
+	/**
+	 * Range l'identifiant à l'index "name"
+	 * @param name le nom de l'identifiant
+	 * @param id l'identifiant
+	 */
+	public void rangeIdent(String name, Ident id) {
 		if (id!=null)
-			table.put(cle, id);
+			table.put(name, id);
 	}	
 	
 	public String toString()

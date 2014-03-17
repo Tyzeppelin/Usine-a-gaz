@@ -28,6 +28,11 @@ public class Expression {
 		tabIdent = tab;
 	}
 	
+	/**
+	 * Retourne le type de la dernière expression évalué (doit être utilisé après l'appel de void verifType()
+	 * @return le type de l'expression
+	 * @throws ErrTypeExprException si le type de l'expression est Type.Err
+	 */
 	public Type getTypeExpr() throws ErrTypeExprException
 	{
 		if (stackType.peek()==Type.ERR)
@@ -35,6 +40,10 @@ public class Expression {
 		return stackType.peek();
 	}
 	
+	/**
+	 * Retourne l'opérateur de l'expression courante
+	 * @return
+	 */
 	public Operateur getOperateur()
 	{
 		return stackOp.peek();
@@ -48,6 +57,11 @@ public class Expression {
 		stackType.push(type);
 	}
 	
+	/**
+	 * Ajoute le type de l'identifiant "nom" à l'expression
+	 * @param nom le nom de l'identifiant
+	 * @throws IdentDoesNotExistException si l'identifiant n'existe pas
+	 */
 	public void ajouterIdent(String nom) throws IdentDoesNotExistException {
 		try
 		{
@@ -74,8 +88,22 @@ public class Expression {
 			throw e;			
 		}		
 	}
+
+	/**
+	 * Procède à la vérification du type de l'expression courante.
+	 */
+	public void verifType()
+	{
+		while (!stackOp.isEmpty())
+		{
+			testFirstExpression();
+		}
+	}
 	
-	public void verifType() {
+	/**
+	 * Procède à la vérification du type de la 1er opération de l'expression
+	 */
+	private void testFirstExpression() {
 		Operateur op = stackOp.pop();
 		Type t1 = stackType.pop();
 		Type t2;

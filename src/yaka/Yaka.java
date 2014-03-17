@@ -258,6 +258,7 @@ public class Yaka implements YakaConstants {
   }
 
   static final public void instruction() throws ParseException {
+                     expr.clear();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case ident:
       affectation();
@@ -378,12 +379,13 @@ public class Yaka implements YakaConstants {
     case 49:
       opRel();
       simpleExpr();
-                gen.operation(expr.getOperateur());expr.verifType();
+                gen.operation(expr.getOperateur());
       break;
     default:
       jj_la1[11] = jj_gen;
       ;
     }
+    expr.verifType();
   }
 
   static final public void simpleExpr() throws ParseException {
@@ -402,7 +404,7 @@ public class Yaka implements YakaConstants {
       }
       opAdd();
       terme();
-                  gen.operation(expr.getOperateur());expr.verifType();
+                  gen.operation(expr.getOperateur());
     }
   }
 
@@ -422,7 +424,7 @@ public class Yaka implements YakaConstants {
       }
       opMul();
       facteur();
-             gen.operation(expr.getOperateur());expr.verifType();
+             gen.operation(expr.getOperateur());
     }
   }
 
@@ -439,7 +441,7 @@ public class Yaka implements YakaConstants {
     case 51:
       opNeg();
       primaire();
-                         gen.operation(expr.getOperateur());expr.verifType();
+                         gen.operation(expr.getOperateur());
       break;
     default:
       jj_la1[14] = jj_gen;
@@ -489,11 +491,11 @@ public class Yaka implements YakaConstants {
       break;
     case VRAI:
       jj_consume_token(VRAI);
-                         expr.ajouterType(Type.BOOL);gen.iconst(-1);
+                         expr.ajouterType(Type.BOOL);gen.iconst(VRAI);
       break;
     case FAUX:
       jj_consume_token(FAUX);
-                         expr.ajouterType(Type.BOOL);gen.iconst(0);
+                         expr.ajouterType(Type.BOOL);gen.iconst(FAUX);
       break;
     default:
       jj_la1[16] = jj_gen;
