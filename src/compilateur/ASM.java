@@ -3,11 +3,13 @@ package compilateur;
 public class ASM  extends AbstractGeneration {
 	
 	private YVM yvm;
+	private int numString;
 	
 	public ASM(String nameFile)
 	{
 		super(nameFile);
 		yvm = new YVM(out);
+		numString = 0;
 	}
 
 	@Override
@@ -254,8 +256,10 @@ public class ASM  extends AbstractGeneration {
 		Ecriture.ecrireChar(out, ';');
 		yvm.ecrireString(s);
 		
+		numString++;
+		
 		Ecriture.ecrireStringln(out,".DATA\n" +
-				"mess2 DB " + s.substring(0, s.length()-1) + "=$\"\n" +
+				"mess"+numString+" DB " + s.substring(0, s.length()-1) + "=$\"\n" +
 				".CODE\n" +
 				"lea dx, mess2\n" +
 				"push dx\n" +
