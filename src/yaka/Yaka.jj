@@ -60,13 +60,14 @@ public class Yaka {
     try {
       analyseur = new Yaka(input);
       analyseur.analyse();
-      
       System.out.println("analyse syntaxique reussie !\n");
-      gen.closeFile();
     } catch (ParseException e) {
       String msg = e.getMessage();
       msg = msg.substring(0,msg.indexOf("\n"));
       System.out.println("Erreur de syntaxe : "+msg);
+    } finally
+    {
+      gen.closeFile();
     }
     
   } 
@@ -191,7 +192,7 @@ void valConst() : {String name = YakaTokenManager.identLu;}{
     {
     	decl.addConst(name,Type.ENT,YakaTokenManager.entierLu);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }  }
@@ -200,7 +201,7 @@ void valConst() : {String name = YakaTokenManager.identLu;}{
     try
     {		decl.addConstIdent(name,YakaTokenManager.identLu);
     }
-    catch (Exception e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -211,7 +212,7 @@ void valConst() : {String name = YakaTokenManager.identLu;}{
     {
 		decl.addConst(name,Type.BOOL,VRAI);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -222,7 +223,7 @@ void valConst() : {String name = YakaTokenManager.identLu;}{
     {
 		decl.addConst(name,Type.BOOL,FAUX);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -239,7 +240,7 @@ void declVar() : {}
     try
     {		decl.addVar(YakaTokenManager.identLu,type);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -250,7 +251,7 @@ void declVar() : {}
     try
     {        decl.addVar(YakaTokenManager.identLu,type);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -300,7 +301,7 @@ void affectation() :{}
 		{			gen.istore(tabIdent.chercheIdent(ident).getValeur());
 		}
 	   }
-	   catch (Exception e)
+	   catch (SemanticException e)
 	   {
       		printErrorMsg(e.getMessage());			
 	   }
@@ -313,7 +314,7 @@ void lecture() :{}
 	  try
 	  {	    gen.lire(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
 	  }
-	catch (Exception e)
+	catch (SemanticException e)
 	{
       		printErrorMsg(e.getMessage());	
 	}
@@ -326,7 +327,7 @@ void ecriture() :{}
 	  try
 	  {	    Type.generateEcrireType(expr.getTypeExpr(),gen);
 	  }
-	  catch (Exception e)
+	  catch (SemanticException e)
 	  {
       		printErrorMsg(e.getMessage());
 	  }	} | < chaine > {gen.ecrireString(YakaTokenManager.chaineLue);}) ")" | < ALALIGNE > {gen.alaligne();}
@@ -340,28 +341,27 @@ void expression() : {}
 {
   simpleExpr() 
   (opRel() 
-  simpleExpr() //{System.out.println("D1"); gen.operation(expr.getOperateur());}
-  )?
-  {    expr.verifType();  }  
+  simpleExpr()
+  )?  
 }
 
 void simpleExpr() : {}
 {
    terme() 
    (opAdd() 
-   terme()	 {System.out.println("D2"); gen.operation(expr.getOperateur());}
+   terme()	 {gen.operation(expr.getOperateur());expr.verifType();}
    )*
 } 
 void terme() : {}
 {
   facteur() 
   (opMul() 
-  facteur() {System.out.println("D3"); gen.operation(expr.getOperateur());}  
+  facteur() {gen.operation(expr.getOperateur());expr.verifType();}  
   )*
 }
 void facteur() : {}
-{   primaire() 
-  |  opNeg() primaire() {System.out.println("D4"); gen.operation(expr.getOperateur());}
+{   primaire()
+  |  opNeg() primaire() {gen.operation(expr.getOperateur());expr.verifType();}
 }
 
 void primaire (): {}
@@ -380,8 +380,9 @@ void valeur () : {}
 						id.generateIdent(gen);
    						expr.ajouterIdent(id);
    					}
-   					catch (IdentDoesNotExistException e)
+   					catch (SemanticException e)
    					{
+   					    expr.ajouterType(Type.ERR);
       					printErrorMsg(e.getMessage());	
    					}
    				}

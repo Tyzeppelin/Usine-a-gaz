@@ -44,13 +44,14 @@ public class Yaka implements YakaConstants {
     try {
       analyseur = new Yaka(input);
       analyseur.analyse();
-
       System.out.println("analyse syntaxique reussie !\u005cn");
-      gen.closeFile();
     } catch (ParseException e) {
       String msg = e.getMessage();
       msg = msg.substring(0,msg.indexOf("\u005cn"));
       System.out.println("Erreur de syntaxe : "+msg);
+    } finally
+    {
+      gen.closeFile();
     }
 
   }
@@ -130,7 +131,7 @@ public class Yaka implements YakaConstants {
     {
         decl.addConst(name,Type.ENT,YakaTokenManager.entierLu);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -141,7 +142,7 @@ public class Yaka implements YakaConstants {
     {
                 decl.addConstIdent(name,YakaTokenManager.identLu);
     }
-    catch (Exception e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -152,7 +153,7 @@ public class Yaka implements YakaConstants {
     {
                 decl.addConst(name,Type.BOOL,VRAI);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -163,7 +164,7 @@ public class Yaka implements YakaConstants {
     {
                 decl.addConst(name,Type.BOOL,FAUX);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -184,7 +185,7 @@ public class Yaka implements YakaConstants {
     {
                 decl.addVar(YakaTokenManager.identLu,type);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -204,7 +205,7 @@ public class Yaka implements YakaConstants {
     {
         decl.addVar(YakaTokenManager.identLu,type);
     }
-    catch (IdentAlreadyDeclaredException e)
+    catch (SemanticException e)
     {
       printErrorMsg(e.getMessage());
     }
@@ -299,7 +300,7 @@ public class Yaka implements YakaConstants {
                         gen.istore(tabIdent.chercheIdent(ident).getValeur());
                 }
            }
-           catch (Exception e)
+           catch (SemanticException e)
            {
                 printErrorMsg(e.getMessage());
            }
@@ -313,7 +314,7 @@ public class Yaka implements YakaConstants {
           {
             gen.lire(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
           }
-        catch (Exception e)
+        catch (SemanticException e)
         {
                 printErrorMsg(e.getMessage());
         }
@@ -338,7 +339,7 @@ public class Yaka implements YakaConstants {
           {
             Type.generateEcrireType(expr.getTypeExpr(),gen);
           }
-          catch (Exception e)
+          catch (SemanticException e)
           {
                 printErrorMsg(e.getMessage());
           }
@@ -384,7 +385,6 @@ public class Yaka implements YakaConstants {
       jj_la1[11] = jj_gen;
       ;
     }
-    expr.verifType();
   }
 
   static final public void simpleExpr() throws ParseException {
@@ -403,7 +403,7 @@ public class Yaka implements YakaConstants {
       }
       opAdd();
       terme();
-                  System.out.println("D2"); gen.operation(expr.getOperateur());
+                  gen.operation(expr.getOperateur());expr.verifType();
     }
   }
 
@@ -423,7 +423,7 @@ public class Yaka implements YakaConstants {
       }
       opMul();
       facteur();
-             System.out.println("D3"); gen.operation(expr.getOperateur());
+             gen.operation(expr.getOperateur());expr.verifType();
     }
   }
 
@@ -440,7 +440,7 @@ public class Yaka implements YakaConstants {
     case 51:
       opNeg();
       primaire();
-                         System.out.println("D4"); gen.operation(expr.getOperateur());
+                         gen.operation(expr.getOperateur());expr.verifType();
       break;
     default:
       jj_la1[14] = jj_gen;
@@ -483,8 +483,9 @@ public class Yaka implements YakaConstants {
                                                 id.generateIdent(gen);
                                                 expr.ajouterIdent(id);
                                         }
-                                        catch (IdentDoesNotExistException e)
+                                        catch (SemanticException e)
                                         {
+                                            expr.ajouterType(Type.ERR);
                                         printErrorMsg(e.getMessage());
                                         }
       break;

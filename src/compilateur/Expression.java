@@ -46,8 +46,7 @@ public class Expression {
 	 */
 	public Operateur getOperateur()
 	{
-		System.out.println(stackOp);
-		return stackOp.pop();
+		return stackOp.peek();
 	}
 	
 	public void ajouterOp (Operateur op) {
@@ -95,16 +94,6 @@ public class Expression {
 	 */
 	public void verifType()
 	{
-		while (!stackOp.isEmpty())
-		{
-			testFirstExpression();
-		}
-	}
-	
-	/**
-	 * Procède à la vérification du type de la 1er opération de l'expression
-	 */
-	private void testFirstExpression() {
 		Operateur op = stackOp.pop();
 		Type t1 = stackType.pop();
 		Type t2;
