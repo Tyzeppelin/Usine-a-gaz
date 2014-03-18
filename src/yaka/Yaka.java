@@ -24,7 +24,7 @@ public class Yaka implements YakaConstants {
     tabIdent = new TabIdent();
     decl = new Declaration(tabIdent);
     expr = new Expression(tabIdent);
-    gen = new ASM("out.yvm");
+    gen = new ASM("out.asm");
 
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");

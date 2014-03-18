@@ -17,7 +17,9 @@ public class ASM  extends AbstractGeneration {
 		Ecriture.ecrireChar(out, ';');
 		yvm.header();
 		
-		Ecriture.ecrireStringln(out,"extrn lirent:proc, ecrent:proc, ecrbool:proc, ecrch:proc, ligsuiv:proc" +
+		Ecriture.ecrireStringln(out,"extrn lirent:proc, ecrent:proc\n"
+				+ "extrn ecrbool:proc\n"
+				+ "extrn ecrch:proc, ligsuiv:proc\n" +
 				".model SMALL\n" +
 				".586\n" +
 				".CODE\n" +
@@ -256,14 +258,13 @@ public class ASM  extends AbstractGeneration {
 		Ecriture.ecrireChar(out, ';');
 		yvm.ecrireString(s);
 		
-		numString++;
-		
 		Ecriture.ecrireStringln(out,".DATA\n" +
 				"mess"+numString+" DB " + s.substring(0, s.length()-1) + "=$\"\n" +
 				".CODE\n" +
-				"lea dx, mess2\n" +
+				"lea dx, mess"+numString+"\n" +
 				"push dx\n" +
-				"call ercch\n");			
+				"call ecrch\n");	
+		numString++;
 	}
 
 	@Override
