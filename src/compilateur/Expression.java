@@ -47,7 +47,7 @@ public class Expression {
 	public Operateur getOperateur()
 	{
 		System.out.println(stackOp);
-		return stackOp.peek();
+		return stackOp.pop();
 	}
 	
 	public void ajouterOp (Operateur op) {
