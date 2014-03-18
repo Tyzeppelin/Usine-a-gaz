@@ -24,7 +24,7 @@ public class Yaka implements YakaConstants {
     tabIdent = new TabIdent();
     decl = new Declaration(tabIdent);
     expr = new Expression(tabIdent);
-    gen = new ASM("out.asm");
+    gen = new ASM("../out.asm");
 
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");
@@ -379,7 +379,6 @@ public class Yaka implements YakaConstants {
     case 49:
       opRel();
       simpleExpr();
-                gen.operation(expr.getOperateur());
       break;
     default:
       jj_la1[11] = jj_gen;
@@ -404,7 +403,7 @@ public class Yaka implements YakaConstants {
       }
       opAdd();
       terme();
-                  gen.operation(expr.getOperateur());
+                  System.out.println("D2"); gen.operation(expr.getOperateur());
     }
   }
 
@@ -424,7 +423,7 @@ public class Yaka implements YakaConstants {
       }
       opMul();
       facteur();
-             gen.operation(expr.getOperateur());
+             System.out.println("D3"); gen.operation(expr.getOperateur());
     }
   }
 
@@ -441,7 +440,7 @@ public class Yaka implements YakaConstants {
     case 51:
       opNeg();
       primaire();
-                         gen.operation(expr.getOperateur());
+                         System.out.println("D4"); gen.operation(expr.getOperateur());
       break;
     default:
       jj_la1[14] = jj_gen;

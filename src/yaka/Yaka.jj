@@ -40,7 +40,7 @@ public class Yaka {
     tabIdent = new TabIdent();
     decl = new Declaration(tabIdent);
     expr = new Expression(tabIdent);
-    gen = new ASM("out.asm");
+    gen = new ASM("../out.asm");
 
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");
@@ -340,7 +340,7 @@ void expression() : {}
 {
   simpleExpr() 
   (opRel() 
-  simpleExpr() {gen.operation(expr.getOperateur());}
+  simpleExpr() //{System.out.println("D1"); gen.operation(expr.getOperateur());}
   )?
   {    expr.verifType();  }  
 }
@@ -349,19 +349,19 @@ void simpleExpr() : {}
 {
    terme() 
    (opAdd() 
-   terme()	 {gen.operation(expr.getOperateur());}
+   terme()	 {System.out.println("D2"); gen.operation(expr.getOperateur());}
    )*
 } 
 void terme() : {}
 {
   facteur() 
   (opMul() 
-  facteur() {gen.operation(expr.getOperateur());}  
+  facteur() {System.out.println("D3"); gen.operation(expr.getOperateur());}  
   )*
 }
 void facteur() : {}
 {   primaire() 
-  |  opNeg() primaire() {gen.operation(expr.getOperateur());}
+  |  opNeg() primaire() {System.out.println("D4"); gen.operation(expr.getOperateur());}
 }
 
 void primaire (): {}
