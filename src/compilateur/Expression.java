@@ -9,10 +9,10 @@ public class Expression {
 	
 	protected Type[][] typesOperateurs = {
 		//   entier 	booleen
-		{Type.ENT, Type.ERR, Type.ERR},	// +,-,*,/
+		{Type.ENT, Type.ERR, Type.ERR},		// +,-,*,/
 		{Type.BOOL, Type.ERR, Type.ERR},	// <,>,<=,>=
 		{Type.BOOL, Type.BOOL, Type.ERR},	// =, !=
-		{Type.ERR, Type.BOOL, Type.ERR}	// et, ou
+		{Type.ERR, Type.BOOL, Type.ERR}		// et, ou
 	};
 		
 
@@ -35,6 +35,7 @@ public class Expression {
 	 */
 	public Type getTypeExpr() throws ErrTypeExprException
 	{
+		System.out.println(stackType);
 		if (stackType.peek()==Type.ERR)
 			throw new ErrTypeExprException();
 		return stackType.peek();
@@ -46,6 +47,7 @@ public class Expression {
 	 */
 	public Operateur getOperateur()
 	{
+		System.out.println(stackOp);
 		return stackOp.peek();
 	}
 	

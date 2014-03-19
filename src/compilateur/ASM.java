@@ -259,7 +259,7 @@ public class ASM  extends AbstractGeneration {
 		yvm.ecrireString(s);
 		
 		Ecriture.ecrireStringln(out,".DATA\n" +
-				"mess"+numString+" DB " + s.substring(0, s.length()-1) + "=$\"\n" +
+				"mess"+numString+" DB " + s.substring(0, s.length()-1) + "$\"\n" +
 				".CODE\n" +
 				"lea dx, mess"+numString+"\n" +
 				"push dx\n" +

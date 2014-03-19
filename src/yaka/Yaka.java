@@ -380,6 +380,7 @@ public class Yaka implements YakaConstants {
     case 49:
       opRel();
       simpleExpr();
+                gen.operation(expr.getOperateur());expr.verifType();
       break;
     default:
       jj_la1[11] = jj_gen;

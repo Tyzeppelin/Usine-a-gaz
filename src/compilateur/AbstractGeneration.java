@@ -28,7 +28,7 @@ public abstract class AbstractGeneration implements Generation {
 			imul();
 			break;
 		case DIV:
-			idiv();
+			idiv();	
 			break;
 		case INF:
 			iinf();

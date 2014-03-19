@@ -341,7 +341,7 @@ void expression() : {}
 {
   simpleExpr() 
   (opRel() 
-  simpleExpr()
+  simpleExpr() {gen.operation(expr.getOperateur());expr.verifType();}
   )?  
 }
 
