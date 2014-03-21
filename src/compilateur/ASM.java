@@ -296,4 +296,36 @@ public class ASM  extends AbstractGeneration {
 				"sub sp, " + i + "\n");	
 	}
 
+	@Override
+	public void iffauxIter() {
+		Ecriture.ecrireStringln(out, "; iffaux FAIT"+stackTantQue.peek());
+
+		Ecriture.ecrireStringln(out,"pop ax \n" +
+									"cmp ax,0 \n" +
+									"je FAIT"+stackTantQue.peek()+"\n");	
+	}
+
+	@Override
+	public void jumpIter() {
+		Ecriture.ecrireStringln(out, "; goto FAIRE"+stackTantQue.peek());
+		Ecriture.ecrireStringln(out,"jmp FAIRE"+stackTantQue.peek()+"\n");	
+				
+	}
+	
+	@Override
+	public void iffauxCond() {
+		Ecriture.ecrireStringln(out, "; iffaux SINON"+stackCond.peek());
+
+		Ecriture.ecrireStringln(out,"pop ax \n" +
+									"cmp ax,0 \n" +
+									"je SINON"+stackCond.peek()+"\n");	
+	}
+
+	@Override
+	public void jumpCond() {
+		Ecriture.ecrireStringln(out, "; goto FSI"+stackCond.peek());
+		Ecriture.ecrireStringln(out,"jmp FSI"+stackCond.peek()+"\n");	
+				
+	}
+
 }

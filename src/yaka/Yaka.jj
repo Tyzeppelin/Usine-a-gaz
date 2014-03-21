@@ -280,7 +280,43 @@ void instruction() :{expr.clear();}
 {	affectation()
 | 	lecture()
 | 	ecriture()
+|   iteration()
+|   condition()
 }
+
+void condition() : {}
+{	< SI >
+	{		gen.si();
+	}
+		expression()
+		{
+		  	gen.iffauxCond();
+		    try
+		    {
+		      expr.testExpressionBoolean();
+		    }
+		    catch (SemanticException e)
+		    {
+		      printErrorMsg(e.getMessage());
+		    }
+		}
+	< ALORS >
+		suiteInstr()
+		{			gen.sinon();
+		}
+	(< SINON >
+		suiteInstr())?
+	{	  gen.fsi();
+	}
+	< FSI >
+}
+
+void iteration() : {}{  < TANTQUE >  {
+    gen.faire();  }  expression()  {
+    gen.iffauxIter();    try    {      expr.testExpressionBoolean();    }    catch (SemanticException e)    {      printErrorMsg(e.getMessage());    }  }  < FAIRE >   suiteInstr()   < FAIT >
+  {
+    gen.fait();
+  }}
 
 void affectation() :{}
 {	< ident >	{

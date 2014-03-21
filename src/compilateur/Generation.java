@@ -37,6 +37,18 @@ public interface Generation {
 	
 	void closeFile();
 	
+	void iffauxIter();
+	void faire();
+	void jumpIter();
+	void fait();
+	
+	void iffauxCond();
+	void jumpCond();
+	void sinon();
+	void fsi();
+	void si();
+	
+	
 	
 	
 }

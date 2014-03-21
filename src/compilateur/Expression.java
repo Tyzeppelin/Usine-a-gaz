@@ -3,6 +3,7 @@ package compilateur;
 import java.util.Stack;
 
 import exceptions.ErrTypeExprException;
+import exceptions.ExpressionNotBooleanException;
 import exceptions.IdentDoesNotExistException;
 
 public class Expression {
@@ -28,6 +29,14 @@ public class Expression {
 		tabIdent = tab;
 	}
 	
+	public void testExpressionBoolean() throws ExpressionNotBooleanException, ErrTypeExprException
+	{
+		if (getTypeExpr() != Type.BOOL)
+		{
+			throw new ExpressionNotBooleanException();
+		}
+	}
+	
 	/**
 	 * Retourne le type de la dernière expression évalué (doit être utilisé après l'appel de void verifType()
 	 * @return le type de l'expression
@@ -35,7 +44,6 @@ public class Expression {
 	 */
 	public Type getTypeExpr() throws ErrTypeExprException
 	{
-		System.out.println(stackType);
 		if (stackType.peek()==Type.ERR)
 			throw new ErrTypeExprException();
 		return stackType.peek();
@@ -47,7 +55,6 @@ public class Expression {
 	 */
 	public Operateur getOperateur()
 	{
-		System.out.println(stackOp);
 		return stackOp.peek();
 	}
 	

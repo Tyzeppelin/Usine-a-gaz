@@ -137,4 +137,20 @@ public class YVM extends AbstractGeneration {
 	public void ouvrePrinc(int i) {
 		Ecriture.ecrireStringln(out,"ouvrePrinc "+i);
 	}
+	@Override
+	public void iffauxIter() {
+		Ecriture.ecrireStringln(out,"iffaux FAIT"+stackTantQue.peek());	
+	}
+	@Override
+	public void jumpIter() {
+		Ecriture.ecrireStringln(out,"goto FAIRE"+stackTantQue.peek());				
+	}
+	@Override
+	public void iffauxCond() {
+		Ecriture.ecrireStringln(out,"iffaux SINON"+stackCond.peek());	
+	}
+	@Override
+	public void jumpCond() {
+		Ecriture.ecrireStringln(out,"goto FSI"+stackCond.peek());				
+	}
 }
