@@ -48,6 +48,12 @@ public interface Generation {
 	void fsi();
 	void si();
 	
+	/*
+	void ouvreBloc(String name, int i);
+	void fermeBloc(int i);
+	void ireturn(int i);
+	*/
+	
 	
 	
 	

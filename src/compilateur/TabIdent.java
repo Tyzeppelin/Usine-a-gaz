@@ -8,10 +8,12 @@ import exceptions.IdentDoesNotExistException;
 
 public class TabIdent {
 
-	private Map<String, Ident> table;
+	private Map<String, Ident> globaux;
+	private Map<String, Ident> locaux;
 	
 	public TabIdent() {
-		table = new HashMap<String, Ident>();
+		globaux = new HashMap<String, Ident>();
+		locaux = new HashMap<String, Ident>();
 	}
 	
 	/**
@@ -21,7 +23,7 @@ public class TabIdent {
 	public int nbVarDeclared()
 	{
 		int compteur = 0;
-		Iterator<Ident> i = table.values().iterator();
+		Iterator<Ident> i = locaux.values().iterator();
 		while (i.hasNext()) {
 			if(i.next() instanceof IdVar) {
 				compteur++;
@@ -39,7 +41,7 @@ public class TabIdent {
 	public Ident chercheIdent(String name) throws IdentDoesNotExistException {
 		if (existeIdent(name))
 		{
-			return table.get(name);
+			return locaux.get(name);
 		}
 		else
 		{
@@ -53,7 +55,7 @@ public class TabIdent {
 	 * @return true si l'identifiant existe, faux sinon
 	 */
 	public boolean existeIdent(String name) {
-		return table.containsKey(name);
+		return locaux.containsKey(name);
 	}
 	
 	/**
@@ -63,11 +65,11 @@ public class TabIdent {
 	 */
 	public void rangeIdent(String name, Ident id) {
 		if (id!=null)
-			table.put(name, id);
+			locaux.put(name, id);
 	}	
 	
 	public String toString()
 	{
-		return table.toString();
+		return locaux.toString();
 	}
 }

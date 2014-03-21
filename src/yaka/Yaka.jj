@@ -160,10 +160,27 @@ TOKEN  :
 void analyse() : {}
 {
   {gen.header();}
-   <PROGRAMME> <ident>	
+   <PROGRAMME> <ident>
+   (declFonction())*
+   < PRINCIPAL >
    bloc()
+   < FPRINCIPAL >
    <FPROGRAMME>
    {gen.footer();}
+}
+
+void declFonction() : {}
+{	type() < FONCTION > <ident > paramForms()
+	bloc()
+	< FFONCTION >
+}
+
+void paramForms() : {}
+{	"(" ( paramForm() ( "," paramForm())*)?	  ")"
+}
+
+void paramForm() : {}
+{	type() <ident >
 }
 
 void bloc() : {}{
@@ -282,6 +299,11 @@ void instruction() :{expr.clear();}
 | 	ecriture()
 |   iteration()
 |   condition()
+|   retourne()
+}
+
+void retourne() :{}
+{	< RETOURNE > expression()
 }
 
 void condition() : {}
@@ -409,7 +431,9 @@ void primaire (): {}
 
 void valeur () : {}
 { <entier> 		{expr.ajouterType(Type.ENT);gen.iconst(YakaTokenManager.entierLu);}
- | <ident> 		{
+ | <ident> (argumentsFonction())?
+
+ 				{
    					try
    					{
 						Ident id = tabIdent.chercheIdent(YakaTokenManager.identLu);
@@ -425,6 +449,10 @@ void valeur () : {}
  | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(VRAI);}
  | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(FAUX);}
  
+}
+
+void argumentsFonction() : {}
+{	"(" (expression() ("," expression())* )? ")"
 }
 
 void opRel() : {}
