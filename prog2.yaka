@@ -1,14 +1,25 @@
-PROGRAMME entreeSortie
+PROGRAMME max
+
+ENTIER FONCTION max(ENTIER i, ENTIER j)
+VAR ENTIER max;
+	max=j;
+	SI i>j ALORS
+		max=i;
+	FSI;
+	RETOURNE max;
+FFONCTION
+
+ENTIER FONCTION min(ENTIER i, ENTIER j)
+VAR ENTIER min;
+	min=j;
+	SI i<j ALORS
+		min=i;
+	FSI;
+	RETOURNE min;
+FFONCTION
+
+PRINCIPAL
 VAR ENTIER x,y,z;
-	ECRIRE("x=");
-	LIRE(x);
-	ALALIGNE;
-	ECRIRE("y=");
-	LIRE(y);
-	ALALIGNE;
-	ECRIRE("x+y= ");
-	ECRIRE(x+y);
-	ALALIGNE;
-	z=(x+y/2)/5;
-	x=y+3*y-4;
+	z=max(min(1,5),2);
+FPRINCIPAL
 FPROGRAMME

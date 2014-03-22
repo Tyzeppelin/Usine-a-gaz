@@ -6,11 +6,15 @@ import java.util.List;
 public class IdFonc extends Ident {
 	
 	private List<IdParam> listParam;
-	private Type typeReturn;
 
 	public IdFonc(String nom) {
 		super(nom);
 		listParam = new ArrayList<IdParam>();
+	}
+	
+	public int getNbParam()
+	{
+		return listParam.size();
 	}
 	
 	public void addParam(IdParam param)
@@ -18,19 +22,9 @@ public class IdFonc extends Ident {
 		listParam.add(param);
 	}
 	
-	public IdParam getParam(int i)
+	public IdParam getParam(int i) 
 	{
 		return listParam.get(i);
-	}
-
-	@Override
-	public int getValeur() {
-		return typeReturn.ordinal();
-	}
-
-	@Override
-	public void setValeur(int value) {
-		typeReturn = Type.intToType(value);
 	}
 
 	@Override
@@ -38,5 +32,25 @@ public class IdFonc extends Ident {
 		
 
 	}
+
+	@Override
+	public int getValeur() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setValeur(int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String toString() {
+		return "IdFonc "+nom+"["+type+"] [listParam=" + listParam + "]";
+	}
+
+	
+	
 
 }

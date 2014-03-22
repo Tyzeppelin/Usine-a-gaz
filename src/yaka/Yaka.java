@@ -77,6 +77,14 @@ public class Yaka implements YakaConstants {
       declFonction();
     }
     jj_consume_token(PRINCIPAL);
+        try
+        {
+                decl.addFonction("main");
+        }
+        catch (SemanticException e)
+        {
+                printErrorMsg(e.getMessage());
+        }
     bloc();
     jj_consume_token(FPRINCIPAL);
     jj_consume_token(FPROGRAMME);
@@ -85,11 +93,22 @@ public class Yaka implements YakaConstants {
 
   static final public void declFonction() throws ParseException {
     type();
+    int type = token.kind;
     jj_consume_token(FONCTION);
     jj_consume_token(ident);
+    String name = YakaTokenManager.identLu;
+    try
+    {
+        decl.addFonction(name,Type.intToType(type));
+    }
+    catch (SemanticException e)
+    {
+      printErrorMsg(e.getMessage());
+    }
     paramForms();
     bloc();
     jj_consume_token(FFONCTION);
+        tabIdent.clearLocaux();
   }
 
   static final public void paramForms() throws ParseException {
@@ -121,7 +140,17 @@ public class Yaka implements YakaConstants {
 
   static final public void paramForm() throws ParseException {
     type();
+    int type = token.kind;
     jj_consume_token(ident);
+        String name = YakaTokenManager.identLu;
+        try
+    {
+                decl.addParam(name,Type.intToType(type));
+    }
+    catch (SemanticException e)
+    {
+      printErrorMsg(e.getMessage());
+    }
   }
 
   static final public void bloc() throws ParseException {
@@ -349,6 +378,14 @@ public class Yaka implements YakaConstants {
   static final public void retourne() throws ParseException {
     jj_consume_token(RETOURNE);
     expression();
+                try
+                {
+                  decl.testRetourneType(expr.getTypeExpr());
+                }
+                catch (SemanticException e)
+                {
+                  printErrorMsg(e.getMessage());
+                }
   }
 
   static final public void condition() throws ParseException {
@@ -402,23 +439,23 @@ public class Yaka implements YakaConstants {
   static final public void affectation() throws ParseException {
     jj_consume_token(ident);
           String ident = YakaTokenManager.identLu;
-          if (!tabIdent.existeIdent(ident))
+          if (!tabIdent.existeIdentLocal(ident))
           {
                 printErrorMsg(ident+" does not exist.");
-                        tabIdent.rangeIdent(ident,new IdVar(ident,Type.ERR));
+                        tabIdent.rangeIdentLocal(ident,new IdVar(ident,Type.ERR));
           }
     jj_consume_token(44);
     expression();
            try
            {
 
-                if (expr.getTypeExpr() != tabIdent.chercheIdent(ident).getType())
+                if (expr.getTypeExpr() != tabIdent.chercheIdentLocal(ident).getType())
                 {
-                printErrorMsg("type expected "+tabIdent.chercheIdent(ident).getType());
+                printErrorMsg("type expected "+tabIdent.chercheIdentLocal(ident).getType());
                 }
                 else
                 {
-                        gen.istore(tabIdent.chercheIdent(ident).getValeur());
+                        gen.istore(tabIdent.chercheIdentLocal(ident).getValeur());
                 }
            }
            catch (SemanticException e)
@@ -433,7 +470,7 @@ public class Yaka implements YakaConstants {
     jj_consume_token(ident);
           try
           {
-            gen.lire(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+            gen.lire(tabIdent.chercheIdentLocal(YakaTokenManager.identLu).getValeur());
           }
         catch (SemanticException e)
         {
@@ -599,14 +636,6 @@ public class Yaka implements YakaConstants {
       break;
     case ident:
       jj_consume_token(ident);
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 40:
-        argumentsFonction();
-        break;
-      default:
-        jj_la1[20] = jj_gen;
-        ;
-      }
                                         try
                                         {
                                                 Ident id = tabIdent.chercheIdent(YakaTokenManager.identLu);
@@ -618,6 +647,14 @@ public class Yaka implements YakaConstants {
                                             expr.ajouterType(Type.ERR);
                                         printErrorMsg(e.getMessage());
                                         }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 40:
+        argumentsFonction();
+        break;
+      default:
+        jj_la1[20] = jj_gen;
+        ;
+      }
       break;
     case VRAI:
       jj_consume_token(VRAI);
@@ -635,6 +672,16 @@ public class Yaka implements YakaConstants {
   }
 
   static final public void argumentsFonction() throws ParseException {
+                            String fonc = YakaTokenManager.identLu;
+    ControlTypeFonction controlType = new ControlTypeFonction(tabIdent);
+    try
+          {
+             controlType.initTest(fonc);
+          }
+          catch (SemanticException e)
+          {
+        printErrorMsg(e.getMessage());
+          }
     jj_consume_token(40);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case VRAI:
@@ -645,6 +692,14 @@ public class Yaka implements YakaConstants {
     case 40:
     case 51:
       expression();
+          try
+          {
+            controlType.testTypeParam(expr.getTypeExpr());
+          }
+          catch (SemanticException e)
+          {
+        printErrorMsg(e.getMessage());
+          }
       label_10:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -657,6 +712,14 @@ public class Yaka implements YakaConstants {
         }
         jj_consume_token(41);
         expression();
+          try
+                  {
+                    controlType.testTypeParam(expr.getTypeExpr());
+                  }
+                  catch (SemanticException e)
+                  {
+                        printErrorMsg(e.getMessage());
+                  }
       }
       break;
     default:
@@ -664,6 +727,14 @@ public class Yaka implements YakaConstants {
       ;
     }
     jj_consume_token(42);
+                  try
+                  {
+                        expr.verifTypeFonc(fonc);
+                  }
+                  catch (SemanticException e)
+                  {
+                        printErrorMsg(e.getMessage());
+                  }
   }
 
   static final public void opRel() throws ParseException {

@@ -32,16 +32,55 @@ public class TabIdent {
 		return compteur;
 	}
 	
+	public int nbParamDeclared()
+	{
+		int compteur = 0;
+		Iterator<Ident> i = locaux.values().iterator();
+		while (i.hasNext()) {
+			if(i.next() instanceof IdParam) {
+				compteur++;
+			}
+		}
+		return compteur;
+	}
+		
 	/**
 	 * Retourne l'identifiant suivant son nom
 	 * @param name le nom de l'identifiant
 	 * @return l'identifiant
 	 * @throws IdentDoesNotExistException si l'identifiant n'existe pas
 	 */
-	public Ident chercheIdent(String name) throws IdentDoesNotExistException {
-		if (existeIdent(name))
+	
+	public Ident chercheIdent(String name) throws IdentDoesNotExistException
+	{
+		Ident res=null;
+		try {
+			res = chercheIdentLocal(name);
+		} catch (IdentDoesNotExistException _) {
+			try {
+				res = chercheIdentGlobal(name);
+			} catch (IdentDoesNotExistException e) {
+				throw e;
+			}
+		}
+		return res;
+	}
+	
+	public Ident chercheIdentLocal(String name) throws IdentDoesNotExistException {
+		if (existeIdentLocal(name))
 		{
 			return locaux.get(name);
+		}
+		else
+		{
+			throw new IdentDoesNotExistException(name);
+		}
+	}
+	
+	public Ident chercheIdentGlobal(String name) throws IdentDoesNotExistException {
+		if (existeIdentGlobal(name))
+		{
+			return globaux.get(name);
 		}
 		else
 		{
@@ -54,8 +93,13 @@ public class TabIdent {
 	 * @param name le nom de l'identifiant
 	 * @return true si l'identifiant existe, faux sinon
 	 */
-	public boolean existeIdent(String name) {
+	
+	public boolean existeIdentLocal(String name) {
 		return locaux.containsKey(name);
+	}
+	
+	public boolean existeIdentGlobal(String name) {
+		return globaux.containsKey(name);
 	}
 	
 	/**
@@ -63,13 +107,25 @@ public class TabIdent {
 	 * @param name le nom de l'identifiant
 	 * @param id l'identifiant
 	 */
-	public void rangeIdent(String name, Ident id) {
+	public void rangeIdentLocal(String name, Ident id)
+	{
 		if (id!=null)
 			locaux.put(name, id);
-	}	
+	}
+	
+	public void rangeIdentGlobal(String name, Ident id)
+	{
+		if (id!=null)
+			globaux.put(name, id);
+	}
+	
+	public void clearLocaux()
+	{
+		locaux.clear();
+	}
 	
 	public String toString()
 	{
-		return locaux.toString();
+		return globaux.toString()+"\n"+locaux.toString();
 	}
 }

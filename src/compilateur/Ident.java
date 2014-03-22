@@ -3,8 +3,8 @@ package compilateur;
 public abstract class Ident {
 	
 	
-	private String nom;
-	private Type type;
+	protected String nom;
+	protected Type type;
 	
 	public Ident(String nom)
 	{

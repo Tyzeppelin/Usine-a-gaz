@@ -163,27 +163,56 @@ void analyse() : {}
    <PROGRAMME> <ident>
    (declFonction())*
    < PRINCIPAL >
+   {
+     	try
+     	{
+     		decl.addFonction("main");
+    	}
+    	catch (SemanticException e)
+    	{
+      		printErrorMsg(e.getMessage());
+    	}
+   }
    bloc()
    < FPRINCIPAL >
    <FPROGRAMME>
    {gen.footer();}
 }
 
-void declFonction() : {}
-{	type() < FONCTION > <ident > paramForms()
-	bloc()
-	< FFONCTION >
-}
+void declFonction() : {}{  type()  {    int type = token.kind;  }  < FONCTION > < ident >
+  {
+    String name = YakaTokenManager.identLu;
+    try
+    {
+    	decl.addFonction(name,Type.intToType(type));
+    }
+    catch (SemanticException e)
+    {
+      printErrorMsg(e.getMessage());
+    }  }
+  paramForms()   bloc()   < FFONCTION >
+  {
+	tabIdent.clearLocaux();
+  }}
 
 void paramForms() : {}
 {	"(" ( paramForm() ( "," paramForm())*)?	  ")"
 }
 
-void paramForm() : {}
-{	type() <ident >
-}
+void paramForm() : {}{  type()  {    int type = token.kind;  }  < ident >
+  {	String name = YakaTokenManager.identLu;
+	try
+    {
+		decl.addParam(name,Type.intToType(type));
+    }
+    catch (SemanticException e)
+    {
+      printErrorMsg(e.getMessage());
+    }
+  }}
 
-void bloc() : {}{
+void bloc() : {}
+{
  (declConst())*
  (declVar())*
  {
@@ -304,6 +333,14 @@ void instruction() :{expr.clear();}
 
 void retourne() :{}
 {	< RETOURNE > expression()
+	{		try
+		{		  decl.testRetourneType(expr.getTypeExpr());
+		}
+		catch (SemanticException e)
+		{
+		  printErrorMsg(e.getMessage());			
+		}
+	}
 }
 
 void condition() : {}
@@ -343,20 +380,20 @@ void iteration() : {}{  < TANTQUE >  {
 void affectation() :{}
 {	< ident >	{
 	  String ident = YakaTokenManager.identLu;
-	  if (!tabIdent.existeIdent(ident))
+	  if (!tabIdent.existeIdentLocal(ident))
 	  {
       		printErrorMsg(ident+" does not exist.");
-			tabIdent.rangeIdent(ident,new IdVar(ident,Type.ERR));
+			tabIdent.rangeIdentLocal(ident,new IdVar(ident,Type.ERR));
 	  }	}
 	 "=" expression()
 	 {
 	   try
-	   {	     		if (expr.getTypeExpr() != tabIdent.chercheIdent(ident).getType())
+	   {	     		if (expr.getTypeExpr() != tabIdent.chercheIdentLocal(ident).getType())
 		{
-      		printErrorMsg("type expected "+tabIdent.chercheIdent(ident).getType());
+      		printErrorMsg("type expected "+tabIdent.chercheIdentLocal(ident).getType());
 		}
 		else
-		{			gen.istore(tabIdent.chercheIdent(ident).getValeur());
+		{			gen.istore(tabIdent.chercheIdentLocal(ident).getValeur());
 		}
 	   }
 	   catch (SemanticException e)
@@ -370,7 +407,7 @@ void lecture() :{}
 {	< LIRE > "(" < ident >
 	{
 	  try
-	  {	    gen.lire(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+	  {	    gen.lire(tabIdent.chercheIdentLocal(YakaTokenManager.identLu).getValeur());
 	  }
 	catch (SemanticException e)
 	{
@@ -431,8 +468,7 @@ void primaire (): {}
 
 void valeur () : {}
 { <entier> 		{expr.ajouterType(Type.ENT);gen.iconst(YakaTokenManager.entierLu);}
- | <ident> (argumentsFonction())?
-
+ | <ident>
  				{
    					try
    					{
@@ -446,14 +482,55 @@ void valeur () : {}
       					printErrorMsg(e.getMessage());	
    					}
    				}
+
+(argumentsFonction())?
+   				
  | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(VRAI);}
  | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(FAUX);}
  
 }
+void argumentsFonction() : {String fonc = YakaTokenManager.identLu;}{
+  {
+    ControlTypeFonction controlType = new ControlTypeFonction(tabIdent);
+    try
+	  {
+	     controlType.initTest(fonc);
+	  }
+	  catch (SemanticException e)
+	  {
+      	printErrorMsg(e.getMessage());
+	  }
+  }  "("  (    expression()
+    {
+	  try
+	  {	    controlType.testTypeParam(expr.getTypeExpr());
+	  }
+	  catch (SemanticException e)
+	  {
+      	printErrorMsg(e.getMessage());
+	  }
 
-void argumentsFonction() : {}
-{	"(" (expression() ("," expression())* )? ")"
-}
+    }    (      "," expression()
+      {
+          try
+		  {
+		    controlType.testTypeParam(expr.getTypeExpr());
+		  }
+		  catch (SemanticException e)
+		  {
+		  	printErrorMsg(e.getMessage());
+		  }
+      }    )*  )?  ")"
+  {
+		  try
+		  {
+  			expr.verifTypeFonc(fonc);
+		  }
+		  catch (SemanticException e)
+		  {
+		  	printErrorMsg(e.getMessage());
+		  }
+	}}
 
 void opRel() : {}
 {

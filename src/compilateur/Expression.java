@@ -74,28 +74,27 @@ public class Expression {
 	public void ajouterIdent(String nom) throws IdentDoesNotExistException {
 		try
 		{
-			Ident ident = tabIdent.chercheIdent(nom);
+			Ident ident = tabIdent.chercheIdentLocal(nom);
 			stackType.push(ident.getType());
 		}
-		catch (IdentDoesNotExistException e)
+		catch (IdentDoesNotExistException _)
 		{
-			stackType.push(Type.ERR);
-			throw e;			
+			try
+			{		
+				Ident ident = tabIdent.chercheIdentGlobal(nom);
+				stackType.push(ident.getType());
+			}
+			catch (IdentDoesNotExistException e)
+			{
+				stackType.push(Type.ERR);
+				throw e;					
+			}
 		}
 	}
 	
-	public void ajouterIdent(Ident id) throws IdentDoesNotExistException
+	public void ajouterIdent(Ident ident) throws IdentDoesNotExistException
 	{
-		try
-		{
-			tabIdent.chercheIdent(id.getNom());
-			stackType.push(id.getType());
-		}
-		catch (IdentDoesNotExistException e)
-		{
-			stackType.push(Type.ERR);
-			throw e;			
-		}		
+		ajouterIdent(ident.getNom());
 	}
 
 	/**
@@ -178,10 +177,22 @@ public class Expression {
 		}
 	}
 	
+	public void verifTypeFonc(String fonc) throws IdentDoesNotExistException
+	{
+		IdFonc idF = (IdFonc) tabIdent.chercheIdentGlobal(fonc);
+		for(int i=0;i<idF.getNbParam();i++)
+			stackType.pop();
+	}
+	
 	public void clear()
 	{
 		stackType.clear();
 		stackOp.clear();
+	}
+	
+	public void debug()
+	{
+		System.out.println("type expr : "+stackType);
 	}
 	
 }
