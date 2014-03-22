@@ -1,5 +1,11 @@
 package compilateur;
 
+/**
+ * Classe de Generation de code en langage Assembleur INTEL 8086
+ * @author francois
+ *
+ */
+
 public class ASM  extends AbstractGeneration {
 	
 	private YVM yvm;
@@ -13,6 +19,9 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Generation du header
+	 */
 	public void header() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.header();
@@ -28,6 +37,9 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Generation du footer
+	 */
 	public void footer() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.footer();
