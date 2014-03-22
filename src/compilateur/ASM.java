@@ -1,7 +1,9 @@
 package compilateur;
 
 /**
- * Classe de Generation de code en langage Assembleur INTEL 8086
+ * Classe de Generation de code en langage Assembleur INTEL 8086 <br>
+ * Pour chaque instruction en langage Yaka, on genere un bloc de code ASM INTEL 8086 
+ * precede d'un commentaire correspondant a une instruction en langage YVM
  * @author francois
  *
  */
@@ -50,6 +52,10 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**	
+	 * Traduction de l'instruction iconst
+	 * @param val : int, la valeur de la constante a stocker
+	 */
 	public void iconst(int val) {
 		Ecriture.ecrireChar(out, ';');
 		yvm.iconst(val);
@@ -58,6 +64,10 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction istore
+	 * @param offset : int, l'offset de la variable a stocker
+	 */
 	public void istore(int offset) {
 		Ecriture.ecrireChar(out, ';');
 		yvm.istore(offset);
@@ -67,7 +77,10 @@ public class ASM  extends AbstractGeneration {
 		Ecriture.ecrireStringln(out,"pop ax\n" +
 				"mov word ptr[bp"+signe+offset+"], ax\n");	
 	}
-
+	/**
+	 * Traduction de l'instruction iload
+	 * @param offset : int, l'offset de la variable a recuperer
+	 */
 	@Override
 	public void iload(int offset) {
 		Ecriture.ecrireChar(out, ';');
@@ -77,7 +90,10 @@ public class ASM  extends AbstractGeneration {
 		if (offset >= 0) signe = "+";
 		Ecriture.ecrireStringln(out,"push word ptr[bp"+signe+offset+"]\n");
 	}
-
+	/**
+	 * Traduction de l'instruction idiv <br>
+	 * Divise les  deux premiers elements de la pile
+	 */
 	@Override
 	public void idiv() {
 		Ecriture.ecrireChar(out, ';');
@@ -89,7 +105,10 @@ public class ASM  extends AbstractGeneration {
 				"idiv bx\n" +
 				"push ax\n");
 	}
-
+	/**
+	 * Traduction de l'instruction mul <br>
+	 * Multiplie les  deux premiers elements de la pile
+	 */
 	@Override
 	public void imul() {
 		Ecriture.ecrireChar(out, ';');
@@ -100,7 +119,10 @@ public class ASM  extends AbstractGeneration {
 				"imul bx\n" +
 				"push ax\n");
 	}
-
+	/**
+	 * Traduction de l'instruction iadd <br>
+	 * Additionne les  deux premiers elements de la pile
+	 */
 	@Override
 	public void iadd() {
 		Ecriture.ecrireChar(out, ';');
@@ -111,7 +133,10 @@ public class ASM  extends AbstractGeneration {
 				"add ax,bx\n" +
 				"push ax\n");
 	}
-
+	/**
+	 * Traduction de l'instruction isub <br>
+	 * Soustrait les  deux premiers elements de la pile
+	 */
 	@Override
 	public void isub() {
 		Ecriture.ecrireChar(out, ';');
@@ -122,7 +147,10 @@ public class ASM  extends AbstractGeneration {
 				"sub ax,bx\n" +
 				"push ax\n");
 	}
-
+	/**
+	 * Traduction de l'instruction ineg <br>
+	 *  Calcule l'opposé de l'operande (par complement a deux)
+	 */
 	@Override
 	public void ineg() {
 		Ecriture.ecrireChar(out, ';');
@@ -132,7 +160,10 @@ public class ASM  extends AbstractGeneration {
 				"neg ax\n" + // Calcule l'opposé de l'opérande (négation par complément à deux)
 				"push ax\n");
 	}
-
+	/**
+	 * Traduction de l'instruction inot <br>
+	 * Effectue un non logique
+	 */
 	@Override
 	public void inot() {
 		Ecriture.ecrireChar(out, ';');
@@ -142,7 +173,10 @@ public class ASM  extends AbstractGeneration {
 				"not ax\n" + // Effectue un NON logique (négation par complément à un)
 				"push ax\n");		
 	}
-
+	/**
+	 * Traduction de l'instruction ior <br>
+	 * Effectue un OR entre les  deux premiers elements de la pile
+	 */
 	@Override
 	public void ior() {
 		Ecriture.ecrireChar(out, ';');
@@ -153,7 +187,10 @@ public class ASM  extends AbstractGeneration {
 				"or ax, bx\n" +
 				"push ax\n");	
 	}
-
+	/**
+	 * Traduction de l'instruction iand <br>
+	 * Effectue un AND entre les  deux premiers elements de la pile
+	 */
 	@Override
 	public void iand() {
 		Ecriture.ecrireChar(out, ';');
@@ -164,7 +201,10 @@ public class ASM  extends AbstractGeneration {
 				"and ax, bx\n" +
 				"push ax\n");			
 	}
-
+	/**
+	 * Traduction de l'instruction iinf <br>
+	 * Effectue un JL entre les  deux premiers elements de la pile
+	 */
 	@Override
 	public void iinf() {
 		Ecriture.ecrireChar(out, ';');
@@ -180,6 +220,10 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction isup <br>
+	 * Effectue un JG entre les  deux premiers elements de la pile
+	 */
 	public void isup() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.isup();
@@ -194,6 +238,10 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction iinf <br>
+	 * Effectue un JLE entre les  deux premiers elements de la pile
+	 */
 	public void iinfegal() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.iinfegal();
@@ -208,6 +256,10 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction iinf <br>
+	 * Effectue un JGE entre les  deux premiers elements de la pile
+	 */
 	public void isupegal() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.isupegal();
@@ -222,6 +274,10 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction iegal <br>
+	 * Effectue un JE entre les  deux premiers elements de la pile
+	 */
 	public void iegal() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.iegal();
@@ -236,6 +292,10 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction idiff <br>
+	 * Effectue un JNE entre les  deux premiers elements de la pile
+	 */
 	public void idiff() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.idiff();
@@ -250,6 +310,9 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction i/o ECRIRE() pour les entiers
+	 */
 	public void ecrireInt() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.ecrireInt();
@@ -258,6 +321,9 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction i/o ECRIRE() pour les booleens
+	 */
 	public void ecrireBool() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.ecrireBool();
@@ -266,6 +332,9 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction i/o ECRIRE() pour les chaines de caracteres
+	 */
 	public void ecrireString(String s) {
 		Ecriture.ecrireChar(out, ';');
 		yvm.ecrireString(s);
@@ -280,6 +349,9 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction i/o ALALIGNE() (<-suffisement explicite)
+	 */
 	public void alaligne() {
 		Ecriture.ecrireChar(out, ';');
 		yvm.alaligne();
@@ -288,6 +360,10 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction i/o LIRE() 
+	 * Ne permet de lire que des entiers
+	 */
 	public void lire(int offset) { // lireEnt
 		Ecriture.ecrireChar(out, ';');
 		yvm.lire(offset);
@@ -300,6 +376,9 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction ouvrePrinc
+	 */
 	public void ouvrePrinc(int i) {
 		Ecriture.ecrireChar(out, ';');
 		yvm.ouvrePrinc(i);
@@ -309,6 +388,9 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * 
+	 */
 	public void iffauxIter() {
 		Ecriture.ecrireStringln(out, "; iffaux FAIT"+stackTantQue.peek());
 
