@@ -57,7 +57,7 @@ public abstract class AbstractGeneration implements Generation {
 	 */
 	public void si()
 	{
-		stackCond.push(1);		
+		stackCond.push(stackCond.peek()+1);		
 	}
 	/**
 	 * Generation d'une etiquette FAIREi, i:int
