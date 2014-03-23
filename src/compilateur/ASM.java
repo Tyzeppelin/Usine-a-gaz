@@ -389,7 +389,8 @@ public class ASM  extends AbstractGeneration {
 
 	@Override
 	/**
-	 * 
+	 * Traduction de l'instruction iffaux <br>
+	 * Version pour les iterations
 	 */
 	public void iffauxIter() {
 		Ecriture.ecrireStringln(out, "; iffaux FAIT"+stackTantQue.peek());
@@ -398,15 +399,24 @@ public class ASM  extends AbstractGeneration {
 									"cmp ax,0 \n" +
 									"je FAIT"+stackTantQue.peek()+"\n");	
 	}
-
+	
 	@Override
+	/**
+	 * Traduction de l'instruction jump <br>
+	 * Version pour les iterations
+	 */
 	public void jumpIter() {
 		Ecriture.ecrireStringln(out, "; goto FAIRE"+stackTantQue.peek());
 		Ecriture.ecrireStringln(out,"jmp FAIRE"+stackTantQue.peek()+"\n");	
 				
 	}
 	
+	
 	@Override
+	/**
+	 * Traduction de l'instruction iffaux <br>
+	 * Version pour les conditionelles
+	 */
 	public void iffauxCond() {
 		Ecriture.ecrireStringln(out, "; iffaux SINON"+stackCond.peek());
 
@@ -416,6 +426,10 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Traduction de l'instruction jump <br>
+	 * Version pour les conditionelles
+	 */
 	public void jumpCond() {
 		Ecriture.ecrireStringln(out, "; goto FSI"+stackCond.peek());
 		Ecriture.ecrireStringln(out,"jmp FSI"+stackCond.peek()+"\n");	

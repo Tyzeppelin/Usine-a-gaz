@@ -3,14 +3,28 @@ package compilateur;
 import java.io.*;
 
 //quelques primitives d'écriture à l'ecran  ou dans un fichier
-
+/**
+ * Classe i/o d'ecriture dans un fichier ou sur la sortie standard
+ * @author Francois
+ *
+ */
 public class Ecriture {   
+	
+	/**
+	 * Methode static d'ecriture du message d'une exception sur la sortie std
+	 * @param e : une exception
+	 */
     private static void erreur(IOException e) {
-        System.out.println(e.getMessage());
+    System.out.println(e.getMessage());
 	System.out.println("Erreur fatale");
 	System.exit(1);
     }
 
+    /**
+     * Methode static qui délivre un outpustream sur le fichier de nom passe en parametre
+     * @param nomFich : fichier a ouvrir
+     * @return : outputstream sur le fichier de nom passe en parametre (null si erreur)
+     */
     public static OutputStream ouvrir(String nomFich) {
 	//délivre un pointeur sur le fichier de nom nomFich (null si erreur)
 	OutputStream f;
@@ -20,16 +34,21 @@ public class Ecriture {
 	return f;
     }
      
+    /**
+     * Methode stati de fermeture du stream f
+     * @param f : l'outputstream a fermer
+     */
     public static void fermer(OutputStream f) {
 	//fermeture d'un fichier                                          
 	try {f.close();}
 	catch (IOException e) {erreur(e);}
-    }
-
-     
-
-    //écriture d'un caractère                   
-
+    }               
+    
+    /**
+     * Methode d'ecriture d'un caractere dans la fichier passe en paramtre
+     * @param f : le fichier où ecrire
+     * @param c : le caractere a ecrire
+     */
     public static void ecrireChar(OutputStream f,char c) {
 	try {f.write(c);}
         catch(IOException e) {erreur(e);}

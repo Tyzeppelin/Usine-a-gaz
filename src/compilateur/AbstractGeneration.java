@@ -5,7 +5,7 @@ import java.util.Stack;
 /**
  * 
  * Classe abstraite qui implemente l'interface Generation <br>
- * Permet de ne pas redÃ©finir deux fois les memes methodes.
+ * Permet de ne pas redéfinir deux fois les memes methodes.
  * 
  * @author Francois Boschet
  *
