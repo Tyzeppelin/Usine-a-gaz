@@ -1,7 +1,9 @@
 package compilateur;
 
 public class IdVar extends Ident {
-	
+	/**
+	 * Offset dans la pile
+	 */
 	protected int offset;
 
 
@@ -13,11 +15,18 @@ public class IdVar extends Ident {
 		super(nom, type);
 		this.offset = offset;
 	}
+
+	/**
+	 * Getter de l'offset de la variable
+	 */
 	@Override
 	public int getValeur() {
 		return offset;
 	}
 
+	/**
+	 * Setter de l'offset de la variable
+	 */
 	@Override
 	public void setValeur(int value)
 	{
@@ -52,6 +61,9 @@ public class IdVar extends Ident {
 	public String toString() {
 		return "IdVar [offset=" + offset + "]";
 	}
+	/**
+	 * Genere le code pour une variable
+	 */
 	@Override
 	public void generateIdent(Generation gen) {
 		gen.iload(offset);

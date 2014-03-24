@@ -5,7 +5,11 @@ import yaka.YakaConstants;
 
 public enum Type implements YakaConstants {
 	ENT, BOOL, ERR;
-	
+	/**
+	 * Convertie un entier en Type
+	 * @param type
+	 * @return
+	 */
 	public static Type intToType(int type)
 	{
 		if (type==BOOLEEN)
@@ -14,7 +18,11 @@ public enum Type implements YakaConstants {
 			return ENT;
 		return ERR;
 	}
-	
+	/**
+	 * Convertie un Type en entier
+	 * @param type
+	 * @return
+	 */
 	public static int typeToInt(Type type)
 	{
 		if (type==ENT)
@@ -24,8 +32,13 @@ public enum Type implements YakaConstants {
 		else
 			return -1;
 	}
-	
-	public static void generateEcrireType(Type type, AbstractGeneration gen) throws ErrTypeExprException
+	/**
+	 * Genere la fonction ecrire en fonction du type
+	 * @param type
+	 * @param gen
+	 * @throws ErrTypeExprException
+	 */
+	public static void generateEcrireType(Type type, Generation gen) throws ErrTypeExprException
 	{
 		  if (type==ENT)
 		  	gen.ecrireInt();

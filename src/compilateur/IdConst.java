@@ -3,6 +3,9 @@ package compilateur;
 public class IdConst extends Ident {
 	
 
+	/**
+	 * La valeur de la constante
+	 */
 	private int val;
 
 	public IdConst(String nom)

@@ -1,7 +1,7 @@
 package compilateur;
 
 /**
- * Classe de Generation de code en langage Assembleur INTEL 8086 <br>
+ * Classe de Generation de code en langage Assembleur INTEL 8086 
  * Pour chaque instruction en langage Yaka, on genere un bloc de code ASM INTEL 8086 
  * precede d'un commentaire correspondant a une instruction en langage YVM
  * @author francois

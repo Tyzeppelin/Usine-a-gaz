@@ -62,6 +62,11 @@ public class ControlTypeFonction {
 		nb++;
 	}
 	
+	/**
+	 * Test si le nombre de paramètres de la fonction est le bon
+	 * @param nbParam
+	 * @throws NotEnoughParamException
+	 */
 	public void testNbParam(int nbParam) throws NotEnoughParamException
 	{
 		if (nbParam != fonc.getNbParam())

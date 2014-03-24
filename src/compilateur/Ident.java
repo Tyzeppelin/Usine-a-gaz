@@ -2,8 +2,13 @@ package compilateur;
 
 public abstract class Ident {
 	
-	
+	/**
+	 * Le nom de l'identifiant
+	 */
 	protected String nom;
+	/**
+	 * Son type
+	 */
 	protected Type type;
 	
 	public Ident(String nom)
@@ -21,24 +26,48 @@ public abstract class Ident {
 	public String toString() {
 		return "Ident [nom=" + nom + ", type=" + type + "]";
 	}
-	
+	/**
+	 * Retourne la valeur de l'identifiant
+	 * @return
+	 */
 	public abstract int getValeur();
+	/**
+	 * Modifie la valeur de l'identifiant
+	 * @param value
+	 */
 	public abstract void setValeur(int value);
-	
+	/**
+	 * Retourne le type de l'identifiant
+	 * @return
+	 */
 	public Type getType() {
 		return type;
 	}
+	/**
+	 * Modifie le type de l'identifiant
+	 * @param type
+	 */
 	public void setType(Type type) {
 		this.type = type;
 	}
-	
+	/**
+	 * Retourne le nom de l'identifiant
+	 * @return
+	 */
 	public String getNom() {
 		return nom;
 	}
+	/**
+	 * Modifie le nom de l'identifiant
+	 * @param nom
+	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
+	/**
+	 * Genère le code pour l'identifiant
+	 * @param gen
+	 */
 	public abstract void generateIdent(Generation gen);
 	
 

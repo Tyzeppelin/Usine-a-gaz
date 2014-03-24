@@ -3,6 +3,8 @@ package tests;
 import org.junit.Before;
 import org.junit.Test;
 
+import yaka.Yaka;
+
 import compilateur.IdVar;
 import compilateur.Ident;
 import compilateur.TabIdent;
@@ -12,12 +14,11 @@ import junit.framework.TestCase;
 
 public class TabIdentTest extends TestCase {
 	
-	TabIdent tabIdent;
-
 	@Before
 	protected void setUp() throws Exception {
 		super.setUp();
-		tabIdent = new TabIdent();
+		
+		Yaka.tabIdent.clearLocaux();
 	}
 
 	@Test
@@ -26,16 +27,16 @@ public class TabIdentTest extends TestCase {
 		boolean thrown = false;
 		
 		try {
-			assertEquals(null, tabIdent.chercheIdent("test"));
+			assertEquals(null, Yaka.tabIdent.chercheIdent("test"));
 		} catch (IdentDoesNotExistException e) {
 			thrown = true;
 		}
 		assertTrue(thrown);
 		
-		tabIdent.rangeIdent("test", new IdVar("test", Type.ENT));
+		Yaka.tabIdent.rangeIdentLocal("test", new IdVar("test", Type.ENT));
 		thrown = false;
 		try {
-			assertEquals(new IdVar("test", Type.ENT), tabIdent.chercheIdent("test"));
+			assertEquals(new IdVar("test", Type.ENT), Yaka.tabIdent.chercheIdent("test"));
 		} catch (IdentDoesNotExistException e) {
 			thrown = true;
 		}		
@@ -43,7 +44,7 @@ public class TabIdentTest extends TestCase {
 		
 		thrown = false;
 		try {
-			assertEquals(null, tabIdent.chercheIdent(null));
+			assertEquals(null, Yaka.tabIdent.chercheIdent(null));
 		} catch (IdentDoesNotExistException e) {
 			thrown = true;
 		}
@@ -52,21 +53,21 @@ public class TabIdentTest extends TestCase {
 
 	@Test
 	public void testExisteIdent() {
-		assertFalse(tabIdent.existeIdent("test"));
+		assertFalse(Yaka.tabIdent.existeIdentLocal("test"));
 		Ident ident = new IdVar("test", Type.ENT);
-		tabIdent.rangeIdent("test", ident);
-		assertTrue(tabIdent.existeIdent("test"));
+		Yaka.tabIdent.rangeIdentLocal("test", ident);
+		assertTrue(Yaka.tabIdent.existeIdentLocal("test"));
 	}
 
 	@Test
 	public void testRangeIdent() {
-		assertFalse(tabIdent.existeIdent("test"));
+		assertFalse(Yaka.tabIdent.existeIdentLocal("test"));
 		Ident ident = new IdVar("test", Type.ENT);
-		tabIdent.rangeIdent("test", ident);
-		assertTrue(tabIdent.existeIdent("test"));
+		Yaka.tabIdent.rangeIdentLocal("test", ident);
+		assertTrue(Yaka.tabIdent.existeIdentLocal("test"));
 		
-		tabIdent.rangeIdent("test2", null);
-		assertFalse(tabIdent.existeIdent("test2"));
+		Yaka.tabIdent.rangeIdentLocal("test2", null);
+		assertFalse(Yaka.tabIdent.existeIdentLocal("test2"));
 	}
 
 }

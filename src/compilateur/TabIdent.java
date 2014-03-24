@@ -32,6 +32,10 @@ public class TabIdent {
 		return compteur;
 	}
 	
+	/**
+	 * Cette méthode retourne le nombre de paramêtres déclarés
+	 * @return le nombre de IdParam
+	 */
 	public int nbParamDeclared()
 	{
 		int compteur = 0;
@@ -45,7 +49,7 @@ public class TabIdent {
 	}
 		
 	/**
-	 * Retourne l'identifiant suivant son nom
+	 * Retourne l'identifiant suivant son nom. Cherche d'abord dans la table des locaux, puis dans la table des globaux.
 	 * @param name le nom de l'identifiant
 	 * @return l'identifiant
 	 * @throws IdentDoesNotExistException si l'identifiant n'existe pas
@@ -65,7 +69,12 @@ public class TabIdent {
 		}
 		return res;
 	}
-	
+	/**
+	 * Cherche l'identifiant dans la table des locaux
+	 * @param name
+	 * @return
+	 * @throws IdentDoesNotExistException
+	 */
 	public Ident chercheIdentLocal(String name) throws IdentDoesNotExistException {
 		if (existeIdentLocal(name))
 		{
@@ -76,7 +85,12 @@ public class TabIdent {
 			throw new IdentDoesNotExistException(name);
 		}
 	}
-	
+	/**
+	 * Cherche l'identifiant dans la table des globaux
+	 * @param name
+	 * @return
+	 * @throws IdentDoesNotExistException
+	 */
 	public Ident chercheIdentGlobal(String name) throws IdentDoesNotExistException {
 		if (existeIdentGlobal(name))
 		{
@@ -89,7 +103,7 @@ public class TabIdent {
 	}
 	
 	/**
-	 * Test si l'identifiant existe
+	 * Test si l'identifiant existe dans la table des locaux
 	 * @param name le nom de l'identifiant
 	 * @return true si l'identifiant existe, faux sinon
 	 */
@@ -98,12 +112,17 @@ public class TabIdent {
 		return locaux.containsKey(name);
 	}
 	
+	/**
+	 * Test si l'identifiant existe dans la table des globaux
+	 * @param name
+	 * @return
+	 */
 	public boolean existeIdentGlobal(String name) {
 		return globaux.containsKey(name);
 	}
 	
 	/**
-	 * Range l'identifiant à l'index "name"
+	 * Range l'identifiant à l'index "name" dans la table des locaux
 	 * @param name le nom de l'identifiant
 	 * @param id l'identifiant
 	 */
@@ -112,16 +131,37 @@ public class TabIdent {
 		if (id!=null)
 			locaux.put(name, id);
 	}
-	
+	/**
+	 * Range l'identifiant à l'index "name" dans la table des globaux
+	 * @param name le nom de l'identifiant
+	 * @param id l'identifiant
+	 */
 	public void rangeIdentGlobal(String name, Ident id)
 	{
 		if (id!=null)
 			globaux.put(name, id);
 	}
-	
+	/**
+	 * Efface la table des globaux et des locaux
+	 */
+	public void clear()
+	{
+		globaux.clear();
+		locaux.clear();
+	}
+	/**
+	 * Efface la table des locaux
+	 */
 	public void clearLocaux()
 	{
 		locaux.clear();
+	}
+	/**
+	 * Efface la table des globaux
+	 */
+	public void clearGlobaux()
+	{
+		globaux.clear();
 	}
 	
 	public String toString()

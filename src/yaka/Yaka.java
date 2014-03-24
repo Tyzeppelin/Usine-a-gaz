@@ -5,10 +5,10 @@ import compilateur.*;
 import exceptions.*;
 
 public class Yaka implements YakaConstants {
-        public static TabIdent tabIdent;
-        public static Declaration decl;
-        public static Expression expr;
-        public static AbstractGeneration gen;
+        public static TabIdent tabIdent = new TabIdent();
+        public static Declaration decl = new Declaration();
+        public static Expression expr = new Expression();
+        public static AbstractGeneration gen = new ASM("../out.asm");
 
 
   public static void printErrorMsg(String msg)
@@ -20,11 +20,6 @@ public class Yaka implements YakaConstants {
   public static void main(String args[]) {
     Yaka analyseur;
     java.io.InputStream input;
-
-    tabIdent = new TabIdent();
-    decl = new Declaration();
-    expr = new Expression();
-    gen = new ASM("../out.asm");
 
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");

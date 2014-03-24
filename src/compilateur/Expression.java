@@ -27,6 +27,11 @@ public class Expression {
 		stackOp = new Stack<Operateur>();
 	}
 	
+	/**
+	 * Test si l'expression est booléen
+	 * @throws ExpressionNotBooleanException si l'expression n'est pas booléen
+	 * @throws ErrTypeExprException
+	 */
 	public void testExpressionBoolean() throws ExpressionNotBooleanException, ErrTypeExprException
 	{
 		if (getTypeExpr() != Type.BOOL)
@@ -55,11 +60,18 @@ public class Expression {
 	{
 		return stackOp.peek();
 	}
-	
+	/**
+	 * Ajoute l'opérateur à la pile des opérateurs
+	 * @param op
+	 */
 	public void ajouterOp (Operateur op) {
 		stackOp.push(op);
 	}
 	
+	/**
+	 * Ajoute un type à la pile des types
+	 * @param type
+	 */
 	public void ajouterType(Type type) {
 		stackType.push(type);
 	}
@@ -89,7 +101,11 @@ public class Expression {
 			}
 		}
 	}
-	
+	/**
+	 * Ajoute le type de l'identifiant à l'expresion
+	 * @param ident
+	 * @throws IdentDoesNotExistException
+	 */
 	public void ajouterIdent(Ident ident) throws IdentDoesNotExistException
 	{
 		ajouterIdent(ident.getNom());
@@ -175,22 +191,24 @@ public class Expression {
 		}
 	}
 	
+	/**
+	 * Enlève de la pile les types des paramètres de la fonction courante pour ne garder que le type de 
+	 * la fonction courante en sommet de pile.
+	 * @param fonc
+	 * @throws IdentDoesNotExistException
+	 */
 	public void verifTypeFonc(String fonc) throws IdentDoesNotExistException
 	{
 		IdFonc idF = (IdFonc) Yaka.tabIdent.chercheIdentGlobal(fonc);
 		for(int i=0;i<idF.getNbParam();i++)
 			stackType.pop();
 	}
-	
+	/**
+	 * Efface la pile de type et d'opérateur
+	 */
 	public void clear()
 	{
 		stackType.clear();
 		stackOp.clear();
-	}
-	
-	public void debug()
-	{
-		System.out.println("type expr : "+stackType);
-	}
-	
+	}	
 }

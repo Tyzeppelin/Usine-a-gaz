@@ -19,6 +19,10 @@ public class Declaration implements YakaConstants{
 	{
 	}
 	
+	/**
+	 * Retourne la fonction courante
+	 * @return
+	 */
 	public IdFonc getCurrentFonc()
 	{
 		return currentFonc;
@@ -76,7 +80,7 @@ public class Declaration implements YakaConstants{
 	}
 	
 	/**
-	 * Methode d'ajout d'un parametre à la fonction avec son nom et son type
+	 * Methode d'ajout d'un parametre ï¿½ la fonction avec son nom et son type
 	 * @param name : le nom du parametre
 	 * @param type : le type du parametre
 	 * @throws IdentAlreadyDeclaredException : si le parametre est deja declare
