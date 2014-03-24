@@ -3,11 +3,13 @@ package compilateur;
 import yaka.Yaka;
 import exceptions.IdentAlreadyDeclaredException;
 import exceptions.IdentDoesNotExistException;
+import exceptions.NotEnoughParamException;
 import exceptions.SemanticException;
+import exceptions.TooMuchParamException;
 import exceptions.TypeParamException;
 
 /**
- * Classe de contrôle du type de fonction 
+ * Classe de contrï¿½le du type de fonction 
  * @author francois
  *
  */
@@ -33,7 +35,7 @@ public class ControlTypeFonction {
 		{
 			fonc = (IdFonc) Yaka.tabIdent.chercheIdentGlobal(nameFonc);
 		}
-		catch(SemanticException e)
+		catch(IdentDoesNotExistException e)
 		{
 			Yaka.decl.addFonction(nameFonc, Type.ERR);
 			fonc = (IdFonc) Yaka.tabIdent.chercheIdentGlobal(nameFonc);
@@ -43,8 +45,8 @@ public class ControlTypeFonction {
 	
 	/**
 	 *  Methode de test du type d'un parametre
-	 * @param type : le type du parametre à tester
-	 * @throws TypeParamException : si le type du parametre [nb] est different du type passé en parametre
+	 * @param type : le type du parametre ï¿½ tester
+	 * @throws TypeParamException : si le type du parametre [nb] est different du type passï¿½ en parametre
 	 * @throws TooMuchParamException 
 	 */
 	public void testTypeParam(Type type) throws TypeParamException, TooMuchParamException

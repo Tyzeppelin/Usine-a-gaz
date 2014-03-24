@@ -1,6 +1,5 @@
-package compilateur;
+package exceptions;
 
-import exceptions.SemanticException;
 
 public class TooMuchParamException extends SemanticException {
 	public TooMuchParamException(String fonc)
