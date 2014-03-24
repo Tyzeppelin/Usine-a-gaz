@@ -25,7 +25,7 @@ public class IdParam extends Ident {
 	}
 	@Override
 	public void generateIdent(Generation gen) {
-		// TODO Auto-generated method stub
+		gen.iload(offset);
 		
 	}
 	

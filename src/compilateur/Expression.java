@@ -2,6 +2,7 @@ package compilateur;
 
 import java.util.Stack;
 
+import yaka.Yaka;
 import exceptions.ErrTypeExprException;
 import exceptions.ExpressionNotBooleanException;
 import exceptions.IdentDoesNotExistException;
@@ -20,13 +21,10 @@ public class Expression {
 	public Stack<Type> stackType;	// pile du type des op�randes lues
 	protected Stack<Operateur> stackOp;	// pile des op�rateurs lus
 	
-	// Table des identifiants
-	protected TabIdent tabIdent;
 	
-	public Expression(TabIdent tab) {
+	public Expression() {
 		stackType = new Stack<Type>();
 		stackOp = new Stack<Operateur>();
-		tabIdent = tab;
 	}
 	
 	public void testExpressionBoolean() throws ExpressionNotBooleanException, ErrTypeExprException
@@ -74,14 +72,14 @@ public class Expression {
 	public void ajouterIdent(String nom) throws IdentDoesNotExistException {
 		try
 		{
-			Ident ident = tabIdent.chercheIdentLocal(nom);
+			Ident ident = Yaka.tabIdent.chercheIdentLocal(nom);
 			stackType.push(ident.getType());
 		}
 		catch (IdentDoesNotExistException _)
 		{
 			try
 			{		
-				Ident ident = tabIdent.chercheIdentGlobal(nom);
+				Ident ident = Yaka.tabIdent.chercheIdentGlobal(nom);
 				stackType.push(ident.getType());
 			}
 			catch (IdentDoesNotExistException e)
@@ -179,7 +177,7 @@ public class Expression {
 	
 	public void verifTypeFonc(String fonc) throws IdentDoesNotExistException
 	{
-		IdFonc idF = (IdFonc) tabIdent.chercheIdentGlobal(fonc);
+		IdFonc idF = (IdFonc) Yaka.tabIdent.chercheIdentGlobal(fonc);
 		for(int i=0;i<idF.getNbParam();i++)
 			stackType.pop();
 	}

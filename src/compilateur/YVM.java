@@ -134,10 +134,6 @@ public class YVM extends AbstractGeneration {
 	}
 
 	@Override
-	public void ouvrePrinc(int i) {
-		Ecriture.ecrireStringln(out,"ouvrePrinc "+i);
-	}
-	@Override
 	public void iffauxIter() {
 		Ecriture.ecrireStringln(out,"iffaux FAIT"+stackTantQue.peek());	
 	}
@@ -152,5 +148,35 @@ public class YVM extends AbstractGeneration {
 	@Override
 	public void jumpCond() {
 		Ecriture.ecrireStringln(out,"goto FSI"+stackCond.peek());				
+	}
+	@Override
+	public void debut() {
+				
+	}
+	@Override
+	public void ouvreBloc(String name, int i) {
+		Ecriture.ecrireStringln(out,name+":");	
+		Ecriture.ecrireStringln(out,"ouvbloc "+i);		
+		
+	}
+	@Override
+	public void fermeBloc(int i) {
+		Ecriture.ecrireStringln(out,"fermebloc "+i);	
+		
+	}
+	@Override
+	public void ireturn(int i) {
+		Ecriture.ecrireStringln(out,"ireturn "+i);	
+		
+	}
+	@Override
+	public void reserveRetour() {
+		Ecriture.ecrireStringln(out,"reserveRetour");	
+		
+	}
+	@Override
+	public void call(String name) {
+		Ecriture.ecrireStringln(out,"call "+name);	
+		
 	}
 }

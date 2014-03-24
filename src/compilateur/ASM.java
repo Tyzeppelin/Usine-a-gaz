@@ -33,9 +33,7 @@ public class ASM  extends AbstractGeneration {
 				+ "extrn ecrch:proc, ligsuiv:proc\n" +
 				".model SMALL\n" +
 				".586\n" +
-				".CODE\n" +
-				"debut:\n" +
-				"STARTUPCODE\n");
+				".CODE\n");
 	}
 
 	@Override
@@ -60,7 +58,7 @@ public class ASM  extends AbstractGeneration {
 		Ecriture.ecrireChar(out, ';');
 		yvm.iconst(val);
 
-		Ecriture.ecrireStringln(out,"push "+val+"\n");	
+		Ecriture.ecrireStringln(out,"push word ptr "+val+"\n");	
 	}
 
 	@Override
@@ -377,18 +375,6 @@ public class ASM  extends AbstractGeneration {
 
 	@Override
 	/**
-	 * Traduction de l'instruction ouvrePrinc
-	 */
-	public void ouvrePrinc(int i) {
-		Ecriture.ecrireChar(out, ';');
-		yvm.ouvrePrinc(i);
-		
-		Ecriture.ecrireStringln(out,"mov bp, sp\n" +
-				"sub sp, " + i + "\n");	
-	}
-
-	@Override
-	/**
 	 * Traduction de l'instruction iffaux <br>
 	 * Version pour les iterations
 	 */
@@ -434,6 +420,45 @@ public class ASM  extends AbstractGeneration {
 		Ecriture.ecrireStringln(out, "; goto FSI"+stackCond.peek());
 		Ecriture.ecrireStringln(out,"jmp FSI"+stackCond.peek()+"\n");	
 				
+	}
+
+	@Override
+	public void debut() {
+		Ecriture.ecrireStringln(out, "debut : \n STARTUPCODE");
+	}
+
+	@Override
+	public void ouvreBloc(String name, int i) {
+		Ecriture.ecrireStringln(out,name+": ");	
+		Ecriture.ecrireStringln(out,"enter "+i+",0");
+	}
+
+	@Override
+	public void fermeBloc(int i) {
+		Ecriture.ecrireChar(out, ';');
+		yvm.fermeBloc(i);
+		Ecriture.ecrireStringln(out,"leave");
+		Ecriture.ecrireStringln(out,"ret "+i);
+	}
+
+	@Override
+	public void ireturn(int i) {
+		Ecriture.ecrireChar(out, ';');
+		yvm.ireturn(i);
+		Ecriture.ecrireStringln(out,"pop ax");
+		Ecriture.ecrireStringln(out,"mov [bp+"+i+"], ax");
+	}
+
+	@Override
+	public void reserveRetour() {
+		Ecriture.ecrireChar(out, ';');
+		yvm.reserveRetour();
+		Ecriture.ecrireStringln(out,"sub sp,2");
+	}
+
+	@Override
+	public void call(String name) {
+		Ecriture.ecrireStringln(out,"call "+name);
 	}
 
 }

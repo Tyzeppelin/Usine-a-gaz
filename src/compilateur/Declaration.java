@@ -3,21 +3,25 @@ package compilateur;
 import exceptions.IdentAlreadyDeclaredException;
 import exceptions.IdentDoesNotExistException;
 import exceptions.ReturnTypeNotCorrectException;
+import yaka.Yaka;
 import yaka.YakaConstants;
 
 /**
- * Classe de declaration d'une fonction <br>
+ * Classe de declaration d'une fonction
  * @author francois
  *
  */
 public class Declaration implements YakaConstants{
 	
-	private TabIdent tabIdent;
-	private IdFonc actualFonc;
+	private IdFonc currentFonc;
 	
-	public Declaration(TabIdent tabIdent)
+	public Declaration()
 	{
-		this.tabIdent=tabIdent;
+	}
+	
+	public IdFonc getCurrentFonc()
+	{
+		return currentFonc;
 	}
 	
 	/**
@@ -27,9 +31,9 @@ public class Declaration implements YakaConstants{
 	 */
 	public void testRetourneType(Type typeRetour) throws ReturnTypeNotCorrectException
 	{
-		if (typeRetour != actualFonc.getType())
+		if (typeRetour != currentFonc.getType())
 		{
-			throw new ReturnTypeNotCorrectException(actualFonc.getType());
+			throw new ReturnTypeNotCorrectException(currentFonc.getType());
 		}
 	}
 	
@@ -40,10 +44,10 @@ public class Declaration implements YakaConstants{
 	 */
 	public void addFonction(String name) throws IdentAlreadyDeclaredException
 	{
-		if (!tabIdent.existeIdentGlobal(name))
+		if (!Yaka.tabIdent.existeIdentGlobal(name))
 		{
-			actualFonc = new IdFonc(name);
-			tabIdent.rangeIdentGlobal(name, actualFonc);
+			currentFonc = new IdFonc(name);
+			Yaka.tabIdent.rangeIdentGlobal(name, currentFonc);
 		}
 		else
 		{
@@ -59,11 +63,11 @@ public class Declaration implements YakaConstants{
 	 */
 	public void addFonction(String name, Type type) throws IdentAlreadyDeclaredException
 	{
-		if (!tabIdent.existeIdentGlobal(name))
+		if (!Yaka.tabIdent.existeIdentGlobal(name))
 		{
-			actualFonc = new IdFonc(name);
-			actualFonc.setType(type);
-			tabIdent.rangeIdentGlobal(name, actualFonc);
+			currentFonc = new IdFonc(name);
+			currentFonc.setType(type);
+			Yaka.tabIdent.rangeIdentGlobal(name, currentFonc);
 		}
 		else
 		{
@@ -79,12 +83,11 @@ public class Declaration implements YakaConstants{
 	 */
 	public void addParam(String name, Type type) throws IdentAlreadyDeclaredException
 	{
-		if (!tabIdent.existeIdentLocal(name))
+		if (!Yaka.tabIdent.existeIdentLocal(name))
 		{
 			IdParam param = new IdParam(name,type);
-			param.setValeur((tabIdent.nbVarDeclared()+1)*2);
-			actualFonc.addParam(param);
-			tabIdent.rangeIdentLocal(name, param);
+			currentFonc.addParam(param);
+			Yaka.tabIdent.rangeIdentLocal(name, param);
 		}
 		else
 		{
@@ -101,9 +104,9 @@ public class Declaration implements YakaConstants{
 	 */
 	public void addConst(String name,Type type, int value) throws IdentAlreadyDeclaredException
 	{
-		if (!tabIdent.existeIdentLocal(name))
+		if (!Yaka.tabIdent.existeIdentLocal(name))
 		{
-			tabIdent.rangeIdentLocal(name, new IdConst(name, type, value));
+			Yaka.tabIdent.rangeIdentLocal(name, new IdConst(name, type, value));
 		}
 		else
 		{
@@ -120,8 +123,8 @@ public class Declaration implements YakaConstants{
 	 */
 	public void addConstIdent(String name,String ident) throws IdentAlreadyDeclaredException, IdentDoesNotExistException
 	{
-		if (!tabIdent.existeIdentLocal(name))
-			tabIdent.rangeIdentLocal(name, tabIdent.chercheIdentLocal(ident));
+		if (!Yaka.tabIdent.existeIdentLocal(name))
+			Yaka.tabIdent.rangeIdentLocal(name, Yaka.tabIdent.chercheIdentLocal(ident));
 		else
 			throw new IdentAlreadyDeclaredException(name);
 	}
@@ -134,9 +137,9 @@ public class Declaration implements YakaConstants{
 	 */
 	public void addVar(String name, int type) throws IdentAlreadyDeclaredException
 	{
-		if (!tabIdent.existeIdentLocal(name))
+		if (!Yaka.tabIdent.existeIdentLocal(name))
 		{
-			tabIdent.rangeIdentLocal(name, new IdVar(name,Type.intToType(type),(tabIdent.nbVarDeclared()+1)*(-2)));
+			Yaka.tabIdent.rangeIdentLocal(name, new IdVar(name,Type.intToType(type),(Yaka.tabIdent.nbVarDeclared()+1)*(-2)));
 		}
 		else
 		{

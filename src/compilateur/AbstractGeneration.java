@@ -17,8 +17,10 @@ public abstract class AbstractGeneration implements Generation {
 	protected OutputStream out;
 	
 	protected Stack<Integer> stackTantQue; 
-	protected Stack<Integer> stackCond; 
+	protected int nbIter = 1;
 	
+	protected Stack<Integer> stackCond; 
+	protected int nbCond = 1;
 
 	protected AbstractGeneration()
 	{
@@ -57,14 +59,14 @@ public abstract class AbstractGeneration implements Generation {
 	 */
 	public void si()
 	{
-		stackCond.push(stackCond.peek()+1);		
+		stackCond.push(nbCond++);		
 	}
 	/**
 	 * Generation d'une etiquette FAIREi, i:int
 	 */
 	public void faire()
 	{
-		stackTantQue.push(stackTantQue.peek()+1);
+		stackTantQue.push(nbIter++);
 		Ecriture.ecrireString(out, "FAIRE"+stackTantQue.peek()+":\n");
 	}
 	/**

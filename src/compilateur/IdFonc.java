@@ -1,7 +1,9 @@
 package compilateur;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class IdFonc extends Ident {
 	
@@ -29,8 +31,12 @@ public class IdFonc extends Ident {
 
 	@Override
 	public void generateIdent(Generation gen) {
-		
-
+		gen.call(nom);
+	}
+	
+	public void generateReturn(Generation gen)
+	{
+	  	  gen.ireturn((listParam.size()*2)+4);
 	}
 
 	@Override
@@ -48,6 +54,16 @@ public class IdFonc extends Ident {
 	@Override
 	public String toString() {
 		return "IdFonc "+nom+"["+type+"] [listParam=" + listParam + "]";
+	}
+	
+	public void setOffsetParams()
+	{
+		ListIterator<IdParam> li = listParam.listIterator(listParam.size());
+		int offset = 4;
+		while(li.hasPrevious()) {
+		  li.previous().setValeur(offset);
+		  offset += 2;
+		}
 	}
 
 	

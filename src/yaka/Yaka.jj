@@ -38,8 +38,8 @@ public class Yaka {
     java.io.InputStream input;
 
     tabIdent = new TabIdent();
-    decl = new Declaration(tabIdent);
-    expr = new Expression(tabIdent);
+    decl = new Declaration();
+    expr = new Expression();
     gen = new ASM("../out.asm");
 
     if (args.length==1) {
@@ -166,6 +166,7 @@ void analyse() : {}
    {
      	try
      	{
+     	    gen.debut();
      		decl.addFonction("main");
     	}
     	catch (SemanticException e)
@@ -192,11 +193,14 @@ void declFonction() : {}{  type()  {    int type = token.kind;  }  < FONCT
     }  }
   paramForms()   bloc()   < FFONCTION >
   {
+    gen.fermeBloc(decl.getCurrentFonc().getNbParam()*2);
 	tabIdent.clearLocaux();
   }}
 
 void paramForms() : {}
 {	"(" ( paramForm() ( "," paramForm())*)?	  ")"
+	{		decl.getCurrentFonc().setOffsetParams();
+	}
 }
 
 void paramForm() : {}{  type()  {    int type = token.kind;  }  < ident >
@@ -216,7 +220,7 @@ void bloc() : {}
  (declConst())*
  (declVar())*
  {
-   gen.ouvrePrinc(tabIdent.nbVarDeclared()*2); }	
+   gen.ouvreBloc(decl.getCurrentFonc().getNom(),tabIdent.nbVarDeclared()*2); }	
    suiteInstr() 
 }
 
@@ -335,6 +339,8 @@ void retourne() :{}
 {	< RETOURNE > expression()
 	{		try
 		{		  decl.testRetourneType(expr.getTypeExpr());
+		  IdFonc fonc = decl.getCurrentFonc();
+		  fonc.generateReturn(gen);
 		}
 		catch (SemanticException e)
 		{
@@ -468,13 +474,15 @@ void primaire (): {}
 
 void valeur () : {}
 { <entier> 		{expr.ajouterType(Type.ENT);gen.iconst(YakaTokenManager.entierLu);}
- | <ident>
+ | <ident> {
+   String nameIdent=YakaTokenManager.identLu; }
+(argumentsFonction())?
  				{
    					try
    					{
-						Ident id = tabIdent.chercheIdent(YakaTokenManager.identLu);
+						Ident id = tabIdent.chercheIdent(nameIdent);
 						id.generateIdent(gen);
-   						expr.ajouterIdent(id);
+   						expr.ajouterIdent(id);   				  
    					}
    					catch (SemanticException e)
    					{
@@ -483,15 +491,15 @@ void valeur () : {}
    					}
    				}
 
-(argumentsFonction())?
    				
  | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(VRAI);}
  | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(FAUX);}
  
 }
-void argumentsFonction() : {String fonc = YakaTokenManager.identLu;}{
+void argumentsFonction() : {String fonc = YakaTokenManager.identLu;int nbParam = 0;}{
   {
-    ControlTypeFonction controlType = new ControlTypeFonction(tabIdent);
+    gen.reserveRetour();
+    ControlTypeFonction controlType = new ControlTypeFonction();
     try
 	  {
 	     controlType.initTest(fonc);
@@ -502,6 +510,7 @@ void argumentsFonction() : {String fonc = YakaTokenManager.identLu;}{
 	  }
   }  "("  (    expression()
     {
+      nbParam++;
 	  try
 	  {	    controlType.testTypeParam(expr.getTypeExpr());
 	  }
@@ -512,6 +521,7 @@ void argumentsFonction() : {String fonc = YakaTokenManager.identLu;}{
 
     }    (      "," expression()
       {
+      	  nbParam++;
           try
 		  {
 		    controlType.testTypeParam(expr.getTypeExpr());
@@ -524,6 +534,7 @@ void argumentsFonction() : {String fonc = YakaTokenManager.identLu;}{
   {
 		  try
 		  {
+		    controlType.testNbParam(nbParam);
   			expr.verifTypeFonc(fonc);
 		  }
 		  catch (SemanticException e)

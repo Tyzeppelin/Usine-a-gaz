@@ -3,7 +3,6 @@ package compilateur;
 public interface Generation {
 
 	void header();
-	void ouvrePrinc(int i);
 	void footer();
 	
 	void iconst(int val);
@@ -48,11 +47,13 @@ public interface Generation {
 	void fsi();
 	void si();
 	
-	/*
+	void debut();
 	void ouvreBloc(String name, int i);
 	void fermeBloc(int i);
 	void ireturn(int i);
-	*/
+	void reserveRetour();
+	void call(String name);
+	
 	
 	
 	
