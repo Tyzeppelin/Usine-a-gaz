@@ -1,0 +1,15 @@
+PROGRAMME max
+VAR BOOLEEN a;
+VAR ENTIER x,y,z;
+	ECRIRE("x=");
+	LIRE(x);
+	ALALIGNE;
+	ECRIRE("y=");
+	LIRE(y);
+	ALALIGNE;
+	ECRIRE("x+y=");
+	ECRIRE(x+y);
+	ALALIGNE;
+	d=(x+y/2) ET 5;
+	x=y+3*y-4;
+FPROGRAMME
