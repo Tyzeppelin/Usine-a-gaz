@@ -338,7 +338,7 @@ public class ASM  extends AbstractGeneration {
 	 * Ne permet de lire que des entiers
 	 */
 	public void lire(int offset) { // lireEnt
-		progString.append("lireEnt "+offset+"\n");
+		progString.append("; lireEnt "+offset+"\n");
 		
 		String signe = "";
 		if (offset >= 0) signe = "+";
