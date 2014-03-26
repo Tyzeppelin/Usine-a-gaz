@@ -15,139 +15,139 @@ public class YVM extends AbstractGeneration {
 
 	@Override
 	public void header() {
-		Ecriture.ecrireStringln(out,"entete");
+		progString.append("entete\n");
 	}
 
 	@Override
 	public void footer() {
-		Ecriture.ecrireStringln(out,"queue");
+		progString.append("queue\n");
 	}
 
 	@Override
 	public void iconst(int val) {
-		Ecriture.ecrireStringln(out,"iconst "+val);		
+		progString.append("iconst "+val+"\n");		
 	}
 
 	@Override
 	public void istore(int offset) {
-		Ecriture.ecrireStringln(out,"istore "+offset);				
+		progString.append("istore "+offset+"\n");				
 	}
 
 	@Override
 	public void iload(int offset) {
-		Ecriture.ecrireStringln(out,"iload "+offset);	
+		progString.append("iload "+offset+"\n");	
 	}
 
 	@Override
 	public void idiv() {
-		Ecriture.ecrireStringln(out,"idiv");
+		progString.append("idiv\n");
 	}
 
 	@Override
 	public void imul() {
-		Ecriture.ecrireStringln(out,"imul");
+		progString.append("imul\n");
 	}
 
 	@Override
 	public void iadd() {
-		Ecriture.ecrireStringln(out,"iadd");
+		progString.append("iadd\n");
 	}
 
 	@Override
 	public void isub() {
-		Ecriture.ecrireStringln(out,"isub");
+		progString.append("isub\n");
 	}
 
 	@Override
 	public void ineg() {
-		Ecriture.ecrireStringln(out,"ineg");
+		progString.append("ineg\n");
 	}
 
 	@Override
 	public void inot() {
-		Ecriture.ecrireStringln(out,"inot");
+		progString.append("inot\n");
 	}
 
 	@Override
 	public void ior() {
-		Ecriture.ecrireStringln(out,"ior");
+		progString.append("ior\n");
 	}
 
 	@Override
 	public void iand() {
-		Ecriture.ecrireStringln(out,"iand");
+		progString.append("iand\n");
 	}
 
 	@Override
 	public void iinf() {
-		Ecriture.ecrireStringln(out,"iinf");
+		progString.append("iinf\n");
 	}
 
 	@Override
 	public void isup() {
-		Ecriture.ecrireStringln(out,"isup");
+		progString.append("isup\n");
 	}
 
 	@Override
 	public void iinfegal() {
-		Ecriture.ecrireStringln(out,"iinfegal");
+		progString.append("iinfegal\n");
 	}
 
 	@Override
 	public void isupegal() {
-		Ecriture.ecrireStringln(out,"isupegal");
+		progString.append("isupegal\n");
 	}
 
 	@Override
 	public void iegal() {
-		Ecriture.ecrireStringln(out,"iegal");
+		progString.append("iegal\n");
 	}
 
 	@Override
 	public void idiff() {
-		Ecriture.ecrireStringln(out,"idiff");
+		progString.append("idiff\n");
 	}
 
 	@Override
 	public void ecrireInt() {
-		Ecriture.ecrireStringln(out,"ecrireInt");
+		progString.append("ecrireInt\n");
 	}
 
 	@Override
 	public void ecrireBool() {
-		Ecriture.ecrireStringln(out,"ecrireBool");
+		progString.append("ecrireBool\n");
 	}
 
 	@Override
 	public void ecrireString(String s) {
-		Ecriture.ecrireStringln(out,"ecrireChaine "+s+" ");
+		progString.append("ecrireChaine "+s+"\n");
 	}
 
 	@Override
 	public void alaligne() {
-		Ecriture.ecrireStringln(out,"aLaLigne");
+		progString.append("aLaLigne\n");
 	}
 
 	@Override
 	public void lire(int offset) {
-		Ecriture.ecrireStringln(out,"lireEnt "+offset);
+		progString.append("lireEnt "+offset+"\n");
 	}
 
 	@Override
 	public void iffauxIter() {
-		Ecriture.ecrireStringln(out,"iffaux FAIT"+stackTantQue.peek());	
+		progString.append("iffaux FAIT"+stackTantQue.peek()+"\n");	
 	}
 	@Override
 	public void jumpIter() {
-		Ecriture.ecrireStringln(out,"goto FAIRE"+stackTantQue.peek());				
+		progString.append("goto FAIRE"+stackTantQue.peek()+"\n");				
 	}
 	@Override
 	public void iffauxCond() {
-		Ecriture.ecrireStringln(out,"iffaux SINON"+stackCond.peek());	
+		progString.append("iffaux SINON"+stackCond.peek()+"\n");	
 	}
 	@Override
 	public void jumpCond() {
-		Ecriture.ecrireStringln(out,"goto FSI"+stackCond.peek());				
+		progString.append("goto FSI"+stackCond.peek()+"\n");				
 	}
 	@Override
 	public void debut() {
@@ -155,28 +155,28 @@ public class YVM extends AbstractGeneration {
 	}
 	@Override
 	public void ouvreBloc(String name, int i) {
-		Ecriture.ecrireStringln(out,name+":");	
-		Ecriture.ecrireStringln(out,"ouvbloc "+i);		
+		progString.append(name+":\n");	
+		progString.append("ouvbloc "+i+"\n");		
 		
 	}
 	@Override
 	public void fermeBloc(int i) {
-		Ecriture.ecrireStringln(out,"fermebloc "+i);	
+		progString.append("fermebloc "+i+"\n");	
 		
 	}
 	@Override
 	public void ireturn(int i) {
-		Ecriture.ecrireStringln(out,"ireturn "+i);	
+		progString.append("ireturn "+i+"\n");	
 		
 	}
 	@Override
 	public void reserveRetour() {
-		Ecriture.ecrireStringln(out,"reserveRetour");	
+		progString.append("reserveRetour\n");	
 		
 	}
 	@Override
 	public void call(String name) {
-		Ecriture.ecrireStringln(out,"call "+name);	
+		progString.append("call "+name+"\n");	
 		
 	}
 }

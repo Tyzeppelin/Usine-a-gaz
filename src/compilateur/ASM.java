@@ -10,13 +10,11 @@ package compilateur;
 
 public class ASM  extends AbstractGeneration {
 	
-	private YVM yvm;
 	private int numString;
 	
 	public ASM(String nameFile)
 	{
 		super(nameFile);
-		yvm = new YVM(out);
 		numString = 0;
 	}
 
@@ -25,15 +23,14 @@ public class ASM  extends AbstractGeneration {
 	 * Generation du header
 	 */
 	public void header() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.header();
+		progString.append("; entete\n");
 		
-		Ecriture.ecrireStringln(out,"extrn lirent:proc, ecrent:proc\n"
+		progString.append("extrn lirent:proc, ecrent:proc\n"
 				+ "extrn ecrbool:proc\n"
 				+ "extrn ecrch:proc, ligsuiv:proc\n" +
 				".model SMALL\n" +
 				".586\n" +
-				".CODE\n");
+				".CODE\n\n");
 	}
 
 	@Override
@@ -41,12 +38,11 @@ public class ASM  extends AbstractGeneration {
 	 * Generation du footer
 	 */
 	public void footer() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.footer();
+		progString.append("; queue\n");
 
-		Ecriture.ecrireStringln(out,"nop\n" +
+		progString.append("nop\n" +
 				"EXITCODE\n" +
-				"end debut\n");
+				"end debut\n\n");
 	}
 
 	@Override
@@ -55,10 +51,9 @@ public class ASM  extends AbstractGeneration {
 	 * @param val : int, la valeur de la constante a stocker
 	 */
 	public void iconst(int val) {
-		Ecriture.ecrireChar(out, ';');
-		yvm.iconst(val);
+		progString.append("; iconst "+val+"\n");
 
-		Ecriture.ecrireStringln(out,"push word ptr "+val+"\n");	
+		progString.append("push word ptr "+val+"\n\n");	
 	}
 
 	@Override
@@ -67,13 +62,12 @@ public class ASM  extends AbstractGeneration {
 	 * @param offset : int, l'offset de la variable a stocker
 	 */
 	public void istore(int offset) {
-		Ecriture.ecrireChar(out, ';');
-		yvm.istore(offset);
+		progString.append("; istore "+offset+"\n");
 
 		String signe = "";
 		if (offset >= 0) signe = "+";
-		Ecriture.ecrireStringln(out,"pop ax\n" +
-				"mov word ptr[bp"+signe+offset+"], ax\n");	
+		progString.append("pop ax\n" +
+				"mov word ptr[bp"+signe+offset+"], ax\n\n");	
 	}
 	/**
 	 * Traduction de l'instruction iload
@@ -81,12 +75,11 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void iload(int offset) {
-		Ecriture.ecrireChar(out, ';');
-		yvm.iload(offset);
+		progString.append("; iload "+offset+"\n");
 
 		String signe = "";
 		if (offset >= 0) signe = "+";
-		Ecriture.ecrireStringln(out,"push word ptr[bp"+signe+offset+"]\n");
+		progString.append("push word ptr[bp"+signe+offset+"]\n\n");
 	}
 	/**
 	 * Traduction de l'instruction idiv <br>
@@ -94,14 +87,13 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void idiv() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.idiv();
+		progString.append("; idiv\n");
 
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"cwd\n" +
 				"idiv bx\n" +
-				"push ax\n");
+				"push ax\n\n");
 	}
 	/**
 	 * Traduction de l'instruction mul <br>
@@ -109,13 +101,12 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void imul() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.imul();
+		progString.append("; imul \n");
 
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"imul bx\n" +
-				"push ax\n");
+				"push ax\n\n");
 	}
 	/**
 	 * Traduction de l'instruction iadd <br>
@@ -123,13 +114,12 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void iadd() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.iadd();
+		progString.append("; iadd \n");
 
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"add ax,bx\n" +
-				"push ax\n");
+				"push ax\n\n");
 	}
 	/**
 	 * Traduction de l'instruction isub <br>
@@ -137,13 +127,12 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void isub() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.isub();
+		progString.append("; isub \n");
 
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"sub ax,bx\n" +
-				"push ax\n");
+				"push ax\n\n");
 	}
 	/**
 	 * Traduction de l'instruction ineg <br>
@@ -151,12 +140,11 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void ineg() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.ineg();
+		progString.append("; ineg \n");
 
-		Ecriture.ecrireStringln(out,"pop ax\n" +
+		progString.append("pop ax\n" +
 				"neg ax\n" + // Calcule l'opposé de l'opérande (négation par complément à deux)
-				"push ax\n");
+				"push ax\n\n");
 	}
 	/**
 	 * Traduction de l'instruction inot <br>
@@ -164,12 +152,11 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void inot() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.inot();
+		progString.append("; inot \n");
 
-		Ecriture.ecrireStringln(out,"pop ax\n" +
+		progString.append("pop ax\n" +
 				"not ax\n" + // Effectue un NON logique (négation par complément à un)
-				"push ax\n");		
+				"push ax\n\n");		
 	}
 	/**
 	 * Traduction de l'instruction ior <br>
@@ -177,13 +164,12 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void ior() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.ior();
+		progString.append("; ior \n");
 		
-		Ecriture.ecrireStringln(out,"pop ax\n" +
+		progString.append("pop ax\n" +
 				"pop bx\n" +
 				"or ax, bx\n" +
-				"push ax\n");	
+				"push ax\n\n");	
 	}
 	/**
 	 * Traduction de l'instruction iand <br>
@@ -191,13 +177,12 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void iand() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.iand();
+		progString.append("; iand \n");
 		
-		Ecriture.ecrireStringln(out,"pop ax\n" +
+		progString.append("pop ax\n" +
 				"pop bx\n" +
 				"and ax, bx\n" +
-				"push ax\n");			
+				"push ax\n\n");			
 	}
 	/**
 	 * Traduction de l'instruction iinf <br>
@@ -205,16 +190,15 @@ public class ASM  extends AbstractGeneration {
 	 */
 	@Override
 	public void iinf() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.iinf();
+		progString.append("; iinf \n");
 		
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"cmp ax, bx\n" +
 				"jge $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
-				"push 0\n");		
+				"push 0\n\n");		
 	}
 
 	@Override
@@ -223,16 +207,15 @@ public class ASM  extends AbstractGeneration {
 	 * Effectue un JG entre les  deux premiers elements de la pile
 	 */
 	public void isup() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.isup();
+		progString.append("; isup \n");
 		
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"cmp ax, bx\n" +
 				"jle $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
-				"push 0\n");		
+				"push 0\n\n");		
 	}
 
 	@Override
@@ -241,16 +224,15 @@ public class ASM  extends AbstractGeneration {
 	 * Effectue un JLE entre les  deux premiers elements de la pile
 	 */
 	public void iinfegal() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.iinfegal();
+		progString.append("; iinfegal \n");
 		
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"cmp ax, bx\n" +
 				"jg $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
-				"push 0\n");
+				"push 0\n\n");
 	}
 
 	@Override
@@ -259,16 +241,15 @@ public class ASM  extends AbstractGeneration {
 	 * Effectue un JGE entre les  deux premiers elements de la pile
 	 */
 	public void isupegal() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.isupegal();
+		progString.append("; isupegal \n");
 		
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"cmp ax, bx\n" +
 				"jl $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
-				"push 0\n");
+				"push 0\n\n");
 	}
 
 	@Override
@@ -277,16 +258,15 @@ public class ASM  extends AbstractGeneration {
 	 * Effectue un JE entre les  deux premiers elements de la pile
 	 */
 	public void iegal() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.iegal();
+		progString.append("; iegal \n");
 		
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"cmp ax, bx\n" +
 				"jne $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
-				"push 0\n");
+				"push 0\n\n");
 	}
 
 	@Override
@@ -295,16 +275,15 @@ public class ASM  extends AbstractGeneration {
 	 * Effectue un JNE entre les  deux premiers elements de la pile
 	 */
 	public void idiff() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.idiff();
+		progString.append("; idiff \n");
 		
-		Ecriture.ecrireStringln(out,"pop bx\n" +
+		progString.append("pop bx\n" +
 				"pop ax\n" +
 				"cmp ax, bx\n" +
 				"je $+6\n" +
 				"push -1\n" +
 				"jmp $+4\n" +
-				"push 0\n");		
+				"push 0\n\n");		
 	}
 
 	@Override
@@ -312,10 +291,9 @@ public class ASM  extends AbstractGeneration {
 	 * Traduction de l'instruction i/o ECRIRE() pour les entiers
 	 */
 	public void ecrireInt() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.ecrireInt();
+		progString.append("; ecrireInt\n");
 		
-		Ecriture.ecrireStringln(out,"call ecrent\n");	
+		progString.append("call ecrent\n\n");	
 	}
 
 	@Override
@@ -323,10 +301,9 @@ public class ASM  extends AbstractGeneration {
 	 * Traduction de l'instruction i/o ECRIRE() pour les booleens
 	 */
 	public void ecrireBool() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.ecrireBool();
+		progString.append("; ecrireBool \n");
 		
-		Ecriture.ecrireStringln(out,"call ecrbool\n");	
+		progString.append("call ecrbool\n\n");	
 	}
 
 	@Override
@@ -334,15 +311,14 @@ public class ASM  extends AbstractGeneration {
 	 * Traduction de l'instruction i/o ECRIRE() pour les chaines de caracteres
 	 */
 	public void ecrireString(String s) {
-		Ecriture.ecrireChar(out, ';');
-		yvm.ecrireString(s);
+		progString.append("; ecrireChaine "+s+"\n");
 		
-		Ecriture.ecrireStringln(out,".DATA\n" +
+		progString.append(".DATA\n" +
 				"mess"+numString+" DB " + s.substring(0, s.length()-1) + "$\"\n" +
 				".CODE\n" +
 				"lea dx, mess"+numString+"\n" +
 				"push dx\n" +
-				"call ecrch\n");	
+				"call ecrch\n\n");	
 		numString++;
 	}
 
@@ -351,10 +327,9 @@ public class ASM  extends AbstractGeneration {
 	 * Traduction de l'instruction i/o ALALIGNE() (<-suffisement explicite)
 	 */
 	public void alaligne() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.alaligne();
+		progString.append("; aLaLigne\n");
 		
-		Ecriture.ecrireStringln(out,"call ligsuiv\n");		
+		progString.append("call ligsuiv\n\n");		
 	}
 
 	@Override
@@ -363,14 +338,13 @@ public class ASM  extends AbstractGeneration {
 	 * Ne permet de lire que des entiers
 	 */
 	public void lire(int offset) { // lireEnt
-		Ecriture.ecrireChar(out, ';');
-		yvm.lire(offset);
+		progString.append("lireEnt "+offset+"\n");
 		
 		String signe = "";
 		if (offset >= 0) signe = "+";
-		Ecriture.ecrireStringln(out,"lea dx, [bp"+signe+offset+"]\n" +
+		progString.append("lea dx, [bp"+signe+offset+"]\n" +
 				"push dx\n" +
-				"call lirent\n");			
+				"call lirent\n\n");			
 	}
 
 	@Override
@@ -379,11 +353,11 @@ public class ASM  extends AbstractGeneration {
 	 * Version pour les iterations
 	 */
 	public void iffauxIter() {
-		Ecriture.ecrireStringln(out, "; iffaux FAIT"+stackTantQue.peek());
+		progString.append("; iffaux FAIT"+stackTantQue.peek()+"\n");
 
-		Ecriture.ecrireStringln(out,"pop ax \n" +
+		progString.append("pop ax \n" +
 									"cmp ax,0 \n" +
-									"je FAIT"+stackTantQue.peek()+"\n");	
+									"je FAIT"+stackTantQue.peek()+"\n\n");	
 	}
 	
 	@Override
@@ -392,8 +366,8 @@ public class ASM  extends AbstractGeneration {
 	 * Version pour les iterations
 	 */
 	public void jumpIter() {
-		Ecriture.ecrireStringln(out, "; goto FAIRE"+stackTantQue.peek());
-		Ecriture.ecrireStringln(out,"jmp FAIRE"+stackTantQue.peek()+"\n");	
+		progString.append("; goto FAIRE"+stackTantQue.peek()+"\n");
+		progString.append("jmp FAIRE"+stackTantQue.peek()+"\n\n");	
 				
 	}
 	
@@ -404,11 +378,11 @@ public class ASM  extends AbstractGeneration {
 	 * Version pour les conditionelles
 	 */
 	public void iffauxCond() {
-		Ecriture.ecrireStringln(out, "; iffaux SINON"+stackCond.peek());
+		progString.append("; iffaux SINON"+stackCond.peek()+"\n");
 
-		Ecriture.ecrireStringln(out,"pop ax \n" +
+		progString.append("pop ax \n" +
 									"cmp ax,0 \n" +
-									"je SINON"+stackCond.peek()+"\n");	
+									"je SINON"+stackCond.peek()+"\n\n");	
 	}
 
 	@Override
@@ -417,48 +391,45 @@ public class ASM  extends AbstractGeneration {
 	 * Version pour les conditionelles
 	 */
 	public void jumpCond() {
-		Ecriture.ecrireStringln(out, "; goto FSI"+stackCond.peek());
-		Ecriture.ecrireStringln(out,"jmp FSI"+stackCond.peek()+"\n");	
+		progString.append("; goto FSI"+stackCond.peek()+"\n");
+		progString.append("jmp FSI"+stackCond.peek()+"\n\n");	
 				
 	}
 
 	@Override
 	public void debut() {
-		Ecriture.ecrireStringln(out, "debut : \n STARTUPCODE");
+		progString.append("debut : \n STARTUPCODE\n\n");
 	}
 
 	@Override
 	public void ouvreBloc(String name, int i) {
-		Ecriture.ecrireStringln(out,name+": ");	
-		Ecriture.ecrireStringln(out,"enter "+i+",0");
+		progString.append(name+": \n");	
+		progString.append("enter "+i+",0 \n\n");
 	}
 
 	@Override
 	public void fermeBloc(int i) {
-		Ecriture.ecrireChar(out, ';');
-		yvm.fermeBloc(i);
-		Ecriture.ecrireStringln(out,"leave");
-		Ecriture.ecrireStringln(out,"ret "+i);
+		progString.append("; fermeBloc "+i+"\n");
+		progString.append("leave\n");
+		progString.append("ret "+i+"\n\n");
 	}
 
 	@Override
 	public void ireturn(int i) {
-		Ecriture.ecrireChar(out, ';');
-		yvm.ireturn(i);
-		Ecriture.ecrireStringln(out,"pop ax");
-		Ecriture.ecrireStringln(out,"mov [bp+"+i+"], ax");
+		progString.append("; ireturn "+i+"\n");
+		progString.append("pop ax\n");
+		progString.append("mov [bp+"+i+"], ax\n\n");
 	}
 
 	@Override
 	public void reserveRetour() {
-		Ecriture.ecrireChar(out, ';');
-		yvm.reserveRetour();
-		Ecriture.ecrireStringln(out,"sub sp,2");
+		progString.append(";reserveRetour \n");
+		progString.append("sub sp,2\n\n");
 	}
 
 	@Override
 	public void call(String name) {
-		Ecriture.ecrireStringln(out,"call "+name);
+		progString.append("call "+name+"\n\n");
 	}
 
 }

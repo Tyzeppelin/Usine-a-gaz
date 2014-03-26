@@ -5,7 +5,7 @@ import java.util.Stack;
 /**
  * 
  * Classe abstraite qui implemente l'interface Generation <br>
- * Permet de ne pas redéfinir deux fois les memes methodes.
+ * Permet de ne pas redï¿½finir deux fois les memes methodes.
  * 
  * @author Francois Boschet
  *
@@ -15,6 +15,8 @@ import java.util.Stack;
 public abstract class AbstractGeneration implements Generation {
 
 	protected OutputStream out;
+	private String nameFile;
+	protected StringBuilder progString;
 	
 	protected Stack<Integer> stackTantQue; 
 	protected int nbIter = 1;
@@ -25,6 +27,7 @@ public abstract class AbstractGeneration implements Generation {
 	protected AbstractGeneration()
 	{
 		out = System.out;
+		progString = new StringBuilder();
 		stackTantQue = new Stack<Integer>();
 		stackTantQue.push(0);
 		stackCond = new Stack<Integer>();
@@ -32,7 +35,8 @@ public abstract class AbstractGeneration implements Generation {
 	}
 	protected AbstractGeneration(String nameFile)
 	{
-		out = Ecriture.ouvrir(nameFile);
+		this.nameFile=nameFile;
+		progString = new StringBuilder();
 		stackTantQue = new Stack<Integer>();
 		stackTantQue.push(0);
 		stackCond = new Stack<Integer>();
@@ -45,14 +49,14 @@ public abstract class AbstractGeneration implements Generation {
 	public void sinon()
 	{
 		jumpCond();
-		Ecriture.ecrireString(out, "SINON"+stackCond.peek()+":\n");		
+		progString.append("SINON"+stackCond.peek()+":\n");		
 	}
 	/** 
 	 * Generation d'un etiquette FSIi, i:int
 	 */
 	public void fsi()
 	{
-		Ecriture.ecrireString(out, "FSI"+stackCond.pop()+":\n");
+		progString.append( "FSI"+stackCond.pop()+":\n");
 	}
 	/**
 	 * Generation d'une etiquette SIi, i:int
@@ -67,7 +71,7 @@ public abstract class AbstractGeneration implements Generation {
 	public void faire()
 	{
 		stackTantQue.push(nbIter++);
-		Ecriture.ecrireString(out, "FAIRE"+stackTantQue.peek()+":\n");
+		progString.append( "FAIRE"+stackTantQue.peek()+":\n");
 	}
 	/**
 	 * Generation d'une etiquette FAITi, i:int
@@ -75,7 +79,7 @@ public abstract class AbstractGeneration implements Generation {
 	public void fait()
 	{
 		jumpIter();
-		Ecriture.ecrireString(out, "FAIT"+stackTantQue.pop()+":\n");		
+		progString.append( "FAIT"+stackTantQue.pop()+":\n");		
 	}
 	/**
 	 * Generation du code associe Ã  l'operateur passe en parametre 
@@ -132,6 +136,8 @@ public abstract class AbstractGeneration implements Generation {
 
 	@Override
 	public void closeFile() {
+		out = Ecriture.ouvrir(nameFile);
+		Ecriture.ecrireStringln(out, progString.toString());
 		Ecriture.fermer(out);
 	}
 
