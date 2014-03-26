@@ -56,6 +56,10 @@ public class IdConst extends Ident {
 	public void generateIdent(Generation gen) {
 		gen.iconst(val);
 	}
+	@Override
+	public boolean canBeAffected() {
+		return false;
+	}
 	
 	
 	

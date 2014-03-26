@@ -69,7 +69,7 @@ public class ControlTypeFonction {
 	 */
 	public void testNbParam(int nbParam) throws NotEnoughParamException
 	{
-		if (nbParam != fonc.getNbParam())
+		if (nbParam < fonc.getNbParam())
 		{
 			throw new NotEnoughParamException(fonc.getNom());			
 		}

@@ -10,10 +10,11 @@ public class Yaka implements YakaConstants {
         public static Expression expr = new Expression();
         public static AbstractGeneration gen = new ASM("../out.asm");
 
-
+        private static int nbError = 0;
   public static void printErrorMsg(String msg)
   {
                 System.out.println("Error (l."+token.beginLine+") : "+msg);
+                nbError++;
   }
 
 
@@ -46,7 +47,8 @@ public class Yaka implements YakaConstants {
       System.out.println("Erreur de syntaxe : "+msg);
     } finally
     {
-      gen.closeFile();
+      if (nbError==0)
+        gen.closeFile();
     }
 
   }
@@ -443,6 +445,21 @@ public class Yaka implements YakaConstants {
           {
                 printErrorMsg(ident+" does not exist.");
                         tabIdent.rangeIdentLocal(ident,new IdVar(ident,Type.ERR));
+          }
+          else
+          {
+           try
+           {
+            Ident id = tabIdent.chercheIdentLocal(ident);
+                if (!id.canBeAffected())
+                {
+                        printErrorMsg("Constante cannot be affected.");
+                }
+           }
+           catch (SemanticException e)
+           {
+                printErrorMsg(e.getMessage());
+           }
           }
     jj_consume_token(44);
     expression();

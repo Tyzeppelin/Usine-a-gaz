@@ -28,6 +28,10 @@ public class IdParam extends Ident {
 		gen.iload(offset);
 		
 	}
+	@Override
+	public boolean canBeAffected() {
+		return true;
+	}
 	
 	
 

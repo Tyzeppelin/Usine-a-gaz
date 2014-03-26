@@ -70,6 +70,8 @@ public abstract class Ident {
 	 */
 	public abstract void generateIdent(Generation gen);
 	
+	public abstract boolean canBeAffected();
+	
 
 	@Override
 	public int hashCode() {

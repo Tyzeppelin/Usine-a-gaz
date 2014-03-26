@@ -93,6 +93,10 @@ public class IdFonc extends Ident {
 		  offset += 2;
 		}
 	}
+	@Override
+	public boolean canBeAffected() {
+		return false;
+	}
 
 	
 	
