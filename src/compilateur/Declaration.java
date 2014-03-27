@@ -2,7 +2,7 @@ package compilateur;
 
 import exceptions.IdentAlreadyDeclaredException;
 import exceptions.IdentDoesNotExistException;
-import exceptions.ReturnForbiddenInMainFunction;
+import exceptions.ReturnInMainFunctionException;
 import exceptions.ReturnTypeNotCorrectException;
 import yaka.Yaka;
 import yaka.YakaConstants;
@@ -33,13 +33,13 @@ public class Declaration implements YakaConstants{
 	 * Methode de test du type de retour
 	 * @param typeRetour : le type de retour de la fonction
 	 * @throws ReturnTypeNotCorrectException : si le type retourne n'est pas celui declare
-	 * @throws ReturnForbiddenInMainFunction 
+	 * @throws ReturnInMainFunctionException 
 	 */
-	public void testRetourneType(Type typeRetour) throws ReturnTypeNotCorrectException, ReturnForbiddenInMainFunction
+	public void testRetourneType(Type typeRetour) throws ReturnTypeNotCorrectException, ReturnInMainFunctionException
 	{
 		if (currentFonc.getNom().equals("main"))
 		{
-			throw new ReturnForbiddenInMainFunction();
+			throw new ReturnInMainFunctionException();
 		}
 		if (typeRetour != currentFonc.getType())
 		{

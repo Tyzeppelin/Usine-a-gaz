@@ -352,7 +352,6 @@ void condition() : {}
 	}
 		expression()
 		{
-		  	gen.iffauxCond();
 		    try
 		    {
 		      expr.testExpressionBoolean();
@@ -361,6 +360,7 @@ void condition() : {}
 		    {
 		      printErrorMsg(e.getMessage());
 		    }
+		  	gen.iffauxCond();
 		}
 	< ALORS >
 		suiteInstr()
@@ -374,45 +374,29 @@ void condition() : {}
 }
 
 void iteration() : {}{  < TANTQUE >  {
-    gen.faire();  }  expression()  {
-    gen.iffauxIter();    try    {      expr.testExpressionBoolean();    }    catch (SemanticException e)    {      printErrorMsg(e.getMessage());    }  }  < FAIRE >   suiteInstr()   < FAIT >
+    gen.faire();  }  expression()  {    try    {      expr.testExpressionBoolean();    }    catch (SemanticException e)    {      printErrorMsg(e.getMessage());    }
+    gen.iffauxIter();  }  < FAIRE >   suiteInstr()   < FAIT >
   {
     gen.fait();
   }}
 
 void affectation() :{}
-{	< ident >	{
+{
+  {	ControlAffectation control = new ControlAffectation();
+  }	< ident >	{
 	  String ident = YakaTokenManager.identLu;
-	  if (!tabIdent.existeIdentLocal(ident))
-	  {
-      		printErrorMsg(ident+" does not exist.");
-			tabIdent.rangeIdentLocal(ident,new IdVar(ident,Type.ERR));
+	  try
+	  {	    control.controlIdent(ident);
 	  }
-	  else
+	  catch (SemanticException e)
 	  {
-	   try
-	   {
-	    Ident id = tabIdent.chercheIdentLocal(ident);
-		if (!id.canBeAffected())
-		{
-			printErrorMsg("Constante cannot be affected.");
-		}
-	   }
-	   catch (SemanticException e)
-	   {
-      		printErrorMsg(e.getMessage());			
-	   }
+      	printErrorMsg(e.getMessage());
 	  }	}
 	 "=" expression()
 	 {
 	   try
-	   {	     		if (expr.getTypeExpr() != tabIdent.chercheIdentLocal(ident).getType())
-		{
-      		printErrorMsg("type expected "+tabIdent.chercheIdentLocal(ident).getType());
-		}
-		else
-		{			gen.istore(tabIdent.chercheIdentLocal(ident).getValeur());
-		}
+	   {	     control.controlExpression(ident);
+		 gen.istore(tabIdent.chercheIdentLocal(ident).getValeur());
 	   }
 	   catch (SemanticException e)
 	   {
@@ -425,7 +409,8 @@ void lecture() :{}
 {	< LIRE > "(" < ident >
 	{
 	  try
-	  {	    gen.lire(tabIdent.chercheIdentLocal(YakaTokenManager.identLu).getValeur());
+	  {
+	    int offset = tabIdent.chercheIdentLocal(YakaTokenManager.identLu).getValeur();	    gen.lire(offset);
 	  }
 	catch (SemanticException e)
 	{
@@ -438,7 +423,8 @@ void lecture() :{}
 void ecriture() :{}
 {	< ECRIRE > "(" (expression()	{
 	  try
-	  {	    Type.generateEcrireType(expr.getTypeExpr(),gen);
+	  {
+	    Type type = expr.getTypeExpr();	    Type.generateEcrireType(type,gen);
 	  }
 	  catch (SemanticException e)
 	  {
@@ -494,7 +480,7 @@ void valeur () : {}
    					{
 						Ident id = tabIdent.chercheIdent(nameIdent);
 						id.generateIdent(gen);
-   						expr.ajouterIdent(id);   				  
+   						expr.ajouterIdent(id);
    					}
    					catch (SemanticException e)
    					{
