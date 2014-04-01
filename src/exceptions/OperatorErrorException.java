@@ -1,6 +1,5 @@
-package compilateur;
+package exceptions;
 
-import exceptions.SemanticException;
 
 public class OperatorErrorException extends SemanticException {
 
