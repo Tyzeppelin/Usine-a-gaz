@@ -3,7 +3,7 @@ package compilateur;
 import java.util.Stack;
 
 import yaka.Yaka;
-import exceptions.ErrTypeExprException;
+import exceptions.TypeErrException;
 import exceptions.ExpressionNotBooleanException;
 import exceptions.IdentDoesNotExistException;
 
@@ -30,9 +30,9 @@ public class Expression {
 	/**
 	 * Test si l'expression est booléen
 	 * @throws ExpressionNotBooleanException si l'expression n'est pas booléen
-	 * @throws ErrTypeExprException
+	 * @throws TypeErrException
 	 */
-	public void testExpressionBoolean() throws ExpressionNotBooleanException, ErrTypeExprException
+	public void testExpressionBoolean() throws ExpressionNotBooleanException, TypeErrException
 	{
 		if (getTypeExpr() != Type.BOOL)
 		{
@@ -43,12 +43,12 @@ public class Expression {
 	/**
 	 * Retourne le type de la dernière expression évalué (doit être utilisé après l'appel de void verifType()
 	 * @return le type de l'expression
-	 * @throws ErrTypeExprException si le type de l'expression est Type.Err
+	 * @throws TypeErrException si le type de l'expression est Type.Err
 	 */
-	public Type getTypeExpr() throws ErrTypeExprException
+	public Type getTypeExpr() throws TypeErrException
 	{
 		if (stackType.peek()==Type.ERR)
-			throw new ErrTypeExprException();
+			throw new TypeErrException();
 		return stackType.peek();
 	}
 	
@@ -113,8 +113,9 @@ public class Expression {
 
 	/**
 	 * Procède à la vérification du type de l'expression courante.
+	 * @throws OperatorErrorException 
 	 */
-	public void verifType()
+	public void verifType() throws OperatorErrorException
 	{
 		Operateur op = stackOp.pop();
 		Type t1 = stackType.pop();
@@ -125,14 +126,20 @@ public class Expression {
 			if (t1 == Type.ENT)
 				stackType.push(Type.ENT);
 			else
+			{
 				stackType.push(Type.ERR);
+				throw new OperatorErrorException("Type error on unary operator NEG : Integer expected.");
+			}
 			break;
 			
 		case NOT:
 			if (t1 == Type.BOOL)
 				stackType.push(Type.BOOL);
 			else
+			{
 				stackType.push(Type.ERR);
+				throw new OperatorErrorException("Type error on unary operator NOT : Boolean expected.");
+			}
 			break;
 		case ADD:
 		case MUL:
@@ -146,6 +153,9 @@ public class Expression {
 			else
 			{
 				stackType.push(Type.ERR);
+
+				if (t1!=Type.ERR && t2!=Type.ERR)
+					throw new OperatorErrorException("Type error on binary operator "+op+"("+t1+" "+t2+")");
 			}
 			break;
 		case INF:
@@ -160,6 +170,9 @@ public class Expression {
 			else
 			{
 				stackType.push(Type.ERR);
+
+				if (t1!=Type.ERR && t2!=Type.ERR)
+					throw new OperatorErrorException("Type error on binary operator "+op+"("+t1+" "+t2+")");
 			}
 			break;
 		case EQU:
@@ -172,6 +185,8 @@ public class Expression {
 			else
 			{
 				stackType.push(Type.ERR);
+				if (t1!=Type.ERR && t2!=Type.ERR)
+					throw new OperatorErrorException("Type error on binary operator "+op+"("+t1+" "+t2+")");
 			}
 			break;
 		case AND:
@@ -184,6 +199,9 @@ public class Expression {
 			else
 			{
 				stackType.push(Type.ERR);
+
+				if (t1!=Type.ERR && t2!=Type.ERR)
+					throw new OperatorErrorException("Type error on binary operator "+op+"("+t1+" "+t2+")");
 			}
 			break;
 		default:

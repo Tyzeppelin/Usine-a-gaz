@@ -394,7 +394,6 @@ public class Yaka implements YakaConstants {
     jj_consume_token(SI);
                 gen.si();
     expression();
-                        gen.iffauxCond();
                     try
                     {
                       expr.testExpressionBoolean();
@@ -403,6 +402,7 @@ public class Yaka implements YakaConstants {
                     {
                       printErrorMsg(e.getMessage());
                     }
+                        gen.iffauxCond();
     jj_consume_token(ALORS);
     suiteInstr();
                         gen.sinon();
@@ -423,7 +423,6 @@ public class Yaka implements YakaConstants {
     jj_consume_token(TANTQUE);
     gen.faire();
     expression();
-    gen.iffauxIter();
     try
     {
       expr.testExpressionBoolean();
@@ -432,6 +431,7 @@ public class Yaka implements YakaConstants {
     {
       printErrorMsg(e.getMessage());
     }
+    gen.iffauxIter();
     jj_consume_token(FAIRE);
     suiteInstr();
     jj_consume_token(FAIT);
@@ -439,41 +439,23 @@ public class Yaka implements YakaConstants {
   }
 
   static final public void affectation() throws ParseException {
+        ControlAffectation control = new ControlAffectation();
     jj_consume_token(ident);
           String ident = YakaTokenManager.identLu;
-          if (!tabIdent.existeIdentLocal(ident))
+          try
           {
-                printErrorMsg(ident+" does not exist.");
-                        tabIdent.rangeIdentLocal(ident,new IdVar(ident,Type.ERR));
+            control.controlIdent(ident);
           }
-          else
+          catch (SemanticException e)
           {
-           try
-           {
-            Ident id = tabIdent.chercheIdentLocal(ident);
-                if (!id.canBeAffected())
-                {
-                        printErrorMsg("Constante cannot be affected.");
-                }
-           }
-           catch (SemanticException e)
-           {
-                printErrorMsg(e.getMessage());
-           }
+        printErrorMsg(e.getMessage());
           }
     jj_consume_token(44);
     expression();
            try
            {
-
-                if (expr.getTypeExpr() != tabIdent.chercheIdentLocal(ident).getType())
-                {
-                printErrorMsg("type expected "+tabIdent.chercheIdentLocal(ident).getType());
-                }
-                else
-                {
-                        gen.istore(tabIdent.chercheIdentLocal(ident).getValeur());
-                }
+             control.controlExpression(ident);
+                 gen.istore(tabIdent.chercheIdentLocal(ident).getValeur());
            }
            catch (SemanticException e)
            {
@@ -487,7 +469,8 @@ public class Yaka implements YakaConstants {
     jj_consume_token(ident);
           try
           {
-            gen.lire(tabIdent.chercheIdentLocal(YakaTokenManager.identLu).getValeur());
+            int offset = tabIdent.chercheIdentLocal(YakaTokenManager.identLu).getValeur();
+            gen.lire(offset);
           }
         catch (SemanticException e)
         {
@@ -512,7 +495,8 @@ public class Yaka implements YakaConstants {
         expression();
           try
           {
-            Type.generateEcrireType(expr.getTypeExpr(),gen);
+            Type type = expr.getTypeExpr();
+            Type.generateEcrireType(type,gen);
           }
           catch (SemanticException e)
           {
@@ -555,7 +539,15 @@ public class Yaka implements YakaConstants {
     case 49:
       opRel();
       simpleExpr();
-                gen.operation(expr.getOperateur());expr.verifType();
+                gen.operation(expr.getOperateur());
+  try
+  {
+    expr.verifType();
+  }
+  catch(SemanticException e)
+  {
+                printErrorMsg(e.getMessage());
+  }
       break;
     default:
       jj_la1[15] = jj_gen;
@@ -579,7 +571,15 @@ public class Yaka implements YakaConstants {
       }
       opAdd();
       terme();
-                  gen.operation(expr.getOperateur());expr.verifType();
+                  gen.operation(expr.getOperateur());
+   try
+  {
+    expr.verifType();
+  }
+  catch(SemanticException e)
+  {
+                printErrorMsg(e.getMessage());
+  }
     }
   }
 
@@ -599,7 +599,15 @@ public class Yaka implements YakaConstants {
       }
       opMul();
       facteur();
-             gen.operation(expr.getOperateur());expr.verifType();
+             gen.operation(expr.getOperateur());
+   try
+  {
+    expr.verifType();
+  }
+  catch(SemanticException e)
+  {
+                printErrorMsg(e.getMessage());
+  }
     }
   }
 
@@ -616,7 +624,15 @@ public class Yaka implements YakaConstants {
     case 51:
       opNeg();
       primaire();
-                         gen.operation(expr.getOperateur());expr.verifType();
+                         gen.operation(expr.getOperateur());
+   try
+  {
+    expr.verifType();
+  }
+  catch(SemanticException e)
+  {
+                printErrorMsg(e.getMessage());
+  }
       break;
     default:
       jj_la1[18] = jj_gen;

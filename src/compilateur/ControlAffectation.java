@@ -17,7 +17,7 @@ public class ControlAffectation {
 		}
 	}
 	
-	public void controlExpression(String ident) throws ErrTypeExprException, IdentDoesNotExistException, TypeExpectedNotCorrectException
+	public void controlExpression(String ident) throws TypeErrException, IdentDoesNotExistException, TypeExpectedNotCorrectException
 	{		
 		Type typeGiven = Yaka.expr.getTypeExpr();
 		Type typeExpected = Yaka.tabIdent.chercheIdentLocal(ident).getType();

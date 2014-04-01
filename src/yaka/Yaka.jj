@@ -440,7 +440,15 @@ void expression() : {}
 {
   simpleExpr() 
   (opRel() 
-  simpleExpr() {gen.operation(expr.getOperateur());expr.verifType();}
+  simpleExpr() {gen.operation(expr.getOperateur());
+  try
+  {    expr.verifType();
+  }
+  catch(SemanticException e)
+  {
+      		printErrorMsg(e.getMessage());	
+  }
+  }
   )?  
 }
 
@@ -448,19 +456,43 @@ void simpleExpr() : {}
 {
    terme() 
    (opAdd() 
-   terme()	 {gen.operation(expr.getOperateur());expr.verifType();}
+   terme()	 {gen.operation(expr.getOperateur());
+   try
+  {
+    expr.verifType();
+  }
+  catch(SemanticException e)
+  {
+      		printErrorMsg(e.getMessage());	
+  }}
    )*
 } 
 void terme() : {}
 {
   facteur() 
   (opMul() 
-  facteur() {gen.operation(expr.getOperateur());expr.verifType();}  
+  facteur() {gen.operation(expr.getOperateur());
+   try
+  {
+    expr.verifType();
+  }
+  catch(SemanticException e)
+  {
+      		printErrorMsg(e.getMessage());	
+  }}  
   )*
 }
 void facteur() : {}
 {   primaire()
-  |  opNeg() primaire() {gen.operation(expr.getOperateur());expr.verifType();}
+  |  opNeg() primaire() {gen.operation(expr.getOperateur());
+   try
+  {
+    expr.verifType();
+  }
+  catch(SemanticException e)
+  {
+      		printErrorMsg(e.getMessage());	
+  }}
 }
 
 void primaire (): {}

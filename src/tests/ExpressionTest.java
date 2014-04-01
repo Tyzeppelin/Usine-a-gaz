@@ -26,7 +26,7 @@ public class ExpressionTest extends TestCase {
 		Type type = null;
 		try {
 			type = Yaka.expr.getTypeExpr();
-		} catch (ErrTypeExprException e) {
+		} catch (TypeErrException e) {
 			assertTrue(false);
 		}
 		

@@ -1,6 +1,6 @@
 package compilateur;
 
-import exceptions.ErrTypeExprException;
+import exceptions.TypeErrException;
 import yaka.YakaConstants;
 
 public enum Type implements YakaConstants {
@@ -36,15 +36,15 @@ public enum Type implements YakaConstants {
 	 * Genere la fonction ecrire en fonction du type
 	 * @param type
 	 * @param gen
-	 * @throws ErrTypeExprException
+	 * @throws TypeErrException
 	 */
-	public static void generateEcrireType(Type type, Generation gen) throws ErrTypeExprException
+	public static void generateEcrireType(Type type, Generation gen) throws TypeErrException
 	{
 		  if (type==ENT)
 		  	gen.ecrireInt();
 		  else if (type==BOOL)
 		  	gen.ecrireBool();
 		  else
-			  throw new ErrTypeExprException();
+			  throw new TypeErrException();
 	}
 }
