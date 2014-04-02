@@ -7,6 +7,12 @@ import exceptions.OperatorErrorException;
 import exceptions.TypeErrException;
 import exceptions.ExpressionNotBooleanException;
 import exceptions.IdentDoesNotExistException;
+/**
+ * 
+ * Classe qui gère les Expression. <br>Merci Cpt. Obvious
+* @author francois
+*
+*/
 
 public class Expression {
 	
