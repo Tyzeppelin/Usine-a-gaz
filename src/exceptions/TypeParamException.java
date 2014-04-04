@@ -1,7 +1,6 @@
 package exceptions;
 
 import compilateur.IdParam;
-import compilateur.Type;
 
 
 public class TypeParamException extends SemanticException {

@@ -1,19 +1,19 @@
 package tests;
 
 
+import junit.framework.TestCase;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import yaka.Yaka;
 
-import compilateur.Declaration;
 import compilateur.IdConst;
 import compilateur.IdVar;
-import compilateur.TabIdent;
 import compilateur.Type;
+
 import exceptions.IdentAlreadyDeclaredException;
 import exceptions.IdentDoesNotExistException;
-import junit.framework.TestCase;
 
 public class DeclarationTest extends TestCase {
 

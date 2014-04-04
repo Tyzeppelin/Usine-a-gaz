@@ -1,7 +1,7 @@
 package compilateur;
 
-import exceptions.TypeErrException;
 import yaka.YakaConstants;
+import exceptions.TypeErrException;
 
 public enum Type implements YakaConstants {
 	ENT, BOOL, ERR;

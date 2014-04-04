@@ -1,15 +1,20 @@
 package tests;
 
 
+import junit.framework.TestCase;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import yaka.Yaka;
 
-import compilateur.*;
-import exceptions.*;
+import compilateur.IdConst;
+import compilateur.IdVar;
+import compilateur.Ident;
+import compilateur.Type;
 
-import junit.framework.TestCase;
+import exceptions.IdentDoesNotExistException;
+import exceptions.TypeErrException;
 
 public class ExpressionTest extends TestCase {
 	

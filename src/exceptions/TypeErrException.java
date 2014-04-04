@@ -1,6 +1,5 @@
 package exceptions;
 
-import compilateur.Operateur;
 
 public class TypeErrException extends SemanticException {
 	public TypeErrException()

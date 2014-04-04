@@ -1,11 +1,11 @@
 package compilateur;
 
+import yaka.Yaka;
+import yaka.YakaConstants;
 import exceptions.IdentAlreadyDeclaredException;
 import exceptions.IdentDoesNotExistException;
 import exceptions.ReturnInMainFunctionException;
 import exceptions.ReturnTypeNotCorrectException;
-import yaka.Yaka;
-import yaka.YakaConstants;
 
 /**
  * Classe de declaration d'une fonction

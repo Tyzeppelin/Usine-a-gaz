@@ -4,7 +4,6 @@ import yaka.Yaka;
 import exceptions.IdentAlreadyDeclaredException;
 import exceptions.IdentDoesNotExistException;
 import exceptions.NotEnoughParamException;
-import exceptions.SemanticException;
 import exceptions.TooMuchParamException;
 import exceptions.TypeParamException;
 

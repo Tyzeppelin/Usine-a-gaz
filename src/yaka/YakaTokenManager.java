@@ -2,6 +2,7 @@
 package yaka;
 import compilateur.*;
 import exceptions.*;
+import java.util.Date;
 
 /** Token Manager. */
 public class YakaTokenManager implements YakaConstants

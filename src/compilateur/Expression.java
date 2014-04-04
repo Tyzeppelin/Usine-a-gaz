@@ -3,10 +3,10 @@ package compilateur;
 import java.util.Stack;
 
 import yaka.Yaka;
-import exceptions.OperatorErrorException;
-import exceptions.TypeErrException;
 import exceptions.ExpressionNotBooleanException;
 import exceptions.IdentDoesNotExistException;
+import exceptions.OperatorErrorException;
+import exceptions.TypeErrException;
 /**
  * 
  * Classe qui gère les Expression. <br>Merci Cpt. Obvious

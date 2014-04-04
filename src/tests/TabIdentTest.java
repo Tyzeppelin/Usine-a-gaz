@@ -1,5 +1,7 @@
 package tests;
 
+import junit.framework.TestCase;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,10 +9,9 @@ import yaka.Yaka;
 
 import compilateur.IdVar;
 import compilateur.Ident;
-import compilateur.TabIdent;
 import compilateur.Type;
+
 import exceptions.IdentDoesNotExistException;
-import junit.framework.TestCase;
 
 public class TabIdentTest extends TestCase {
 	

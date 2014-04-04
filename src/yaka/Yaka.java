@@ -3,6 +3,7 @@ package yaka;
 
 import compilateur.*;
 import exceptions.*;
+import java.util.Date;
 
 public class Yaka implements YakaConstants {
         public static TabIdent tabIdent = new TabIdent();
@@ -37,6 +38,7 @@ public class Yaka implements YakaConstants {
       System.out.println("Usage: java Gram [fichier]");
       return;
     }
+    Date t1 = new Date();
     try {
       analyseur = new Yaka(input);
       analyseur.analyse();
@@ -48,7 +50,11 @@ public class Yaka implements YakaConstants {
     } finally
     {
       if (nbError==0)
+      {
         gen.closeFile();
+        Date t2 = new Date();
+        System.out.println("Time lost compiling this -> "+ (t2.getTime()-t1.getTime())/1000. + "s");
+                }
     }
 
   }

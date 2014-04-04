@@ -1,7 +1,10 @@
 package compilateur;
 
-import exceptions.*;
 import yaka.Yaka;
+import exceptions.IdentAffectationException;
+import exceptions.IdentDoesNotExistException;
+import exceptions.TypeErrException;
+import exceptions.TypeExpectedNotCorrectException;
 
 public class ControlAffectation {
 

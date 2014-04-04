@@ -397,17 +397,26 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Generation de l'etiquette debut et  du STARTUPCODE
+	 */
 	public void debut() {
 		progString.append("debut : \n STARTUPCODE\n\n");
 	}
 
 	@Override
+	/**
+	 * Generation des etiquette et du enter pour les blocs de fonctions
+	 */
 	public void ouvreBloc(String name, int i) {
 		progString.append(name+": \n");	
 		progString.append("enter "+i+",0 \n\n");
 	}
 
 	@Override
+	/**
+	 * Generation des etiquette et du leave ret pour les blocs de fonctions
+	 */
 	public void fermeBloc(int i) {
 		progString.append("; fermeBloc "+i+"\n");
 		progString.append("leave\n");
@@ -415,6 +424,9 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Trraduction de l'instruction return
+	 */
 	public void ireturn(int i) {
 		progString.append("; ireturn "+i+"\n");
 		progString.append("pop ax\n");
@@ -422,12 +434,18 @@ public class ASM  extends AbstractGeneration {
 	}
 
 	@Override
+	/**
+	 * Generation de reservation d'espace pour une fusee
+	 */
 	public void reserveRetour() {
 		progString.append(";reserveRetour \n");
 		progString.append("sub sp,2\n\n");
 	}
 
 	@Override
+	/**
+	 * Generation d'une instruction d'appel de fonction
+	 */
 	public void call(String name) {
 		progString.append("call "+name+"\n\n");
 	}
