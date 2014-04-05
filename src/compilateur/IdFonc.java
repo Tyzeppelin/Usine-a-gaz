@@ -45,7 +45,7 @@ public class IdFonc extends Ident {
 	 */
 	@Override
 	public void generateIdent(Generation gen) {
-		gen.call(nom);
+		gen.call(this);
 	}
 	/**
 	 * Génère le ireturn de la fonction
@@ -53,7 +53,7 @@ public class IdFonc extends Ident {
 	 */
 	public void generateReturn(Generation gen)
 	{
-	  	  gen.ireturn((listParam.size()*2)+4);
+	  	  gen.ireturn(this);
 	}
 
 	/**

@@ -2,6 +2,8 @@ package compilateur;
 
 import java.io.OutputStream;
 
+import yaka.Yaka;
+
 public class YVM extends AbstractGeneration {
 	
 	public YVM(OutputStream out)
@@ -22,22 +24,26 @@ public class YVM extends AbstractGeneration {
 	public void footer() {
 		progString.append("queue\n");
 	}
-
+	@Override
+	public void iconst(Ident ident) {
+		progString.append("iconst "+ident.getValeur()+"\n");
+		
+	}
 	@Override
 	public void iconst(int val) {
-		progString.append("iconst "+val+"\n");		
+		progString.append("iconst "+val+"\n");
+		
 	}
-
 	@Override
-	public void istore(int offset) {
-		progString.append("istore "+offset+"\n");				
+	public void istore(Ident ident) {
+		progString.append("istore "+ident.getValeur()+"\n");
+		
 	}
-
 	@Override
-	public void iload(int offset) {
-		progString.append("iload "+offset+"\n");	
+	public void iload(Ident ident) {
+		progString.append("iload "+ident.getValeur()+"\n");
+		
 	}
-
 	@Override
 	public void idiv() {
 		progString.append("idiv\n");
@@ -129,10 +135,9 @@ public class YVM extends AbstractGeneration {
 	}
 
 	@Override
-	public void lire(int offset) {
-		progString.append("lireEnt "+offset+"\n");
+	public void lire(Ident ident) {
+		progString.append("lireEnt "+ident.getValeur()+"\n");		
 	}
-
 	@Override
 	public void iffauxIter() {
 		progString.append("iffaux FAIT"+stackTantQue.peek()+"\n");	
@@ -154,29 +159,32 @@ public class YVM extends AbstractGeneration {
 				
 	}
 	@Override
-	public void ouvreBloc(String name, int i) {
-		progString.append(name+":\n");	
-		progString.append("ouvbloc "+i+"\n");		
+	public void ouvreBloc(IdFonc fonc) {
+		progString.append(fonc.getNom()+":\n");	
+		progString.append("ouvbloc "+Yaka.tabIdent.nbVarDeclared()*2+"\n");	
 		
 	}
 	@Override
-	public void fermeBloc(int i) {
-		progString.append("fermebloc "+i+"\n");	
+	public void fermeBloc(IdFonc fonc) {
+		progString.append("fermebloc "+fonc.getNbParam()*2+"\n");	
 		
 	}
 	@Override
-	public void ireturn(int i) {
-		progString.append("ireturn "+i+"\n");	
+	public void ireturn(IdFonc fonc) {
+		progString.append("ireturn "+((fonc.getNbParam()*2)+4)+"\n");	
 		
 	}
+
 	@Override
 	public void reserveRetour() {
 		progString.append("reserveRetour\n");	
 		
 	}
+
 	@Override
-	public void call(String name) {
-		progString.append("call "+name+"\n");	
+	public void call(IdFonc fonc) {
+		progString.append("call "+fonc.getNom()+"\n");	
 		
 	}
+
 }

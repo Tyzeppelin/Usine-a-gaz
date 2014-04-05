@@ -54,7 +54,7 @@ public class IdConst extends Ident {
 	
 	@Override
 	public void generateIdent(Generation gen) {
-		gen.iconst(val);
+		gen.iconst(this);
 	}
 	@Override
 	public boolean canBeAffected() {

@@ -8,9 +8,10 @@ public interface Generation {
 	void closeFile();
 	
 	// variables et constantes
+	void iconst(Ident ident);
 	void iconst(int val);
-	void istore(int offset);
-	void iload(int offset);
+	void istore(Ident ident);
+	void iload(Ident ident);
 	
 	// opérateurs
 	void idiv();
@@ -36,7 +37,7 @@ public interface Generation {
 	void ecrireBool();
 	void ecrireString(String s);
 	void alaligne();
-	void lire(int offset);
+	void lire(Ident ident);
 	
 	// itération
 	void iffauxIter();
@@ -53,11 +54,11 @@ public interface Generation {
 	
 	//fonction
 	void debut();
-	void ouvreBloc(String name, int i);
-	void fermeBloc(int i);
-	void ireturn(int i);
+	void ouvreBloc(IdFonc fonc);
+	void fermeBloc(IdFonc fonc);
+	void ireturn(IdFonc fonc);
 	void reserveRetour();
-	void call(String name);
+	void call(IdFonc fonc);
 	
 	
 	

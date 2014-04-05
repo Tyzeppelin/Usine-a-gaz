@@ -9,7 +9,7 @@ public class Yaka implements YakaConstants {
         public static TabIdent tabIdent = new TabIdent();
         public static Declaration decl = new Declaration();
         public static Expression expr = new Expression();
-        public static AbstractGeneration gen = new ASM("../out.asm");
+        public static AbstractGeneration gen = new ASM("Helloworld");
 
         private static int nbError = 0;
   public static void printErrorMsg(String msg)
@@ -112,7 +112,7 @@ public class Yaka implements YakaConstants {
     paramForms();
     bloc();
     jj_consume_token(FFONCTION);
-    gen.fermeBloc(decl.getCurrentFonc().getNbParam()*2);
+    gen.fermeBloc(decl.getCurrentFonc());
         tabIdent.clearLocaux();
   }
 
@@ -184,7 +184,7 @@ public class Yaka implements YakaConstants {
       }
       declVar();
     }
-   gen.ouvreBloc(decl.getCurrentFonc().getNom(),tabIdent.nbVarDeclared()*2);
+   gen.ouvreBloc(decl.getCurrentFonc());
     suiteInstr();
   }
 
@@ -461,7 +461,7 @@ public class Yaka implements YakaConstants {
            try
            {
              control.controlExpression(ident);
-                 gen.istore(tabIdent.chercheIdentLocal(ident).getValeur());
+                 gen.istore(tabIdent.chercheIdentLocal(ident));
            }
            catch (SemanticException e)
            {
@@ -475,8 +475,7 @@ public class Yaka implements YakaConstants {
     jj_consume_token(ident);
           try
           {
-            int offset = tabIdent.chercheIdentLocal(YakaTokenManager.identLu).getValeur();
-            gen.lire(offset);
+            gen.lire(tabIdent.chercheIdentLocal(YakaTokenManager.identLu));
           }
         catch (SemanticException e)
         {
@@ -698,11 +697,11 @@ public class Yaka implements YakaConstants {
       break;
     case VRAI:
       jj_consume_token(VRAI);
-                         expr.ajouterType(Type.BOOL);gen.iconst(VRAI);
+                         expr.ajouterType(Type.BOOL);gen.iconst(-1);
       break;
     case FAUX:
       jj_consume_token(FAUX);
-                         expr.ajouterType(Type.BOOL);gen.iconst(FAUX);
+                         expr.ajouterType(Type.BOOL);gen.iconst(0);
       break;
     default:
       jj_la1[21] = jj_gen;

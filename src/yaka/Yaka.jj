@@ -25,7 +25,7 @@ public class Yaka {
 	public static TabIdent tabIdent = new TabIdent();
 	public static Declaration decl = new Declaration();
 	public static Expression expr = new Expression();
-	public static AbstractGeneration gen = new ASM("../out.asm");
+	public static AbstractGeneration gen = new ASM("Helloworld");
 
 	private static int nbError = 0;
   public static void printErrorMsg(String msg)
@@ -195,7 +195,7 @@ void declFonction() : {}{  type()  {    int type = token.kind;  }  < FONCT
     }  }
   paramForms()   bloc()   < FFONCTION >
   {
-    gen.fermeBloc(decl.getCurrentFonc().getNbParam()*2);
+    gen.fermeBloc(decl.getCurrentFonc());
 	tabIdent.clearLocaux();
   }}
 
@@ -222,7 +222,7 @@ void bloc() : {}
  (declConst())*
  (declVar())*
  {
-   gen.ouvreBloc(decl.getCurrentFonc().getNom(),tabIdent.nbVarDeclared()*2); }	
+   gen.ouvreBloc(decl.getCurrentFonc()); }	
    suiteInstr() 
 }
 
@@ -401,7 +401,7 @@ void affectation() :{}
 	 {
 	   try
 	   {	     control.controlExpression(ident);
-		 gen.istore(tabIdent.chercheIdentLocal(ident).getValeur());
+		 gen.istore(tabIdent.chercheIdentLocal(ident));
 	   }
 	   catch (SemanticException e)
 	   {
@@ -414,8 +414,7 @@ void lecture() :{}
 {	< LIRE > "(" < ident >
 	{
 	  try
-	  {
-	    int offset = tabIdent.chercheIdentLocal(YakaTokenManager.identLu).getValeur();	    gen.lire(offset);
+	  {	    gen.lire(tabIdent.chercheIdentLocal(YakaTokenManager.identLu));
 	  }
 	catch (SemanticException e)
 	{
@@ -527,8 +526,8 @@ void valeur () : {}
    				}
 
    				
- | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(VRAI);}
- | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(FAUX);}
+ | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(-1);}
+ | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(0);}
  
 }
 void argumentsFonction() : {String fonc = YakaTokenManager.identLu;int nbParam = 0;}{

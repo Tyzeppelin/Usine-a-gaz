@@ -1,5 +1,7 @@
 package compilateur;
 
+import yaka.Yaka;
+
 /**
  * Classe de Generation de code en langage Assembleur INTEL 8086 
  * Pour chaque instruction en langage Yaka, on genere un bloc de code ASM INTEL 8086 
@@ -50,6 +52,17 @@ public class ASM  extends AbstractGeneration {
 	 * Traduction de l'instruction iconst
 	 * @param val : int, la valeur de la constante a stocker
 	 */
+	public void iconst(Ident ident) {
+		progString.append("; iconst "+ident.getValeur()+"\n");
+
+		progString.append("push word ptr "+ident.getValeur()+"\n\n");	
+	}
+	
+	@Override
+	/**	
+	 * Traduction de l'instruction iconst
+	 * @param val : int, la valeur de la constante a stocker
+	 */
 	public void iconst(int val) {
 		progString.append("; iconst "+val+"\n");
 
@@ -61,25 +74,25 @@ public class ASM  extends AbstractGeneration {
 	 * Traduction de l'instruction istore
 	 * @param offset : int, l'offset de la variable a stocker
 	 */
-	public void istore(int offset) {
-		progString.append("; istore "+offset+"\n");
+	public void istore(Ident ident) {
+		progString.append("; istore "+ident.getValeur()+"\n");
 
 		String signe = "";
-		if (offset >= 0) signe = "+";
+		if (ident.getValeur() >= 0) signe = "+";
 		progString.append("pop ax\n" +
-				"mov word ptr[bp"+signe+offset+"], ax\n\n");	
+				"mov word ptr[bp"+signe+ident.getValeur()+"], ax\n\n");	
 	}
 	/**
 	 * Traduction de l'instruction iload
 	 * @param offset : int, l'offset de la variable a recuperer
 	 */
 	@Override
-	public void iload(int offset) {
-		progString.append("; iload "+offset+"\n");
+	public void iload(Ident ident) {
+		progString.append("; iload "+ident.getValeur()+"\n");
 
 		String signe = "";
-		if (offset >= 0) signe = "+";
-		progString.append("push word ptr[bp"+signe+offset+"]\n\n");
+		if (ident.getValeur() >= 0) signe = "+";
+		progString.append("push word ptr[bp"+signe+ident.getValeur()+"]\n\n");
 	}
 	/**
 	 * Traduction de l'instruction idiv <br>
@@ -337,12 +350,12 @@ public class ASM  extends AbstractGeneration {
 	 * Traduction de l'instruction i/o LIRE() 
 	 * Ne permet de lire que des entiers
 	 */
-	public void lire(int offset) { // lireEnt
-		progString.append("; lireEnt "+offset+"\n");
+	public void lire(Ident ident) { // lireEnt
+		progString.append("; lireEnt "+ident.getValeur()+"\n");
 		
 		String signe = "";
-		if (offset >= 0) signe = "+";
-		progString.append("lea dx, [bp"+signe+offset+"]\n" +
+		if (ident.getValeur() >= 0) signe = "+";
+		progString.append("lea dx, [bp"+signe+ident.getValeur()+"]\n" +
 				"push dx\n" +
 				"call lirent\n\n");			
 	}
@@ -408,16 +421,18 @@ public class ASM  extends AbstractGeneration {
 	/**
 	 * Generation des etiquette et du enter pour les blocs de fonctions
 	 */
-	public void ouvreBloc(String name, int i) {
-		progString.append(name+": \n");	
-		progString.append("enter "+i+",0 \n\n");
+	public void ouvreBloc(IdFonc fonc) {
+		
+		progString.append(fonc.getNom()+": \n");	
+		progString.append("enter "+Yaka.tabIdent.nbVarDeclared()*2+",0 \n\n");
 	}
 
 	@Override
 	/**
 	 * Generation des etiquette et du leave ret pour les blocs de fonctions
 	 */
-	public void fermeBloc(int i) {
+	public void fermeBloc(IdFonc fonc) {
+		int i = fonc.getNbParam()*2;
 		progString.append("; fermeBloc "+i+"\n");
 		progString.append("leave\n");
 		progString.append("ret "+i+"\n\n");
@@ -427,7 +442,8 @@ public class ASM  extends AbstractGeneration {
 	/**
 	 * Trraduction de l'instruction return
 	 */
-	public void ireturn(int i) {
+	public void ireturn(IdFonc fonc) {
+		int i = (fonc.getNbParam()*2)+4;
 		progString.append("; ireturn "+i+"\n");
 		progString.append("pop ax\n");
 		progString.append("mov [bp+"+i+"], ax\n\n");
@@ -446,8 +462,8 @@ public class ASM  extends AbstractGeneration {
 	/**
 	 * Generation d'une instruction d'appel de fonction
 	 */
-	public void call(String name) {
-		progString.append("call "+name+"\n\n");
+	public void call(IdFonc fonc) {
+		progString.append("call "+fonc.getNom()+"\n\n");
 	}
 
 }

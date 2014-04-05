@@ -66,7 +66,7 @@ public class IdVar extends Ident {
 	 */
 	@Override
 	public void generateIdent(Generation gen) {
-		gen.iload(offset);
+		gen.iload(this);
 	}
 	@Override
 	public boolean canBeAffected() {
