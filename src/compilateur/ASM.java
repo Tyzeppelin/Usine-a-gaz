@@ -75,12 +75,13 @@ public class ASM  extends AbstractGeneration {
 	 * @param offset : int, l'offset de la variable a stocker
 	 */
 	public void istore(Ident ident) {
-		progString.append("; istore "+ident.getValeur()+"\n");
+		int i = ident.getValeur();
+		progString.append("; istore "+i+"\n");
 
 		String signe = "";
-		if (ident.getValeur() >= 0) signe = "+";
+		if (i >= 0) signe = "+";
 		progString.append("pop ax\n" +
-				"mov word ptr[bp"+signe+ident.getValeur()+"], ax\n\n");	
+				"mov word ptr[bp"+signe+i+"], ax\n\n");	
 	}
 	/**
 	 * Traduction de l'instruction iload
@@ -351,11 +352,12 @@ public class ASM  extends AbstractGeneration {
 	 * Ne permet de lire que des entiers
 	 */
 	public void lire(Ident ident) { // lireEnt
-		progString.append("; lireEnt "+ident.getValeur()+"\n");
+		int i=ident.getValeur();
+		progString.append("; lireEnt "+i+"\n");
 		
 		String signe = "";
-		if (ident.getValeur() >= 0) signe = "+";
-		progString.append("lea dx, [bp"+signe+ident.getValeur()+"]\n" +
+		if (i >= 0) signe = "+";
+		progString.append("lea dx, [bp"+signe+i+"]\n" +
 				"push dx\n" +
 				"call lirent\n\n");			
 	}

@@ -3,6 +3,8 @@ package compilateur;
 public class IdConst extends Ident {
 	
 
+	public final static int VRAI = -1;
+	public final static int FAUX = 0;
 	/**
 	 * La valeur de la constante
 	 */

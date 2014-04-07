@@ -25,7 +25,7 @@ public class Yaka {
 	public static TabIdent tabIdent = new TabIdent();
 	public static Declaration decl = new Declaration();
 	public static Expression expr = new Expression();
-	public static AbstractGeneration gen = new ASM("Helloworld");
+	public static AbstractGeneration gen = new ASM("../out.asm");
 
 	private static int nbError = 0;
   public static void printErrorMsg(String msg)
@@ -262,7 +262,7 @@ void valConst() : {String name = YakaTokenManager.identLu;}{
  {
     try
     {
-		decl.addConst(name,Type.BOOL,VRAI);
+		decl.addConst(name,Type.BOOL,IdConst.VRAI);
     }
     catch (SemanticException e)
     {
@@ -273,7 +273,7 @@ void valConst() : {String name = YakaTokenManager.identLu;}{
  {
     try
     {
-		decl.addConst(name,Type.BOOL,FAUX);
+		decl.addConst(name,Type.BOOL,IdConst.FAUX);
     }
     catch (SemanticException e)
     {
@@ -526,8 +526,8 @@ void valeur () : {}
    				}
 
    				
- | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(-1);}
- | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(0);}
+ | <VRAI> 		{expr.ajouterType(Type.BOOL);gen.iconst(IdConst.VRAI);}
+ | <FAUX> 		{expr.ajouterType(Type.BOOL);gen.iconst(IdConst.FAUX);}
  
 }
 void argumentsFonction() : {String fonc = YakaTokenManager.identLu;int nbParam = 0;}{

@@ -9,7 +9,7 @@ public class Yaka implements YakaConstants {
         public static TabIdent tabIdent = new TabIdent();
         public static Declaration decl = new Declaration();
         public static Expression expr = new Expression();
-        public static AbstractGeneration gen = new ASM("Helloworld");
+        public static AbstractGeneration gen = new ASM("../out.asm");
 
         private static int nbError = 0;
   public static void printErrorMsg(String msg)
@@ -242,7 +242,7 @@ public class Yaka implements YakaConstants {
       jj_consume_token(VRAI);
     try
     {
-                decl.addConst(name,Type.BOOL,VRAI);
+                decl.addConst(name,Type.BOOL,IdConst.VRAI);
     }
     catch (SemanticException e)
     {
@@ -253,7 +253,7 @@ public class Yaka implements YakaConstants {
       jj_consume_token(FAUX);
     try
     {
-                decl.addConst(name,Type.BOOL,FAUX);
+                decl.addConst(name,Type.BOOL,IdConst.FAUX);
     }
     catch (SemanticException e)
     {
@@ -697,11 +697,11 @@ public class Yaka implements YakaConstants {
       break;
     case VRAI:
       jj_consume_token(VRAI);
-                         expr.ajouterType(Type.BOOL);gen.iconst(-1);
+                         expr.ajouterType(Type.BOOL);gen.iconst(IdConst.VRAI);
       break;
     case FAUX:
       jj_consume_token(FAUX);
-                         expr.ajouterType(Type.BOOL);gen.iconst(0);
+                         expr.ajouterType(Type.BOOL);gen.iconst(IdConst.FAUX);
       break;
     default:
       jj_la1[21] = jj_gen;
