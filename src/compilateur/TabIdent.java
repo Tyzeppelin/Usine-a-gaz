@@ -126,20 +126,20 @@ public class TabIdent {
 	 * @param name le nom de l'identifiant
 	 * @param id l'identifiant
 	 */
-	public void rangeIdentLocal(String name, Ident id)
+	public void rangeIdentLocal(Ident id)
 	{
 		if (id!=null)
-			locaux.put(name, id);
+			locaux.put(id.getNom(), id);
 	}
 	/**
 	 * Range l'identifiant à l'index "name" dans la table des globaux
 	 * @param name le nom de l'identifiant
 	 * @param id l'identifiant
 	 */
-	public void rangeIdentGlobal(String name, Ident id)
+	public void rangeIdentGlobal(Ident id)
 	{
 		if (id!=null)
-			globaux.put(name, id);
+			globaux.put(id.getNom(), id);
 	}
 	/**
 	 * Efface la table des globaux et des locaux

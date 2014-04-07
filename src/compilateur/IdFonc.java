@@ -14,6 +14,11 @@ public class IdFonc extends Ident {
 		super(nom);
 		listParam = new ArrayList<IdParam>();
 	}
+	
+	public IdFonc(String nom, Type type) {
+		super(nom,type);
+		listParam = new ArrayList<IdParam>();
+	}
 	/**
 	 * Retourne le nombre de paramètre de la fonction
 	 * @return

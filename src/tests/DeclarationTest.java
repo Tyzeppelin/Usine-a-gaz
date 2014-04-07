@@ -7,11 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import yaka.Yaka;
-
 import compilateur.IdConst;
+import compilateur.IdFonc;
 import compilateur.IdVar;
 import compilateur.Type;
-
 import exceptions.IdentAlreadyDeclaredException;
 import exceptions.IdentDoesNotExistException;
 
@@ -21,7 +20,7 @@ public class DeclarationTest extends TestCase {
 	@Before
 	protected void setUp() throws Exception {
 		super.setUp();
-		Yaka.tabIdent.clearLocaux();
+		Yaka.tabIdent.clear();
 	}
 
 	@Test
@@ -100,5 +99,36 @@ public class DeclarationTest extends TestCase {
 			assertTrue(true);
 		}
 	}
+	
+	@Test
+	public void testAddFonction()
+	{
+		try {
+			Yaka.decl.addFonction("test", Type.ENT);
+		} catch (IdentAlreadyDeclaredException e) {
+			assertTrue(false);
+		}
+		assertTrue(Yaka.tabIdent.existeIdentGlobal("test"));
+		
+		try {
+			assertEquals(new IdFonc("test",Type.ENT), Yaka.tabIdent.chercheIdent("test"));
+			assertEquals(new IdFonc("test",Type.ENT), Yaka.tabIdent.chercheIdentGlobal("test"));
+		} catch (IdentDoesNotExistException e1) {
+			assertTrue(false);
+		}
+		
+		try {
+			Yaka.decl.addFonction("test", Type.ENT);
+		} catch (IdentAlreadyDeclaredException e) {
+			assertTrue(true);
+		}
+	}
+	
+	@Test
+	public void testAddParam()
+	{
+		
+	}
+	
 
 }

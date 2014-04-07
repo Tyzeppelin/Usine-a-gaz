@@ -10,7 +10,7 @@ public class ControlAffectation {
 
 	public void controlIdent(String ident) throws IdentDoesNotExistException, IdentAffectationException {
 		if (!Yaka.tabIdent.existeIdentLocal(ident)) {
-			Yaka.tabIdent.rangeIdentLocal(ident, new IdVar(ident, Type.ERR));
+			Yaka.tabIdent.rangeIdentLocal(new IdVar(ident, Type.ERR));
 			throw new IdentDoesNotExistException(ident);
 		} else {
 			Ident id = Yaka.tabIdent.chercheIdentLocal(ident);

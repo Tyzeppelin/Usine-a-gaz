@@ -57,7 +57,7 @@ public class Declaration implements YakaConstants{
 		if (!Yaka.tabIdent.existeIdentGlobal(name))
 		{
 			currentFonc = new IdFonc(name);
-			Yaka.tabIdent.rangeIdentGlobal(name, currentFonc);
+			Yaka.tabIdent.rangeIdentGlobal(currentFonc);
 		}
 		else
 		{
@@ -75,9 +75,8 @@ public class Declaration implements YakaConstants{
 	{
 		if (!Yaka.tabIdent.existeIdentGlobal(name))
 		{
-			currentFonc = new IdFonc(name);
-			currentFonc.setType(type);
-			Yaka.tabIdent.rangeIdentGlobal(name, currentFonc);
+			currentFonc = new IdFonc(name,type);
+			Yaka.tabIdent.rangeIdentGlobal(currentFonc);
 		}
 		else
 		{
@@ -97,7 +96,7 @@ public class Declaration implements YakaConstants{
 		{
 			IdParam param = new IdParam(name,type);
 			currentFonc.addParam(param);
-			Yaka.tabIdent.rangeIdentLocal(name, param);
+			Yaka.tabIdent.rangeIdentLocal(param);
 		}
 		else
 		{
@@ -116,7 +115,7 @@ public class Declaration implements YakaConstants{
 	{
 		if (!Yaka.tabIdent.existeIdentLocal(name))
 		{
-			Yaka.tabIdent.rangeIdentLocal(name, new IdConst(name, type, value));
+			Yaka.tabIdent.rangeIdentLocal(new IdConst(name, type, value));
 		}
 		else
 		{
@@ -134,7 +133,7 @@ public class Declaration implements YakaConstants{
 	public void addConstIdent(String name,String ident) throws IdentAlreadyDeclaredException, IdentDoesNotExistException
 	{
 		if (!Yaka.tabIdent.existeIdentLocal(name))
-			Yaka.tabIdent.rangeIdentLocal(name, Yaka.tabIdent.chercheIdentLocal(ident));
+			Yaka.tabIdent.rangeIdentLocal(Yaka.tabIdent.chercheIdentLocal(ident));
 		else
 			throw new IdentAlreadyDeclaredException(name);
 	}
@@ -149,7 +148,7 @@ public class Declaration implements YakaConstants{
 	{
 		if (!Yaka.tabIdent.existeIdentLocal(name))
 		{
-			Yaka.tabIdent.rangeIdentLocal(name, new IdVar(name,Type.intToType(type),(Yaka.tabIdent.nbVarDeclared()+1)*(-2)));
+			Yaka.tabIdent.rangeIdentLocal(new IdVar(name,Type.intToType(type),(Yaka.tabIdent.nbVarDeclared()+1)*(-2)));
 		}
 		else
 		{

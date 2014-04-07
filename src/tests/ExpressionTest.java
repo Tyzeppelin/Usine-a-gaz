@@ -46,7 +46,7 @@ public class ExpressionTest extends TestCase {
 			assertTrue(true);
 		}
 		
-		Yaka.tabIdent.rangeIdentLocal("test", new IdConst("test"));
+		Yaka.tabIdent.rangeIdentLocal(new IdConst("test"));
 		
 		try {
 			Yaka.expr.ajouterIdent("test");
@@ -64,7 +64,7 @@ public class ExpressionTest extends TestCase {
 			assertTrue(true);
 		}
 		
-		Yaka.tabIdent.rangeIdentLocal("test", id);
+		Yaka.tabIdent.rangeIdentLocal(id);
 		
 		try {
 			Yaka.expr.ajouterIdent(id);
