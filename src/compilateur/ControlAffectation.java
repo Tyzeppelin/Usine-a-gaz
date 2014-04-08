@@ -8,19 +8,18 @@ import exceptions.TypeExpectedNotCorrectException;
 
 public class ControlAffectation {
 
-	public void controlIdent(String ident) throws IdentDoesNotExistException, IdentAffectationException {
-		if (!Yaka.tabIdent.existeIdentLocal(ident)) {
-			Yaka.tabIdent.rangeIdentLocal(new IdVar(ident, Type.ERR));
+	public static void controlIdent(String ident) throws IdentDoesNotExistException, IdentAffectationException {
+		if (!Yaka.tabIdent.existeIdentLocal(ident) && !Yaka.tabIdent.existeIdentGlobal(ident)) {
 			throw new IdentDoesNotExistException(ident);
 		} else {
-			Ident id = Yaka.tabIdent.chercheIdentLocal(ident);
+			Ident id = Yaka.tabIdent.chercheIdent(ident);
 			if (!id.canBeAffected()) {
 				throw new IdentAffectationException(id.getNom());
 			}
 		}
 	}
 	
-	public void controlExpression(String ident) throws TypeErrException, IdentDoesNotExistException, TypeExpectedNotCorrectException
+	public static void controlExpression(String ident) throws TypeErrException, IdentDoesNotExistException, TypeExpectedNotCorrectException
 	{		
 		Type typeGiven = Yaka.expr.getTypeExpr();
 		Type typeExpected = Yaka.tabIdent.chercheIdentLocal(ident).getType();

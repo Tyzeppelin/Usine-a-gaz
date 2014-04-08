@@ -33,7 +33,7 @@ public class TabIdent {
 	}
 	
 	/**
-	 * Cette méthode retourne le nombre de paramêtres déclarés
+	 * Cette méthode retourne le nombre de paramêtre déclaré
 	 * @return le nombre de IdParam
 	 */
 	public int nbParamDeclared()
@@ -130,6 +130,13 @@ public class TabIdent {
 	{
 		if (id!=null)
 			locaux.put(id.getNom(), id);
+	}
+	
+
+	public void rangeIdentLocal(String cle, Ident id)
+	{
+		if (id!=null)
+			locaux.put(cle, id);
 	}
 	/**
 	 * Range l'identifiant à l'index "name" dans la table des globaux

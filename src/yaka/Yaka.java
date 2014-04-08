@@ -445,14 +445,18 @@ public class Yaka implements YakaConstants {
   }
 
   static final public void affectation() throws ParseException {
-        ControlAffectation control = new ControlAffectation();
     jj_consume_token(ident);
           String ident = YakaTokenManager.identLu;
           try
           {
-            control.controlIdent(ident);
+            ControlAffectation.controlIdent(ident);
           }
-          catch (SemanticException e)
+          catch (IdentDoesNotExistException e)
+          {
+                Yaka.tabIdent.rangeIdentLocal(new IdVar(ident, Type.ERR));
+        printErrorMsg(e.getMessage());
+          }
+          catch (IdentAffectationException e)
           {
         printErrorMsg(e.getMessage());
           }
@@ -460,9 +464,12 @@ public class Yaka implements YakaConstants {
     expression();
            try
            {
-             control.controlExpression(ident);
+             ControlAffectation.controlExpression(ident);
                  gen.istore(tabIdent.chercheIdentLocal(ident));
            }
+           catch (IdentDoesNotExistException e)
+          {
+          }
            catch (SemanticException e)
            {
                 printErrorMsg(e.getMessage());
@@ -711,7 +718,7 @@ public class Yaka implements YakaConstants {
   }
 
   static final public void argumentsFonction() throws ParseException {
-                            String fonc = YakaTokenManager.identLu;int nbParam = 0;
+                            String fonc = YakaTokenManager.identLu;
     gen.reserveRetour();
     ControlTypeFonction controlType = new ControlTypeFonction();
     try
@@ -732,10 +739,12 @@ public class Yaka implements YakaConstants {
     case 40:
     case 51:
       expression();
-      nbParam++;
           try
           {
             controlType.testTypeParam(expr.getTypeExpr());
+          }
+          catch (TooMuchParamException e)
+          {
           }
           catch (SemanticException e)
           {
@@ -753,10 +762,12 @@ public class Yaka implements YakaConstants {
         }
         jj_consume_token(41);
         expression();
-          nbParam++;
           try
                   {
                     controlType.testTypeParam(expr.getTypeExpr());
+                  }
+                  catch (TooMuchParamException e)
+                  {
                   }
                   catch (SemanticException e)
                   {
@@ -771,7 +782,7 @@ public class Yaka implements YakaConstants {
     jj_consume_token(42);
                   try
                   {
-                    controlType.testNbParam(nbParam);
+                    controlType.testNbParam();
                         expr.verifTypeFonc(fonc);
                   }
                   catch (SemanticException e)

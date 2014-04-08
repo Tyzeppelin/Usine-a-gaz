@@ -125,9 +125,45 @@ public class DeclarationTest extends TestCase {
 	}
 	
 	@Test
+	public void testCurrentFonc()
+	{
+		try {
+			Yaka.decl.addFonction("test", Type.ENT);
+		} catch (IdentAlreadyDeclaredException e) {
+			assertTrue(false);
+		}
+		
+		assertEquals(new IdFonc("test",Type.ENT), Yaka.decl.getCurrentFonc());
+		
+		try {
+			Yaka.decl.addFonction("test2", Type.ENT);
+		} catch (IdentAlreadyDeclaredException e) {
+			assertTrue(false);
+		}
+		
+		assertEquals(new IdFonc("test2",Type.ENT), Yaka.decl.getCurrentFonc());
+	}
+	
+	@Test
 	public void testAddParam()
 	{
+		try {
+			Yaka.decl.addFonction("test", Type.ENT);
+		} catch (IdentAlreadyDeclaredException e) {
+			assertTrue(false);
+		}
 		
+		try {
+			Yaka.decl.addParam("testParam", Type.ENT);
+		} catch (IdentAlreadyDeclaredException e) {
+			assertTrue(false);
+		}
+		
+		try {
+			Yaka.decl.addParam("testParam", Type.ENT);
+		} catch (IdentAlreadyDeclaredException e) {
+			assertTrue(true);
+		}
 	}
 	
 

@@ -14,12 +14,12 @@ import exceptions.TypeParamException;
  */
 public class ControlTypeFonction {
 	
-	private int nb;
+	private int nbParam;
 	private IdFonc fonc;
 	
 	public ControlTypeFonction()
 	{
-		nb = 0;
+		nbParam = 0;
 	}
 	
 	/**
@@ -50,27 +50,33 @@ public class ControlTypeFonction {
 	 */
 	public void testTypeParam(Type type) throws TypeParamException, TooMuchParamException
 	{
-		if (nb>=fonc.getNbParam())
+		int tmp = nbParam;
+		nbParam++;
+		if (tmp>=fonc.getNbParam())
 		{
-			throw new TooMuchParamException(fonc.getNom());
+			throw new TooMuchParamException(fonc.getNom(),tmp-(fonc.getNbParam()));
 		}
-		if (fonc.getParam(nb).getType() != type)
+		if (fonc.getParam(tmp).getType() != type)
 		{
-			throw new TypeParamException(fonc.getParam(nb));
+			throw new TypeParamException(fonc, fonc.getParam(tmp));
 		}
-		nb++;
 	}
 	
 	/**
 	 * Test si le nombre de paramètres de la fonction est le bon
 	 * @param nbParam
 	 * @throws NotEnoughParamException
+	 * @throws TooMuchParamException 
 	 */
-	public void testNbParam(int nbParam) throws NotEnoughParamException
+	public void testNbParam() throws NotEnoughParamException, TooMuchParamException
 	{
 		if (nbParam < fonc.getNbParam())
 		{
-			throw new NotEnoughParamException(fonc.getNom());			
+			throw new NotEnoughParamException(fonc.getNom(),fonc.getNbParam()-nbParam);			
+		}
+		if (nbParam>fonc.getNbParam())
+		{
+			throw new TooMuchParamException(fonc.getNom(),nbParam-fonc.getNbParam());
 		}
 	}
 

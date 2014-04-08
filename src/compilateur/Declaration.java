@@ -133,7 +133,7 @@ public class Declaration implements YakaConstants{
 	public void addConstIdent(String name,String ident) throws IdentAlreadyDeclaredException, IdentDoesNotExistException
 	{
 		if (!Yaka.tabIdent.existeIdentLocal(name))
-			Yaka.tabIdent.rangeIdentLocal(Yaka.tabIdent.chercheIdentLocal(ident));
+			Yaka.tabIdent.rangeIdentLocal(name,Yaka.tabIdent.chercheIdentLocal(ident));
 		else
 			throw new IdentAlreadyDeclaredException(name);
 	}
